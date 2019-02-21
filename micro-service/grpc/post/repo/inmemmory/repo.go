@@ -12,14 +12,14 @@ type Repo struct {
 	nextID int64
 }
 
-func (r Repo) Get(ID int64) (entity.Post, error) {
+func (r *Repo) Get(ID int64) (entity.Post, error) {
 	p, ok := r.data[ID]
 	if !ok {
 		return entity.Post{}, errors.New("post not found")
 	}
 	return p, nil
 }
-func (r Repo) Create(AuthorID int64, Headline string, Content string) (entity.Post, error) {
+func (r *Repo) Create(AuthorID int64, Headline string, Content string) (entity.Post, error) {
 	ID := r.nextID
 	r.nextID++
 
@@ -35,16 +35,16 @@ func (r Repo) Create(AuthorID int64, Headline string, Content string) (entity.Po
 		Headline,
 		Content,
 	}
-	r.data[r.nextID] = p
+	r.data[p.ID] = p
 	return p, nil
 }
-func (r Repo) Delete(ID int64) error {
+func (r *Repo) Delete(ID int64) error {
 	delete(r.data, ID)
 	return nil
 }
 
-func NewRepo() Repo {
+func NewRepo() *Repo {
 	data := make(map[int64]entity.Post)
 	var nextID int64
-	return Repo{data, nextID}
+	return &Repo{data, nextID}
 }

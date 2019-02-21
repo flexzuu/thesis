@@ -10,6 +10,7 @@ import (
 	pb "github.com/flexzuu/benchmark/micro-service/grpc/post/post"
 	"github.com/flexzuu/benchmark/micro-service/grpc/post/repo"
 	"github.com/flexzuu/benchmark/micro-service/grpc/post/repo/inmemmory"
+	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 )
@@ -24,34 +25,31 @@ type server struct {
 }
 
 // GetPost implements post.PostServiceServer
-func (s *server) GetPost(ctx context.Context, in *pb.GetPostRequest) (*pb.GetPostResponse, error) {
+func (s *server) GetById(ctx context.Context, in *pb.GetPostRequest) (*pb.Post, error) {
 	p, err := s.postRepo.Get(in.GetId())
 	if err != nil {
 		return nil, errors.Wrap(err, "get from repo failed")
 	}
-	return &pb.GetPostResponse{
-		Post: p.ToProto(),
-	}, nil
+	return p.ToProto(), nil
 }
 
 // CreatePost implements post.PostServiceServer
-func (s *server) CreatePost(ctx context.Context, in *pb.CreatePostRequest) (*pb.CreatePostResponse, error) {
+func (s *server) Create(ctx context.Context, in *pb.CreatePostRequest) (*pb.Post, error) {
+	//TODO: Validate AuthorID with user service
 	p, err := s.postRepo.Create(in.GetAuthorID(), in.GetHeadline(), in.GetContent())
 	if err != nil {
 		return nil, errors.Wrap(err, "create from repo failed")
 	}
-	return &pb.CreatePostResponse{
-		Post: p.ToProto(),
-	}, nil
+	return p.ToProto(), nil
 }
 
 // DeletePost implements post.PostServiceServer
-func (s *server) DeletePost(ctx context.Context, in *pb.DeletePostRequest) (*pb.DeletePostResponse, error) {
+func (s *server) Delete(ctx context.Context, in *pb.DeletePostRequest) (*empty.Empty, error) {
 	err := s.postRepo.Delete(in.GetId())
 	if err != nil {
 		return nil, errors.Wrap(err, "delete from repo failed")
 	}
-	return &pb.DeletePostResponse{}, nil
+	return &empty.Empty{}, nil
 }
 
 func main() {

@@ -1,14 +1,16 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 package post;
 
 service PostService {
   // Get a single Post by id
-  rpc GetPost (GetPostRequest) returns (GetPostResponse) {}
+  rpc GetById(GetPostRequest) returns (Post) {}
   // Create a single Post validates if the passed AuthorId is valid
-  rpc CreatePost (CreatePostRequest) returns (CreatePostResponse) {}
+  rpc Create (CreatePostRequest) returns (Post) {}
   // Delete a single Post by id
-  rpc DeletePost (DeletePostRequest) returns (DeletePostResponse) {}
+  rpc Delete (DeletePostRequest) returns (google.protobuf.Empty) {}
 
 }
 
