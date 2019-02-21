@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package post;
+
+service PostService {
+  // Get a single Post by id
+  rpc GetPost (GetPostRequest) returns (GetPostResponse) {}
+  // Create a single Post validates if the passed AuthorId is valid
+  rpc CreatePost (CreatePostRequest) returns (CreatePostResponse) {}
+  // Delete a single Post by id
+  rpc DeletePost (DeletePostRequest) returns (DeletePostResponse) {}
+
+}
+
+// The request message containing the id
+message GetPostRequest {
+  int64 id = 1;
+}
+// The response message containing the post
+message GetPostResponse {
+  Post post = 1;
+}
+
+// The request message containing the id
+message CreatePostRequest {
+  int64 authorID = 1;
+  string headline = 2;
+  string content = 3; // markdown
+}
+// The response message containing the post
+message CreatePostResponse {
+  Post post = 1;
+}
+
+// The request message containing the id
+message DeletePostRequest {
+  int64 id = 1;
+}
+// The response message containing the post
+message DeletePostResponse {
+}
+
+message Post {
+  int64 ID = 1;
+  int64 authorID = 2;
+  string headline = 3;
+  string content = 4; // markdown
+}
