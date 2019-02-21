@@ -30,7 +30,7 @@ type server struct {
 
 // GetRating implements rating.RatingServiceServer
 func (s *server) GetById(ctx context.Context, in *pb.GetRatingRequest) (*pb.Rating, error) {
-	r, err := s.ratingRepo.Get(in.ID)
+	r, err := s.ratingRepo.GetById(in.ID)
 	if err != nil {
 		return nil, errors.Wrap(err, "get from repo failed")
 	}

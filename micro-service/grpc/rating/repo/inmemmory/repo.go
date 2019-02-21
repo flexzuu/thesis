@@ -12,7 +12,7 @@ type Repo struct {
 	nextID int64
 }
 
-func (r *Repo) Get(ID int64) (entity.Rating, error) {
+func (r *Repo) GetById(ID int64) (entity.Rating, error) {
 	rating, ok := r.data[ID]
 	if !ok {
 		return entity.Rating{}, errors.New("rating not found")
