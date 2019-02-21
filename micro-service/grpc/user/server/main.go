@@ -28,7 +28,7 @@ type server struct {
 func (s *server) GetById(ctx context.Context, in *pb.GetUserRequest) (*pb.User, error) {
 	u, err := s.userRepo.Get(in.ID)
 	if err != nil {
-		return nil, errors.Wrap(err, "get from repo failed")
+		return nil, errors.Wrap(err, "get failed")
 	}
 	return ToProto(u), nil
 }
@@ -37,7 +37,7 @@ func (s *server) GetById(ctx context.Context, in *pb.GetUserRequest) (*pb.User, 
 func (s *server) Create(ctx context.Context, in *pb.CreateUserRequest) (*pb.User, error) {
 	u, err := s.userRepo.Create(in.Email, in.Name)
 	if err != nil {
-		return nil, errors.Wrap(err, "create from repo failed")
+		return nil, errors.Wrap(err, "create failed")
 	}
 	return ToProto(u), nil
 }
@@ -46,7 +46,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreateUserRequest) (*pb.User
 func (s *server) Delete(ctx context.Context, in *pb.DeleteUserRequest) (*empty.Empty, error) {
 	err := s.userRepo.Delete(in.ID)
 	if err != nil {
-		return nil, errors.Wrap(err, "delete from repo failed")
+		return nil, errors.Wrap(err, "delete failed")
 	}
 	return &empty.Empty{}, nil
 }

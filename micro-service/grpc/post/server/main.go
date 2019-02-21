@@ -31,9 +31,24 @@ type server struct {
 func (s *server) GetById(ctx context.Context, in *pb.GetPostRequest) (*pb.Post, error) {
 	p, err := s.postRepo.GetById(in.ID)
 	if err != nil {
-		return nil, errors.Wrap(err, "get from repo failed")
+		return nil, errors.Wrap(err, "get failed")
 	}
 	return ToProto(p), nil
+}
+
+// ListPostsOfAuthor implements post.PostServiceServer
+func (s *server) ListOfAuthor(ctx context.Context, in *pb.ListPostsOfAuthorRequest) (*pb.ListPostsResponse, error) {
+	ps, err := s.postRepo.ListOfAuthor(in.AuthorID)
+	if err != nil {
+		return nil, errors.Wrap(err, "list failed")
+	}
+	posts := make([]*pb.Post, len(ps))
+	for i, p := range ps {
+		posts[i] = ToProto(p)
+	}
+	return &pb.ListPostsResponse{
+		Posts: posts,
+	}, nil
 }
 
 // CreatePost implements post.PostServiceServer
@@ -47,7 +62,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreatePostRequest) (*pb.Post
 	}
 	p, err := s.postRepo.Create(in.AuthorID, in.Headline, in.Content)
 	if err != nil {
-		return nil, errors.Wrap(err, "create from repo failed")
+		return nil, errors.Wrap(err, "create failed")
 	}
 	return ToProto(p), nil
 }
@@ -56,7 +71,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreatePostRequest) (*pb.Post
 func (s *server) Delete(ctx context.Context, in *pb.DeletePostRequest) (*empty.Empty, error) {
 	err := s.postRepo.Delete(in.ID)
 	if err != nil {
-		return nil, errors.Wrap(err, "delete from repo failed")
+		return nil, errors.Wrap(err, "delete failed")
 	}
 	return &empty.Empty{}, nil
 }

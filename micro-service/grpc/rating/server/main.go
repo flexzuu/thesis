@@ -32,7 +32,7 @@ type server struct {
 func (s *server) GetById(ctx context.Context, in *pb.GetRatingRequest) (*pb.Rating, error) {
 	r, err := s.ratingRepo.GetById(in.ID)
 	if err != nil {
-		return nil, errors.Wrap(err, "get from repo failed")
+		return nil, errors.Wrap(err, "get failed")
 	}
 	return ToProto(r), nil
 }
@@ -41,14 +41,14 @@ func (s *server) GetById(ctx context.Context, in *pb.GetRatingRequest) (*pb.Rati
 func (s *server) ListOfPost(ctx context.Context, in *pb.ListRatingsOfPostRequest) (*pb.ListRatingsResponse, error) {
 	rs, err := s.ratingRepo.ListOfPost(in.PostID)
 	if err != nil {
-		return nil, errors.Wrap(err, "get from repo failed")
+		return nil, errors.Wrap(err, "list failed")
 	}
-	Ratings := make([]*pb.Rating, len(rs))
+	ratings := make([]*pb.Rating, len(rs))
 	for i, r := range rs {
-		Ratings[i] = ToProto(r)
+		ratings[i] = ToProto(r)
 	}
 	return &pb.ListRatingsResponse{
-		Ratings: Ratings,
+		Ratings: ratings,
 	}, nil
 }
 
@@ -64,7 +64,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreateRatingRequest) (*pb.Ra
 
 	r, err := s.ratingRepo.Create(in.PostID, in.Rating)
 	if err != nil {
-		return nil, errors.Wrap(err, "create from repo failed")
+		return nil, errors.Wrap(err, "create failed")
 	}
 	return ToProto(r), nil
 }
@@ -73,7 +73,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreateRatingRequest) (*pb.Ra
 func (s *server) Delete(ctx context.Context, in *pb.DeleteRatingRequest) (*empty.Empty, error) {
 	err := s.ratingRepo.Delete(in.ID)
 	if err != nil {
-		return nil, errors.Wrap(err, "delete from repo failed")
+		return nil, errors.Wrap(err, "delete failed")
 	}
 	return &empty.Empty{}, nil
 }
