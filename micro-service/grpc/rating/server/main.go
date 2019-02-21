@@ -80,8 +80,11 @@ func (s *server) Delete(ctx context.Context, in *pb.DeleteRatingRequest) (*empty
 
 func main() {
 	ratingRepo := inmemmory.NewRepo()
-
-	conn, err := grpc.Dial(os.Getenv("POST_SERVICE"), grpc.WithInsecure())
+	postServiceAdress := os.Getenv("POST_SERVICE")
+	if postServiceAdress == "" {
+		log.Fatalln("please provide POST_SERVICE as env var")
+	}
+	conn, err := grpc.Dial(postServiceAdress, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect to post service: %v", err)
 	}

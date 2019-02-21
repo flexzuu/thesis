@@ -79,7 +79,11 @@ func (s *server) Delete(ctx context.Context, in *pb.DeletePostRequest) (*empty.E
 func main() {
 	postRepo := inmemmory.NewRepo()
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(os.Getenv("USER_SERVICE"), grpc.WithInsecure())
+	userServiceAdress := os.Getenv("USER_SERVICE")
+	if userServiceAdress == "" {
+		log.Fatalln("please provide USER_SERVICE as env var")
+	}
+	conn, err := grpc.Dial(userServiceAdress, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect to user service: %v", err)
 	}
