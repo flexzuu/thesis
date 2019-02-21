@@ -18,28 +18,18 @@ service UserService {
 message GetUserRequest {
   int64 ID = 1;
 }
-// The response message containing the user
-message GetUserResponse {
-  User user = 1;
-}
 
 // The request message containing the ID
 message CreateUserRequest {
   string email = 1;
   string name = 2;
 }
-// The response message containing the user
-message CreateUserResponse {
-  User user = 1;
-}
 
 // The request message containing the ID
 message DeleteUserRequest {
   int64 ID = 1;
 }
-// The response message containing the user
-message DeleteUserResponse {
-}
+
 
 message User {
   int64 ID = 1;

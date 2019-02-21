@@ -18,10 +18,6 @@ service PostService {
 message GetPostRequest {
   int64 ID = 1;
 }
-// The response message containing the post
-message GetPostResponse {
-  Post post = 1;
-}
 
 // The request message containing the ID
 message CreatePostRequest {
@@ -29,17 +25,10 @@ message CreatePostRequest {
   string headline = 2;
   string content = 3; // markdown
 }
-// The response message containing the post
-message CreatePostResponse {
-  Post post = 1;
-}
 
 // The request message containing the ID
 message DeletePostRequest {
   int64 ID = 1;
-}
-// The response message containing the post
-message DeletePostResponse {
 }
 
 message Post {

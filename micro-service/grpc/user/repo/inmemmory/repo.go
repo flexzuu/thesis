@@ -1,7 +1,7 @@
 package inmemmory
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 
 	"github.com/flexzuu/benchmark/micro-service/grpc/user/repo/entity"
 )
@@ -13,29 +13,34 @@ type Repo struct {
 }
 
 func (r *Repo) Get(ID int64) (entity.User, error) {
-	p, ok := r.data[ID]
+	u, ok := r.data[ID]
 	if !ok {
 		return entity.User{}, errors.New("user not found")
 	}
-	return p, nil
+	return u, nil
 }
 func (r *Repo) Create(Email string, Name string) (entity.User, error) {
 	ID := r.nextID
 	r.nextID++
 
 	// check if ID does exist allready
-
 	_, exists := r.data[ID]
 	if exists {
 		return entity.User{}, errors.New("no more space") // we ran out of IDs
 	}
-	p := entity.User{
+	//TODO: check if there is a user with this email already
+
+	u := entity.User{
 		ID,
 		Email,
 		Name,
 	}
-	r.data[p.ID] = p
-	return p, nil
+	err := u.Valid()
+	if err != nil {
+		return u, errors.Wrap(err, "validation failed")
+	}
+	r.data[u.ID] = u
+	return u, nil
 }
 func (r *Repo) Delete(ID int64) error {
 	delete(r.data, ID)

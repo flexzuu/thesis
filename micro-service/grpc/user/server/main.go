@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	port = ":50051"
+	port = ":50052"
 )
 
 // server is used to implement user.UserServiceServer
@@ -26,25 +26,25 @@ type server struct {
 
 // GetUser implements user.UserServiceServer
 func (s *server) GetById(ctx context.Context, in *pb.GetUserRequest) (*pb.User, error) {
-	p, err := s.userRepo.Get(in.GetID())
+	u, err := s.userRepo.Get(in.ID)
 	if err != nil {
 		return nil, errors.Wrap(err, "get from repo failed")
 	}
-	return p.ToProto(), nil
+	return u.ToProto(), nil
 }
 
 // CreateUser implements user.UserServiceServer
 func (s *server) Create(ctx context.Context, in *pb.CreateUserRequest) (*pb.User, error) {
-	p, err := s.userRepo.Create(in.GetEmail(), in.GetName())
+	u, err := s.userRepo.Create(in.Email, in.Name)
 	if err != nil {
 		return nil, errors.Wrap(err, "create from repo failed")
 	}
-	return p.ToProto(), nil
+	return u.ToProto(), nil
 }
 
 // DeleteUser implements user.UserServiceServer
 func (s *server) Delete(ctx context.Context, in *pb.DeleteUserRequest) (*empty.Empty, error) {
-	err := s.userRepo.Delete(in.GetID())
+	err := s.userRepo.Delete(in.ID)
 	if err != nil {
 		return nil, errors.Wrap(err, "delete from repo failed")
 	}

@@ -29,7 +29,7 @@ type server struct {
 
 // GetPost implements post.PostServiceServer
 func (s *server) GetById(ctx context.Context, in *pb.GetPostRequest) (*pb.Post, error) {
-	p, err := s.postRepo.Get(in.GetID())
+	p, err := s.postRepo.Get(in.ID)
 	if err != nil {
 		return nil, errors.Wrap(err, "get from repo failed")
 	}
@@ -39,14 +39,13 @@ func (s *server) GetById(ctx context.Context, in *pb.GetPostRequest) (*pb.Post, 
 // CreatePost implements post.PostServiceServer
 func (s *server) Create(ctx context.Context, in *pb.CreatePostRequest) (*pb.Post, error) {
 	//Validate AuthorID with user service
-	authorID := in.GetAuthorID()
 	_, err := s.userClient.GetById(ctx, &user.GetUserRequest{
-		ID: authorID,
+		ID: in.AuthorID,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "invalid author id")
 	}
-	p, err := s.postRepo.Create(authorID, in.GetHeadline(), in.GetContent())
+	p, err := s.postRepo.Create(in.AuthorID, in.Headline, in.Content)
 	if err != nil {
 		return nil, errors.Wrap(err, "create from repo failed")
 	}
@@ -55,7 +54,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreatePostRequest) (*pb.Post
 
 // DeletePost implements post.PostServiceServer
 func (s *server) Delete(ctx context.Context, in *pb.DeletePostRequest) (*empty.Empty, error) {
-	err := s.postRepo.Delete(in.GetID())
+	err := s.postRepo.Delete(in.ID)
 	if err != nil {
 		return nil, errors.Wrap(err, "delete from repo failed")
 	}
@@ -63,12 +62,11 @@ func (s *server) Delete(ctx context.Context, in *pb.DeletePostRequest) (*empty.E
 }
 
 func main() {
-	address := os.Getenv("USER_SERVICE")
 	postRepo := inmemmory.NewRepo()
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
+	conn, err := grpc.Dial(os.Getenv("USER_SERVICE"), grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Fatalf("did not connect to user service: %v", err)
 	}
 	defer conn.Close()
 	userClient := user.NewUserServiceClient(conn)
