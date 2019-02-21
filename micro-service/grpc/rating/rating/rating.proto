@@ -7,6 +7,8 @@ package rating;
 service RatingService {
   // Get a single Rating by ID
   rpc GetById(GetRatingRequest) returns (Rating) {}
+  // List Ratings of a Post
+  rpc ListOfPost(ListRatingsOfPostRequest) returns (ListRatingsResponse) {}
   // Create a single Rating validates if the passed AuthorId is valid
   rpc Create (CreateRatingRequest) returns (Rating) {}
   // Delete a single Rating by ID
@@ -18,6 +20,10 @@ service RatingService {
 message GetRatingRequest {
   int64 ID = 1;
 }
+// The request message containing the PostID
+message ListRatingsOfPostRequest {
+  int64 PostID = 1;
+}
 // The request message containing the ID
 message CreateRatingRequest {
   int64 postID = 1;
@@ -27,6 +33,11 @@ message CreateRatingRequest {
 // The request message containing the ID
 message DeleteRatingRequest {
   int64 ID = 1;
+}
+
+// A list of Ratings
+message ListRatingsResponse {
+  repeated Rating ratings = 1;
 }
 
 message Rating {

@@ -30,7 +30,7 @@ func (s *server) GetById(ctx context.Context, in *pb.GetUserRequest) (*pb.User, 
 	if err != nil {
 		return nil, errors.Wrap(err, "get from repo failed")
 	}
-	return u.ToProto(), nil
+	return ToProto(u), nil
 }
 
 // CreateUser implements user.UserServiceServer
@@ -39,7 +39,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreateUserRequest) (*pb.User
 	if err != nil {
 		return nil, errors.Wrap(err, "create from repo failed")
 	}
-	return u.ToProto(), nil
+	return ToProto(u), nil
 }
 
 // DeleteUser implements user.UserServiceServer

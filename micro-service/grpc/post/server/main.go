@@ -33,7 +33,7 @@ func (s *server) GetById(ctx context.Context, in *pb.GetPostRequest) (*pb.Post, 
 	if err != nil {
 		return nil, errors.Wrap(err, "get from repo failed")
 	}
-	return p.ToProto(), nil
+	return ToProto(p), nil
 }
 
 // CreatePost implements post.PostServiceServer
@@ -49,7 +49,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreatePostRequest) (*pb.Post
 	if err != nil {
 		return nil, errors.Wrap(err, "create from repo failed")
 	}
-	return p.ToProto(), nil
+	return ToProto(p), nil
 }
 
 // DeletePost implements post.PostServiceServer

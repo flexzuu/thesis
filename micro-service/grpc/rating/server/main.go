@@ -34,7 +34,22 @@ func (s *server) GetById(ctx context.Context, in *pb.GetRatingRequest) (*pb.Rati
 	if err != nil {
 		return nil, errors.Wrap(err, "get from repo failed")
 	}
-	return r.ToProto(), nil
+	return ToProto(r), nil
+}
+
+// ListOfPost implements rating.RatingServiceServer
+func (s *server) ListOfPost(ctx context.Context, in *pb.ListRatingsOfPostRequest) (*pb.ListRatingsResponse, error) {
+	rs, err := s.ratingRepo.ListOfPost(in.PostID)
+	if err != nil {
+		return nil, errors.Wrap(err, "get from repo failed")
+	}
+	Ratings := make([]*pb.Rating, len(rs))
+	for i, r := range rs {
+		Ratings[i] = ToProto(r)
+	}
+	return &pb.ListRatingsResponse{
+		Ratings: Ratings,
+	}, nil
 }
 
 // CreateRating implements rating.RatingServiceServer
@@ -51,7 +66,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreateRatingRequest) (*pb.Ra
 	if err != nil {
 		return nil, errors.Wrap(err, "create from repo failed")
 	}
-	return r.ToProto(), nil
+	return ToProto(r), nil
 }
 
 // DeleteRating implements rating.RatingServiceServer
