@@ -29,7 +29,7 @@ type server struct {
 
 // GetPost implements post.PostServiceServer
 func (s *server) GetById(ctx context.Context, in *pb.GetPostRequest) (*pb.Post, error) {
-	p, err := s.postRepo.Get(in.ID)
+	p, err := s.postRepo.GetById(in.ID)
 	if err != nil {
 		return nil, errors.Wrap(err, "get from repo failed")
 	}

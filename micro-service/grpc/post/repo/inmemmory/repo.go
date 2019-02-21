@@ -12,12 +12,22 @@ type Repo struct {
 	nextID int64
 }
 
-func (r *Repo) Get(ID int64) (entity.Post, error) {
+func (r *Repo) GetById(ID int64) (entity.Post, error) {
 	p, ok := r.data[ID]
 	if !ok {
 		return entity.Post{}, errors.New("post not found")
 	}
 	return p, nil
+}
+
+func (r *Repo) GetByAuthor(AuthorID int64) ([]entity.Post, error) {
+	posts := make([]entity.Post, 0)
+	for _, post := range r.data {
+		if post.AuthorID == AuthorID {
+			posts = append(posts, post)
+		}
+	}
+	return posts, nil
 }
 func (r *Repo) Create(AuthorID int64, Headline string, Content string) (entity.Post, error) {
 	ID := r.nextID
