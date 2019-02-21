@@ -20,7 +20,7 @@ func (r *Repo) GetById(ID int64) (entity.Post, error) {
 	return p, nil
 }
 
-func (r *Repo) GetByAuthor(AuthorID int64) ([]entity.Post, error) {
+func (r *Repo) ListOfAuthor(AuthorID int64) ([]entity.Post, error) {
 	posts := make([]entity.Post, 0)
 	for _, post := range r.data {
 		if post.AuthorID == AuthorID {

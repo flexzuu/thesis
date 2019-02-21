@@ -20,7 +20,7 @@ func (r *Repo) GetById(ID int64) (entity.Rating, error) {
 	return rating, nil
 }
 
-func (r *Repo) GetByPost(PostID int64) ([]entity.Rating, error) {
+func (r *Repo) ListOfPost(PostID int64) ([]entity.Rating, error) {
 	ratings := make([]entity.Rating, 0)
 	for _, rating := range r.data {
 		if rating.PostID == PostID {
