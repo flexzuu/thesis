@@ -19,6 +19,16 @@ func (r *Repo) GetById(ID int64) (entity.Rating, error) {
 	}
 	return rating, nil
 }
+
+func (r *Repo) GetByPost(PostID int64) ([]entity.Rating, error) {
+	ratings := make([]entity.Rating, 0)
+	for _, rating := range r.data {
+		if rating.PostID == PostID {
+			ratings = append(ratings, rating)
+		}
+	}
+	return ratings, nil
+}
 func (r *Repo) Create(PostID int64, value int32) (entity.Rating, error) {
 	ID := r.nextID
 	r.nextID++
