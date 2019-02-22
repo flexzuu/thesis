@@ -36,6 +36,21 @@ func (s *server) GetById(ctx context.Context, in *pb.GetPostRequest) (*pb.Post, 
 	return ToProto(p), nil
 }
 
+// ListPosts implements post.PostServiceServer
+func (s *server) List(ctx context.Context, in *pb.ListPostsRequest) (*pb.ListPostsResponse, error) {
+	ps, err := s.postRepo.List()
+	if err != nil {
+		return nil, errors.Wrap(err, "list failed")
+	}
+	posts := make([]*pb.Post, len(ps))
+	for i, p := range ps {
+		posts[i] = ToProto(p)
+	}
+	return &pb.ListPostsResponse{
+		Posts: posts,
+	}, nil
+}
+
 // ListPostsOfAuthor implements post.PostServiceServer
 func (s *server) ListOfAuthor(ctx context.Context, in *pb.ListPostsOfAuthorRequest) (*pb.ListPostsResponse, error) {
 	ps, err := s.postRepo.ListOfAuthor(in.AuthorID)

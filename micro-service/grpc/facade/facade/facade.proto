@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+import "post/post/post.proto";
+import "user/user/user.proto";
+
+package facade;
+
+service FacadeService {
+  rpc ListPosts(ListPostsRequest) returns (ListPostsResponse) {}
+  rpc PostDetail(PostDetailRequest) returns (PostDetailResponse) {}
+  rpc AuthorDetail(AuthorDetailRequest) returns (AuthorDetailResponse) {}
+  
+}
+
+// The request message containing the ID
+message ListPostsRequest {
+}
+//
+message ListPostsResponse {
+  repeated post.Post posts = 1;
+}
+// The request message containing the ID
+message PostDetailRequest {
+  int64 ID = 1;
+}
+//
+message PostDetailResponse {
+  post.Post post = 1;
+  user.User author = 2;
+  double avgRating = 3;
+}
+// The request message containing the ID
+message AuthorDetailRequest {
+  int64 ID = 1;
+}
+//
+message AuthorDetailResponse {
+  user.User author = 1;
+  repeated post.Post posts = 2;
+  double avgRating = 3;
+}

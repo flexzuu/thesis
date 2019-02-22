@@ -19,7 +19,13 @@ func (r *Repo) GetById(ID int64) (entity.Post, error) {
 	}
 	return p, nil
 }
-
+func (r *Repo) List() ([]entity.Post, error) {
+	posts := make([]entity.Post, len(r.data))
+	for i, post := range r.data {
+		posts[i] = post
+	}
+	return posts, nil
+}
 func (r *Repo) ListOfAuthor(AuthorID int64) ([]entity.Post, error) {
 	posts := make([]entity.Post, 0)
 	for _, post := range r.data {

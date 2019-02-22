@@ -49,16 +49,27 @@ func main() {
 
 	ListPosts(postClient)
 	PostDetail(postClient, userClient, ratingClient, 0)
-	AuthorDetail(userClient, postClient, ratingClient)
+	AuthorDetail(userClient, postClient, ratingClient, 0)
 }
 
 func ListPosts(postClient post.PostServiceClient) {
 	// shows post ids+headline
 	ctx := context.Background()
-	_ = ctx
+	fmt.Println("----------ListPosts----------")
+	// fetch posts
+	posts, err := postClient.List(ctx, &post.ListPostsRequest{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("#%d Posts:\n", len(posts.Posts))
+
+	for _, post := range posts.Posts {
+		fmt.Printf("\t%s (%d)\n", post.Headline, post.ID)
+	}
 }
 
 func PostDetail(postClient post.PostServiceClient, userClient user.UserServiceClient, ratingClient rating.RatingServiceClient, postID int64) {
+	fmt.Println("----------PostDetail----------")
 	// shows post (headline + content) + authorName and all ratings(avg)
 	ctx := context.Background()
 	// fetch post by id
@@ -85,16 +96,52 @@ func PostDetail(postClient post.PostServiceClient, userClient user.UserServiceCl
 	for _, rating := range ratings.Ratings {
 		avgRating += float64(rating.Value)
 	}
-	avgRating /= float64(len(ratings.Ratings))
+	avgRating = avgRating / float64(len(ratings.Ratings))
 
-	fmt.Printf("%s by %s\nAVG-Rating: %.2f\n%s", post.Headline, author.Name, avgRating, post.Content)
+	fmt.Printf("%s by %s\nAVG-Rating: %.2f\n%s\n", post.Headline, author.Name, avgRating, post.Content)
 }
 
-func AuthorDetail(userClient user.UserServiceClient, postClient post.PostServiceClient, ratingClient rating.RatingServiceClient) {
+func AuthorDetail(userClient user.UserServiceClient, postClient post.PostServiceClient, ratingClient rating.RatingServiceClient, authorID int64) {
 	// author name and email
 	// shows post ids+headline of author
 	// global avg ratings
+	fmt.Println("----------AuthorDetail----------")
 	ctx := context.Background()
-	_ = ctx
+	author, err := userClient.GetById(ctx, &user.GetUserRequest{
+		ID: authorID,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	posts, err := postClient.ListOfAuthor(ctx, &post.ListPostsOfAuthorRequest{
+		AuthorID: author.ID,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	var avgRating float64
+	var length int
+	for _, post := range posts.Posts {
+		ratings, err := ratingClient.ListOfPost(ctx, &rating.ListRatingsOfPostRequest{
+			PostID: post.ID,
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for _, rating := range ratings.Ratings {
+			avgRating += float64(rating.Value)
+		}
+		length += len(ratings.Ratings)
+	}
+	avgRating = avgRating / float64(length)
+	fmt.Printf("%s - %s\n", author.Name, author.Email)
+	fmt.Printf("Total AVG-Rating: %.2f\n", avgRating)
+
+	fmt.Printf("#%d Posts:\n", len(posts.Posts))
+
+	for _, post := range posts.Posts {
+		fmt.Printf("\t%s (%d)\n", post.Headline, post.ID)
+	}
 
 }

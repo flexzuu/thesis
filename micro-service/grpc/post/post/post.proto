@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+option go_package = "github.com/flexzuu/benchmark/micro-service/grpc/post/post";
+
 import "google/protobuf/empty.proto";
 
 package post;
@@ -7,6 +9,7 @@ package post;
 service PostService {
   // Get a single Post by ID
   rpc GetById(GetPostRequest) returns (Post) {}
+  rpc List(ListPostsRequest) returns (ListPostsResponse) {}
   rpc ListOfAuthor(ListPostsOfAuthorRequest) returns (ListPostsResponse) {}
   // Create a single Post validates if the passed AuthorId is valid
   rpc Create (CreatePostRequest) returns (Post) {}
@@ -19,7 +22,9 @@ service PostService {
 message GetPostRequest {
   int64 ID = 1;
 }
-
+//
+message ListPostsRequest {
+}
 //
 message ListPostsOfAuthorRequest {
   int64 AuthorID = 1;
