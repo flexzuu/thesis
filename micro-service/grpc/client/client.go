@@ -6,14 +6,17 @@ import (
 	"log"
 	"os"
 
+	"github.com/flexzuu/benchmark/micro-service/grpc/stats"
+	"github.com/golang/protobuf/ptypes/empty"
+
 	"github.com/flexzuu/benchmark/micro-service/grpc/post/post"
 	"github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
 	"github.com/flexzuu/benchmark/micro-service/grpc/user/user"
-	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
 )
 
 func main() {
+	statsClients := make([]stats.StatsClient, 3)
 	postServiceAdress := os.Getenv("POST_SERVICE")
 	if postServiceAdress == "" {
 		log.Fatalln("please provide POST_SERVICE as env var")
@@ -33,6 +36,7 @@ func main() {
 	}
 	defer postConn.Close()
 	postClient := post.NewPostServiceClient(postConn)
+	statsClients[0] = stats.NewStatsClient(postConn)
 
 	userConn, err := grpc.Dial(userServiceAdress, grpc.WithInsecure())
 	if err != nil {
@@ -40,6 +44,7 @@ func main() {
 	}
 	defer userConn.Close()
 	userClient := user.NewUserServiceClient(userConn)
+	statsClients[1] = stats.NewStatsClient(userConn)
 
 	ratingConn, err := grpc.Dial(ratingServiceAdress, grpc.WithInsecure())
 	if err != nil {
@@ -47,12 +52,13 @@ func main() {
 	}
 	defer ratingConn.Close()
 	ratingClient := rating.NewRatingServiceClient(ratingConn)
-
+	statsClients[2] = stats.NewStatsClient(ratingConn)
+	Reset(statsClients)
 	ListPosts(postClient)
 	PostDetail(postClient, userClient, ratingClient, 0)
 	AuthorDetail(userClient, postClient, ratingClient, 0)
 
-	Roundtrips(userClient, postClient, ratingClient)
+	Roundtrips(statsClients)
 }
 
 func ListPosts(postClient post.PostServiceClient) {
@@ -149,17 +155,28 @@ func AuthorDetail(userClient user.UserServiceClient, postClient post.PostService
 
 }
 
-func Roundtrips(userClient user.UserServiceClient, postClient post.PostServiceClient, ratingClient rating.RatingServiceClient) {
+func Roundtrips(clients []stats.StatsClient) {
 	// shows post ids+headline
 	var count int32
 	ctx := context.Background()
-	rt, _ := userClient.RoundTrips(ctx, &empty.Empty{})
-	count += rt.Count
-	rt, _ = postClient.RoundTrips(ctx, &empty.Empty{})
-	count += rt.Count
-	rt, _ = ratingClient.RoundTrips(ctx, &empty.Empty{})
-	count += rt.Count
+	for _, c := range clients {
+		res, err := c.RoundTrips(ctx, &empty.Empty{})
+		if err != nil {
+			log.Fatalln(err)
+		}
+		count += res.Count
+	}
 
 	fmt.Printf("Roundtrips to user + post + rating service: %d\n", count)
 
+}
+
+func Reset(clients []stats.StatsClient) {
+	ctx := context.Background()
+	for _, c := range clients {
+		_, err := c.Reset(ctx, &empty.Empty{})
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}
 }

@@ -23,7 +23,7 @@ services:
      - POST_SERVICE=post-service:50051
     ports:
     - "50053:50053"
-  facade:
+  facade-service:
     depends_on: 
       - post-service
       - user-service

@@ -19,8 +19,19 @@ up:
 logs:
 	docker-compose logs -f
 down: docker-compose down
-benchmark:
+
+benchmark: benchmark-client benchmark-client-facade
+benchmark-client:
 	docker-compose up --no-deps --build client
+benchmark-client-facade:
 	docker-compose up --no-deps --build client-facade
-gui:
-	grpcui -port 50160 -plaintext localhost:50060 & grpcui -port 50151 -plaintext localhost:50051 & grpcui -port 50152 -plaintext localhost:50052 & grpcui -port 50153 -plaintext localhost:50053 & 
+
+gui: gui-1 gui-2 gui-3 gui-4
+gui-1: 
+	grpcui -port 50160 -plaintext localhost:50060
+gui-2:
+	grpcui -port 50151 -plaintext localhost:50051
+gui-3:
+	grpcui -port 50152 -plaintext localhost:50052
+gui-4:
+	grpcui -port 50153 -plaintext localhost:50053 

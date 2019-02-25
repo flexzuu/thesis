@@ -8,6 +8,7 @@ option go_package = "github.com/flexzuu/benchmark/micro-service/grpc/stats";
 
 service Stats {
   rpc RoundTrips(google.protobuf.Empty) returns (stats.RoundTripResponse) {}
+  rpc Reset(google.protobuf.Empty) returns (google.protobuf.Empty) {}
 }
 
 message RoundTripResponse {

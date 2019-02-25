@@ -9,6 +9,7 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 
 	"github.com/flexzuu/benchmark/micro-service/grpc/facade/facade"
+	"github.com/flexzuu/benchmark/micro-service/grpc/stats"
 	"google.golang.org/grpc"
 )
 
@@ -24,12 +25,15 @@ func main() {
 	}
 	defer facadeConn.Close()
 	facadeClient := facade.NewFacadeServiceClient(facadeConn)
+	statsClient := stats.NewStatsClient(facadeConn)
+
+	Reset(statsClient)
 
 	ListPosts(facadeClient)
 	PostDetail(facadeClient, 0)
 	AuthorDetail(facadeClient, 0)
 
-	Roundtrips(facadeClient)
+	Roundtrips(statsClient)
 }
 
 func ListPosts(facadeClient facade.FacadeServiceClient) {
@@ -87,10 +91,22 @@ func AuthorDetail(facadeClient facade.FacadeServiceClient, authorID int64) {
 
 }
 
-func Roundtrips(facadeClient facade.FacadeServiceClient) {
+func Roundtrips(statsClient stats.StatsClient) {
 	// shows post ids+headline
 	ctx := context.Background()
-	rt, _ := facadeClient.RoundTrips(ctx, &empty.Empty{})
+	rt, err := statsClient.RoundTrips(ctx, &empty.Empty{})
+	if err != nil {
+		log.Fatalln(err)
+	}
 	fmt.Printf("Roundtrips to facade: %d\n", rt.Count)
 
+}
+
+func Reset(statsClient stats.StatsClient) {
+	// shows post ids+headline
+	ctx := context.Background()
+	_, err := statsClient.Reset(ctx, &empty.Empty{})
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
