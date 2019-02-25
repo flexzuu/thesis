@@ -9,10 +9,8 @@
 
 package openapi
 
-// User - A User
-type User struct {
-
-	Id int64 `json:"id,omitempty"`
+// CreateUserModel - create user body
+type CreateUserModel struct {
 
 	Email string `json:"email,omitempty"`
 
