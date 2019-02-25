@@ -11,6 +11,7 @@ import (
 	pb "github.com/flexzuu/benchmark/micro-service/grpc/facade/facade"
 	"github.com/flexzuu/benchmark/micro-service/grpc/post/post"
 	"github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
+	"github.com/flexzuu/benchmark/micro-service/grpc/stats"
 	"github.com/flexzuu/benchmark/micro-service/grpc/user/user"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
@@ -25,6 +26,7 @@ type server struct {
 	postClient   post.PostServiceClient
 	userClient   user.UserServiceClient
 	ratingClient rating.RatingServiceClient
+	stats.ServiceHelper
 }
 
 // ListPosts implements facade.FacadeServiceServer
@@ -33,6 +35,7 @@ func (s *server) ListPosts(ctx context.Context, in *pb.ListPostsRequest) (*pb.Li
 	if err != nil {
 		return nil, errors.Wrap(err, "list failed")
 	}
+	s.Count++
 	return &pb.ListPostsResponse{
 		Posts: posts.Posts,
 	}, nil
@@ -64,6 +67,8 @@ func (s *server) PostDetail(ctx context.Context, in *pb.PostDetailRequest) (*pb.
 		avgRating += float64(rating.Value)
 	}
 	avgRating = avgRating / float64(len(ratings.Ratings))
+
+	s.Count++
 	return &pb.PostDetailResponse{
 		Author:    author,
 		Post:      post,
@@ -101,6 +106,7 @@ func (s *server) AuthorDetail(ctx context.Context, in *pb.AuthorDetailRequest) (
 		length += len(ratings.Ratings)
 	}
 	avgRating = avgRating / float64(length)
+	s.Count++
 	return &pb.AuthorDetailResponse{
 		Posts:     posts.Posts,
 		Author:    author,
@@ -114,44 +120,46 @@ func main() {
 	if userServiceAdress == "" {
 		log.Fatalln("please provide USER_SERVICE as env var")
 	}
-	conn, err := grpc.Dial(userServiceAdress, grpc.WithInsecure())
+	connUser, err := grpc.Dial(userServiceAdress, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect to user service: %v", err)
 	}
-	defer conn.Close()
-	userClient := user.NewUserServiceClient(conn)
+	defer connUser.Close()
+	userClient := user.NewUserServiceClient(connUser)
 
 	postServiceAdress := os.Getenv("POST_SERVICE")
 	if postServiceAdress == "" {
 		log.Fatalln("please provide POST_SERVICE as env var")
 	}
-	conn, err := grpc.Dial(postServiceAdress, grpc.WithInsecure())
+	connPost, err := grpc.Dial(postServiceAdress, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect to post service: %v", err)
 	}
-	defer conn.Close()
-	postClient := post.NewPostServiceClient(conn)
+	defer connPost.Close()
+	postClient := post.NewPostServiceClient(connPost)
 
 	ratingServiceAdress := os.Getenv("RATING_SERVICE")
 	if ratingServiceAdress == "" {
 		log.Fatalln("please provide RATING_SERVICE as env var")
 	}
-	conn, err := grpc.Dial(ratingServiceAdress, grpc.WithInsecure())
+	connRating, err := grpc.Dial(ratingServiceAdress, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect to rating service: %v", err)
 	}
-	defer conn.Close()
-	ratingClient := rating.NewRatingServiceClient(conn)
+	defer connRating.Close()
+	ratingClient := rating.NewRatingServiceClient(connRating)
 
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
+	ServiceHelper := stats.ServiceHelper{Count: 0}
 	pb.RegisterFacadeServiceServer(s, &server{
 		postClient,
 		userClient,
 		ratingClient,
+		ServiceHelper,
 	})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

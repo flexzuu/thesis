@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package stats;
+
+option go_package = "github.com/flexzuu/benchmark/micro-service/grpc/stats";
+
+message RoundTripResponse {
+  int32 count = 1;
+}
