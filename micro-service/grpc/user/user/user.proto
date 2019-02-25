@@ -2,6 +2,7 @@ syntax = "proto3";
 
 option go_package = "github.com/flexzuu/benchmark/micro-service/grpc/user/user";
 
+import "stats/stats.proto";
 import "google/protobuf/empty.proto";
 
 package user;
@@ -13,6 +14,7 @@ service UserService {
   rpc Create (CreateUserRequest) returns (User) {}
   // Delete a single User by ID
   rpc Delete (DeleteUserRequest) returns (google.protobuf.Empty) {}
+  rpc RoundTrips(google.protobuf.Empty) returns (stats.RoundTripResponse) {}
 
 }
 

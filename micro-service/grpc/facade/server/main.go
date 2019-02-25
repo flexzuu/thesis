@@ -15,6 +15,7 @@ import (
 	"github.com/flexzuu/benchmark/micro-service/grpc/user/user"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 const (
@@ -154,6 +155,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
+
 	ServiceHelper := stats.ServiceHelper{Count: 0}
 	pb.RegisterFacadeServiceServer(s, &server{
 		postClient,
@@ -161,6 +163,9 @@ func main() {
 		ratingClient,
 		ServiceHelper,
 	})
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
+
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

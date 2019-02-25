@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/flexzuu/benchmark/micro-service/grpc/post/post"
+	"github.com/flexzuu/benchmark/micro-service/grpc/stats"
 
 	pb "github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
 	"github.com/flexzuu/benchmark/micro-service/grpc/rating/repo"
@@ -16,6 +17,7 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 const (
@@ -26,6 +28,7 @@ const (
 type server struct {
 	ratingRepo repo.Rating
 	postClient post.PostServiceClient
+	stats.ServiceHelper
 }
 
 // GetRating implements rating.RatingServiceServer
@@ -34,6 +37,7 @@ func (s *server) GetById(ctx context.Context, in *pb.GetRatingRequest) (*pb.Rati
 	if err != nil {
 		return nil, errors.Wrap(err, "get failed")
 	}
+	s.Count++
 	return ToProto(r), nil
 }
 
@@ -47,6 +51,7 @@ func (s *server) ListOfPost(ctx context.Context, in *pb.ListRatingsOfPostRequest
 	for i, r := range rs {
 		ratings[i] = ToProto(r)
 	}
+	s.Count++
 	return &pb.ListRatingsResponse{
 		Ratings: ratings,
 	}, nil
@@ -66,6 +71,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreateRatingRequest) (*pb.Ra
 	if err != nil {
 		return nil, errors.Wrap(err, "create failed")
 	}
+	s.Count++
 	return ToProto(r), nil
 }
 
@@ -75,6 +81,7 @@ func (s *server) Delete(ctx context.Context, in *pb.DeleteRatingRequest) (*empty
 	if err != nil {
 		return nil, errors.Wrap(err, "delete failed")
 	}
+	s.Count++
 	return &empty.Empty{}, nil
 }
 
@@ -96,10 +103,18 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
+
+	ServiceHelper := stats.ServiceHelper{Count: 0}
+
 	pb.RegisterRatingServiceServer(s, &server{
 		ratingRepo,
 		postClient,
+		ServiceHelper,
 	})
+
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
+
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

@@ -91,6 +91,6 @@ func Roundtrips(facadeClient facade.FacadeServiceClient) {
 	// shows post ids+headline
 	ctx := context.Background()
 	rt, _ := facadeClient.RoundTrips(ctx, &empty.Empty{})
-	fmt.Printf("Roundtrips to facade: \n", rt.Count)
+	fmt.Printf("Roundtrips to facade: %d\n", rt.Count)
 
 }

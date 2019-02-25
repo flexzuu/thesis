@@ -9,6 +9,7 @@ import (
 	"github.com/flexzuu/benchmark/micro-service/grpc/post/post"
 	"github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
 	"github.com/flexzuu/benchmark/micro-service/grpc/user/user"
+	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
 )
 
@@ -50,6 +51,8 @@ func main() {
 	ListPosts(postClient)
 	PostDetail(postClient, userClient, ratingClient, 0)
 	AuthorDetail(userClient, postClient, ratingClient, 0)
+
+	Roundtrips(userClient, postClient, ratingClient)
 }
 
 func ListPosts(postClient post.PostServiceClient) {
@@ -143,5 +146,20 @@ func AuthorDetail(userClient user.UserServiceClient, postClient post.PostService
 	for _, post := range posts.Posts {
 		fmt.Printf("\t%s (%d)\n", post.Headline, post.ID)
 	}
+
+}
+
+func Roundtrips(userClient user.UserServiceClient, postClient post.PostServiceClient, ratingClient rating.RatingServiceClient) {
+	// shows post ids+headline
+	var count int32
+	ctx := context.Background()
+	rt, _ := userClient.RoundTrips(ctx, &empty.Empty{})
+	count += rt.Count
+	rt, _ = postClient.RoundTrips(ctx, &empty.Empty{})
+	count += rt.Count
+	rt, _ = ratingClient.RoundTrips(ctx, &empty.Empty{})
+	count += rt.Count
+
+	fmt.Printf("Roundtrips to user + post + rating service: %d\n", count)
 
 }

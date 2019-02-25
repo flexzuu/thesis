@@ -11,10 +11,12 @@ import (
 	pb "github.com/flexzuu/benchmark/micro-service/grpc/post/post"
 	"github.com/flexzuu/benchmark/micro-service/grpc/post/repo"
 	"github.com/flexzuu/benchmark/micro-service/grpc/post/repo/inmemmory"
+	"github.com/flexzuu/benchmark/micro-service/grpc/stats"
 	"github.com/flexzuu/benchmark/micro-service/grpc/user/user"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 const (
@@ -25,6 +27,7 @@ const (
 type server struct {
 	postRepo   repo.Post
 	userClient user.UserServiceClient
+	stats.ServiceHelper
 }
 
 // GetPost implements post.PostServiceServer
@@ -33,6 +36,7 @@ func (s *server) GetById(ctx context.Context, in *pb.GetPostRequest) (*pb.Post, 
 	if err != nil {
 		return nil, errors.Wrap(err, "get failed")
 	}
+	s.Count++
 	return ToProto(p), nil
 }
 
@@ -46,6 +50,7 @@ func (s *server) List(ctx context.Context, in *pb.ListPostsRequest) (*pb.ListPos
 	for i, p := range ps {
 		posts[i] = ToProto(p)
 	}
+	s.Count++
 	return &pb.ListPostsResponse{
 		Posts: posts,
 	}, nil
@@ -61,6 +66,7 @@ func (s *server) ListOfAuthor(ctx context.Context, in *pb.ListPostsOfAuthorReque
 	for i, p := range ps {
 		posts[i] = ToProto(p)
 	}
+	s.Count++
 	return &pb.ListPostsResponse{
 		Posts: posts,
 	}, nil
@@ -79,6 +85,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreatePostRequest) (*pb.Post
 	if err != nil {
 		return nil, errors.Wrap(err, "create failed")
 	}
+	s.Count++
 	return ToProto(p), nil
 }
 
@@ -88,6 +95,7 @@ func (s *server) Delete(ctx context.Context, in *pb.DeletePostRequest) (*empty.E
 	if err != nil {
 		return nil, errors.Wrap(err, "delete failed")
 	}
+	s.Count++
 	return &empty.Empty{}, nil
 }
 
@@ -110,10 +118,16 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
+	ServiceHelper := stats.ServiceHelper{Count: 0}
+
 	pb.RegisterPostServiceServer(s, &server{
 		postRepo,
 		userClient,
+		ServiceHelper,
 	})
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
+
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

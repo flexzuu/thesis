@@ -2,6 +2,7 @@ syntax = "proto3";
 
 option go_package = "github.com/flexzuu/benchmark/micro-service/grpc/post/post";
 
+import "stats/stats.proto";
 import "google/protobuf/empty.proto";
 
 package post;
@@ -15,6 +16,7 @@ service PostService {
   rpc Create (CreatePostRequest) returns (Post) {}
   // Delete a single Post by ID
   rpc Delete (DeletePostRequest) returns (google.protobuf.Empty) {}
+  rpc RoundTrips(google.protobuf.Empty) returns (stats.RoundTripResponse) {}
 
 }
 
