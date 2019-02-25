@@ -24,7 +24,7 @@ const (
 // server is used to implement user.UserServiceServer
 type server struct {
 	userRepo repo.User
-	stats.ServiceHelper
+	countRoundTrip stats.CountRoundTrip
 }
 
 // GetUser implements user.UserServiceServer
@@ -33,7 +33,7 @@ func (s *server) GetById(ctx context.Context, in *pb.GetUserRequest) (*pb.User, 
 	if err != nil {
 		return nil, errors.Wrap(err, "get failed")
 	}
-	s.Count++
+	s.countRoundTrip()
 	return ToProto(u), nil
 }
 
@@ -43,7 +43,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreateUserRequest) (*pb.User
 	if err != nil {
 		return nil, errors.Wrap(err, "create failed")
 	}
-	s.Count++
+	s.countRoundTrip()
 	return ToProto(u), nil
 }
 
@@ -53,7 +53,7 @@ func (s *server) Delete(ctx context.Context, in *pb.DeleteUserRequest) (*empty.E
 	if err != nil {
 		return nil, errors.Wrap(err, "delete failed")
 	}
-	s.Count++
+	s.countRoundTrip()
 	return &empty.Empty{}, nil
 }
 
@@ -65,11 +65,11 @@ func main() {
 	}
 	s := grpc.NewServer()
 
-	ServiceHelper := stats.ServiceHelper{Count: 0}
+	countRoundTrip := stats.Register(s)
 
 	pb.RegisterUserServiceServer(s, &server{
 		userRepo,
-		ServiceHelper,
+		countRoundTrip,
 	})
 
 	// Register reflection service on gRPC server.

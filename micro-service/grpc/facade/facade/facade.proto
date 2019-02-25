@@ -2,8 +2,6 @@ syntax = "proto3";
 
 import "post/post/post.proto";
 import "user/user/user.proto";
-import "stats/stats.proto";
-import "google/protobuf/empty.proto";
 
 option go_package = "github.com/flexzuu/benchmark/micro-service/grpc/facade/facade";
 
@@ -13,7 +11,6 @@ service FacadeService {
   rpc ListPosts(ListPostsRequest) returns (ListPostsResponse) {}
   rpc PostDetail(PostDetailRequest) returns (PostDetailResponse) {}
   rpc AuthorDetail(AuthorDetailRequest) returns (AuthorDetailResponse) {}
-  rpc RoundTrips(google.protobuf.Empty) returns (stats.RoundTripResponse) {}
 }
 
 // The request message containing the ID

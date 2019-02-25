@@ -1,7 +1,6 @@
 syntax = "proto3";
 option go_package = "github.com/flexzuu/benchmark/micro-service/grpc/rating/rating";
 
-import "stats/stats.proto";
 import "google/protobuf/empty.proto";
 
 package rating;
@@ -15,7 +14,6 @@ service RatingService {
   rpc Create (CreateRatingRequest) returns (Rating) {}
   // Delete a single Rating by ID
   rpc Delete (DeleteRatingRequest) returns (google.protobuf.Empty) {}
-  rpc RoundTrips(google.protobuf.Empty) returns (stats.RoundTripResponse) {}
 
 }
 

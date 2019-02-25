@@ -28,7 +28,7 @@ const (
 type server struct {
 	ratingRepo repo.Rating
 	postClient post.PostServiceClient
-	stats.ServiceHelper
+	countRoundTrip stats.CountRoundTrip
 }
 
 // GetRating implements rating.RatingServiceServer
@@ -37,7 +37,7 @@ func (s *server) GetById(ctx context.Context, in *pb.GetRatingRequest) (*pb.Rati
 	if err != nil {
 		return nil, errors.Wrap(err, "get failed")
 	}
-	s.Count++
+	s.countRoundTrip()
 	return ToProto(r), nil
 }
 
@@ -51,7 +51,7 @@ func (s *server) ListOfPost(ctx context.Context, in *pb.ListRatingsOfPostRequest
 	for i, r := range rs {
 		ratings[i] = ToProto(r)
 	}
-	s.Count++
+	s.countRoundTrip()
 	return &pb.ListRatingsResponse{
 		Ratings: ratings,
 	}, nil
@@ -71,7 +71,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreateRatingRequest) (*pb.Ra
 	if err != nil {
 		return nil, errors.Wrap(err, "create failed")
 	}
-	s.Count++
+	s.countRoundTrip()
 	return ToProto(r), nil
 }
 
@@ -81,7 +81,7 @@ func (s *server) Delete(ctx context.Context, in *pb.DeleteRatingRequest) (*empty
 	if err != nil {
 		return nil, errors.Wrap(err, "delete failed")
 	}
-	s.Count++
+	s.countRoundTrip()
 	return &empty.Empty{}, nil
 }
 
@@ -104,12 +104,12 @@ func main() {
 	}
 	s := grpc.NewServer()
 
-	ServiceHelper := stats.ServiceHelper{Count: 0}
+	countRoundTrip := stats.Register(s)
 
 	pb.RegisterRatingServiceServer(s, &server{
 		ratingRepo,
 		postClient,
-		ServiceHelper,
+		countRoundTrip,
 	})
 
 	// Register reflection service on gRPC server.

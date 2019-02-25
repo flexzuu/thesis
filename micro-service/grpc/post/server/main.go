@@ -25,9 +25,9 @@ const (
 
 // server is used to implement post.PostServiceServer
 type server struct {
-	postRepo   repo.Post
-	userClient user.UserServiceClient
-	stats.ServiceHelper
+	postRepo       repo.Post
+	userClient     user.UserServiceClient
+	countRoundTrip stats.CountRoundTrip
 }
 
 // GetPost implements post.PostServiceServer
@@ -36,7 +36,7 @@ func (s *server) GetById(ctx context.Context, in *pb.GetPostRequest) (*pb.Post, 
 	if err != nil {
 		return nil, errors.Wrap(err, "get failed")
 	}
-	s.Count++
+	s.countRoundTrip()
 	return ToProto(p), nil
 }
 
@@ -50,7 +50,7 @@ func (s *server) List(ctx context.Context, in *pb.ListPostsRequest) (*pb.ListPos
 	for i, p := range ps {
 		posts[i] = ToProto(p)
 	}
-	s.Count++
+	s.countRoundTrip()
 	return &pb.ListPostsResponse{
 		Posts: posts,
 	}, nil
@@ -66,7 +66,7 @@ func (s *server) ListOfAuthor(ctx context.Context, in *pb.ListPostsOfAuthorReque
 	for i, p := range ps {
 		posts[i] = ToProto(p)
 	}
-	s.Count++
+	s.countRoundTrip()
 	return &pb.ListPostsResponse{
 		Posts: posts,
 	}, nil
@@ -85,7 +85,7 @@ func (s *server) Create(ctx context.Context, in *pb.CreatePostRequest) (*pb.Post
 	if err != nil {
 		return nil, errors.Wrap(err, "create failed")
 	}
-	s.Count++
+	s.countRoundTrip()
 	return ToProto(p), nil
 }
 
@@ -95,7 +95,7 @@ func (s *server) Delete(ctx context.Context, in *pb.DeletePostRequest) (*empty.E
 	if err != nil {
 		return nil, errors.Wrap(err, "delete failed")
 	}
-	s.Count++
+	s.countRoundTrip()
 	return &empty.Empty{}, nil
 }
 
@@ -118,12 +118,12 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	ServiceHelper := stats.ServiceHelper{Count: 0}
+	countRoundTrip := stats.Register(s)
 
 	pb.RegisterPostServiceServer(s, &server{
 		postRepo,
 		userClient,
-		ServiceHelper,
+		countRoundTrip,
 	})
 	// Register reflection service on gRPC server.
 	reflection.Register(s)

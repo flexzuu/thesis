@@ -24,10 +24,10 @@ const (
 
 // server is used to implement facade.FacadeServiceServer
 type server struct {
-	postClient   post.PostServiceClient
-	userClient   user.UserServiceClient
-	ratingClient rating.RatingServiceClient
-	stats.ServiceHelper
+	postClient     post.PostServiceClient
+	userClient     user.UserServiceClient
+	ratingClient   rating.RatingServiceClient
+	countRoundTrip stats.CountRoundTrip
 }
 
 // ListPosts implements facade.FacadeServiceServer
@@ -36,7 +36,7 @@ func (s *server) ListPosts(ctx context.Context, in *pb.ListPostsRequest) (*pb.Li
 	if err != nil {
 		return nil, errors.Wrap(err, "list failed")
 	}
-	s.Count++
+	s.countRoundTrip()
 	return &pb.ListPostsResponse{
 		Posts: posts.Posts,
 	}, nil
@@ -69,7 +69,7 @@ func (s *server) PostDetail(ctx context.Context, in *pb.PostDetailRequest) (*pb.
 	}
 	avgRating = avgRating / float64(len(ratings.Ratings))
 
-	s.Count++
+	s.countRoundTrip()
 	return &pb.PostDetailResponse{
 		Author:    author,
 		Post:      post,
@@ -107,7 +107,7 @@ func (s *server) AuthorDetail(ctx context.Context, in *pb.AuthorDetailRequest) (
 		length += len(ratings.Ratings)
 	}
 	avgRating = avgRating / float64(length)
-	s.Count++
+	s.countRoundTrip()
 	return &pb.AuthorDetailResponse{
 		Posts:     posts.Posts,
 		Author:    author,
@@ -156,12 +156,13 @@ func main() {
 	}
 	s := grpc.NewServer()
 
-	ServiceHelper := stats.ServiceHelper{Count: 0}
+	countRoundTrip := stats.Register(s)
+
 	pb.RegisterFacadeServiceServer(s, &server{
 		postClient,
 		userClient,
 		ratingClient,
-		ServiceHelper,
+		countRoundTrip,
 	})
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
