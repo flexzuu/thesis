@@ -11,22 +11,21 @@ package openapi
 
 import (
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // CreateUser - Create user
-func CreateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
+func CreateUser(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 // DeleteUser - Delete user
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
+func DeleteUser(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 // GetUserById - Get user by id
-func GetUserById(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
+func GetUserById(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{})
 }
