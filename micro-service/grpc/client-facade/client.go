@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/golang/protobuf/ptypes/empty"
+
 	"github.com/flexzuu/benchmark/micro-service/grpc/facade/facade"
 	"google.golang.org/grpc"
 )
@@ -26,6 +28,8 @@ func main() {
 	ListPosts(facadeClient)
 	PostDetail(facadeClient, 0)
 	AuthorDetail(facadeClient, 0)
+
+	Roundtrips(facadeClient)
 }
 
 func ListPosts(facadeClient facade.FacadeServiceClient) {
@@ -80,5 +84,13 @@ func AuthorDetail(facadeClient facade.FacadeServiceClient, authorID int64) {
 	for _, post := range res.Posts {
 		fmt.Printf("\t%s (%d)\n", post.Headline, post.ID)
 	}
+
+}
+
+func Roundtrips(facadeClient facade.FacadeServiceClient) {
+	// shows post ids+headline
+	ctx := context.Background()
+	rt, _ := facadeClient.RoundTrips(ctx, &empty.Empty{})
+	fmt.Printf("Roundtrips to facade: \n", rt.Count)
 
 }
