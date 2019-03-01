@@ -2,6 +2,7 @@ module github.com/flexzuu/benchmark
 
 require (
 	github.com/99designs/gqlgen v0.7.2
+	github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6
 	github.com/bifurcation/mint v0.0.0-20190129141059-83ba9bc2ead9 // indirect
 	github.com/cheekybits/genny v1.0.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -29,6 +30,7 @@ require (
 	github.com/vektah/gqlparser v1.1.1 // indirect
 	golang.org/x/crypto v0.0.0-20190219172222-a4c6cb3142f2 // indirect
 	golang.org/x/net v0.0.0-20190225153610-fe579d43d832 // indirect
+	golang.org/x/oauth2 v0.0.0-20180821212333-d2e6202438be
 	golang.org/x/sys v0.0.0-20190225065934-cc5685c2db12 // indirect
 	golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2 // indirect
 	google.golang.org/genproto v0.0.0-20190219182410-082222b4a5c5 // indirect

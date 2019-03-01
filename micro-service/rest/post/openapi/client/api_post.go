@@ -11,12 +11,14 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
-	"fmt"
+
 	"github.com/antihax/optional"
+	"github.com/flexzuu/benchmark/micro-service/rest/post/openapi"
 )
 
 // Linger please
@@ -33,14 +35,14 @@ This can only be done by the logged in post.
  * @param createPostModel Created post object
 @return PostModel
 */
-func (a *PostApiService) CreatePost(ctx context.Context, createPostModel CreatePostModel) (PostModel, *http.Response, error) {
+func (a *PostApiService) CreatePost(ctx context.Context, createPostModel openapi.CreatePostModel) (openapi.PostModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  PostModel
+		localVarReturnValue  openapi.PostModel
 	)
 
 	// create path and map variables
@@ -91,7 +93,7 @@ func (a *PostApiService) CreatePost(ctx context.Context, createPostModel CreateP
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v PostModel
+			var v openapi.PostModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -188,14 +190,14 @@ PostApiService Get post by id
  * @param id The id that needs to be fetched. Use 0 for testing.
 @return PostModel
 */
-func (a *PostApiService) GetPostById(ctx context.Context, id int64) (PostModel, *http.Response, error) {
+func (a *PostApiService) GetPostById(ctx context.Context, id int64) (openapi.PostModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  PostModel
+		localVarReturnValue  openapi.PostModel
 	)
 
 	// create path and map variables
@@ -245,7 +247,7 @@ func (a *PostApiService) GetPostById(ctx context.Context, id int64) (PostModel, 
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v PostModel
+			var v openapi.PostModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -282,14 +284,14 @@ type ListPostsOpts struct {
 	AuthorId optional.Int64
 }
 
-func (a *PostApiService) ListPosts(ctx context.Context, localVarOptionals *ListPostsOpts) (PostListModel, *http.Response, error) {
+func (a *PostApiService) ListPosts(ctx context.Context, localVarOptionals *ListPostsOpts) (openapi.PostListModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  PostListModel
+		localVarReturnValue  openapi.PostListModel
 	)
 
 	// create path and map variables
@@ -341,7 +343,7 @@ func (a *PostApiService) ListPosts(ctx context.Context, localVarOptionals *ListP
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v PostListModel
+			var v openapi.PostListModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
