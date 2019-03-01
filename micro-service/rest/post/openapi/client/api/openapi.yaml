@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  description: a post service
+  title: Post Service
+  version: 1.0.0
+servers:
+- url: http://localhost:4002
+tags:
+- description: Operations about post
+  name: post
+paths:
+  /post:
+    get:
+      description: a list of posts
+      operationId: listPosts
+      parameters:
+      - description: Only get post of the supplied author
+        explode: true
+        in: query
+        name: authorId
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostList'
+          description: successful operation
+        400:
+          description: invalid author id
+        404:
+          description: Post not found
+      summary: List posts
+      tags:
+      - post
+    post:
+      description: This can only be done by the logged in post.
+      operationId: createPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePost'
+        description: Created post object
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: successful operation
+      summary: Create post
+      tags:
+      - post
+  /post/{id}:
+    delete:
+      description: Delete a post by id
+      operationId: deletePost
+      parameters:
+      - description: The id that needs to be deleted. Use 0 for testing.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        400:
+          description: Invalid id supplied
+        404:
+          description: Post not found
+      summary: Delete post
+      tags:
+      - post
+    get:
+      operationId: getPostById
+      parameters:
+      - description: The id that needs to be fetched. Use 0 for testing.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: successful operation
+        400:
+          description: Invalid id supplied
+        404:
+          description: Post not found
+      summary: Get post by id
+      tags:
+      - post
+components:
+  schemas:
+    Post:
+      description: A Post
+      example:
+        id: 0
+        authorId: 6
+        headline: headline
+        content: content
+      properties:
+        id:
+          format: int64
+          type: integer
+        authorId:
+          format: int64
+          type: integer
+        headline:
+          type: string
+        content:
+          description: content as markdown
+          type: string
+      title: a Post
+      type: object
+    PostList:
+      description: a list of posts
+      example:
+        posts:
+        - id: 0
+          authorId: 6
+          headline: headline
+          content: content
+        - id: 0
+          authorId: 6
+          headline: headline
+          content: content
+      properties:
+        posts:
+          items:
+            $ref: '#/components/schemas/Post'
+          type: array
+      title: List Posts
+      type: object
+    CreatePost:
+      description: create post body
+      properties:
+        authorId:
+          format: int64
+          type: integer
+        headline:
+          type: string
+        content:
+          description: content as markdown
+          type: string
+      title: create post body
+      type: object
