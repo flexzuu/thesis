@@ -11,6 +11,7 @@ package openapi
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -38,7 +39,14 @@ func CreateUser(c *gin.Context) {
 
 // DeleteUser - Delete user
 func DeleteUser(c *gin.Context) {
-	err := userRepo.Delete(c.Param("id"))
+
+	userId, err := strconv.ParseInt(c.Param("id"), 10, 0)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = userRepo.Delete(userId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -48,7 +56,12 @@ func DeleteUser(c *gin.Context) {
 
 // GetUserById - Get user by id
 func GetUserById(c *gin.Context) {
-	usr, err := userRepo.Get(c.Param("id"))
+	userId, err := strconv.ParseInt(c.Param("id"), 10, 0)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	usr, err := userRepo.Get(userId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

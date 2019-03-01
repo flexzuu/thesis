@@ -11,11 +11,13 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
-	"fmt"
+
+	"github.com/flexzuu/benchmark/micro-service/rest/user/openapi"
 )
 
 // Linger please
@@ -32,14 +34,14 @@ This can only be done by the logged in user.
  * @param createUserModel Created user object
 @return UserModel
 */
-func (a *UserApiService) CreateUser(ctx context.Context, createUserModel CreateUserModel) (UserModel, *http.Response, error) {
+func (a *UserApiService) CreateUser(ctx context.Context, createUserModel openapi.CreateUserModel) (openapi.UserModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  UserModel
+		localVarReturnValue  openapi.UserModel
 	)
 
 	// create path and map variables
@@ -90,7 +92,7 @@ func (a *UserApiService) CreateUser(ctx context.Context, createUserModel CreateU
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v UserModel
+			var v openapi.UserModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -187,14 +189,14 @@ UserApiService Get user by id
  * @param id The id that needs to be fetched. Use 0 for testing.
 @return UserModel
 */
-func (a *UserApiService) GetUserById(ctx context.Context, id int64) (UserModel, *http.Response, error) {
+func (a *UserApiService) GetUserById(ctx context.Context, id int64) (openapi.UserModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  UserModel
+		localVarReturnValue  openapi.UserModel
 	)
 
 	// create path and map variables
@@ -244,7 +246,7 @@ func (a *UserApiService) GetUserById(ctx context.Context, id int64) (UserModel, 
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v UserModel
+			var v openapi.UserModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
