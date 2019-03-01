@@ -11,10 +11,9 @@ package openapi
 
 // RatingModel - A Rating
 type RatingModel struct {
+	Id int64 `json:"id"`
 
-	Id int64 `json:"id,omitempty"`
-
-	PostId int64 `json:"postId,omitempty"`
+	PostId int64 `json:"postId"`
 
 	Value int32 `json:"value,omitempty"`
 }

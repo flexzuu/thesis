@@ -11,6 +11,5 @@ package openapi
 
 // RatingListModel - a list of ratings
 type RatingListModel struct {
-
-	Ratings []RatingModel `json:"ratings,omitempty"`
+	Ratings []RatingModel `json:"ratings"`
 }

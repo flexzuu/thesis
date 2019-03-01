@@ -11,8 +11,7 @@ package openapi
 
 // CreateRatingModel - create rating body
 type CreateRatingModel struct {
-
-	PostId int64 `json:"postId,omitempty"`
+	PostId int64 `json:"postId"`
 
 	Rating int32 `json:"rating,omitempty"`
 }
