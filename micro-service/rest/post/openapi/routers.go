@@ -13,6 +13,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
+
 	"github.com/flexzuu/benchmark/micro-service/rest/post/repo"
 	"github.com/flexzuu/benchmark/micro-service/rest/post/repo/inmemmory"
 	"github.com/gin-gonic/gin"
@@ -33,12 +35,15 @@ type Route struct {
 // Routes is the list of the generated Route.
 type Routes []Route
 
+//dependencies
 var postRepo repo.Post
+var userServiceClient *client.APIClient
 
 // NewRouter returns a new router.
 func NewRouter() *gin.Engine {
 	postRepo = inmemmory.NewRepo()
-
+	cfg := client.NewConfiguration()
+	userServiceClient = client.NewAPIClient(cfg)
 	router := gin.Default()
 	for _, route := range routes {
 		switch route.Method {

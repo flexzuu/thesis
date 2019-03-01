@@ -10,6 +10,7 @@
 package openapi
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 
@@ -19,8 +20,16 @@ import (
 
 // CreatePost - Create post
 func CreatePost(c *gin.Context) {
+	ctx := context.Background()
 	var create CreatePostModel
 	if err := c.ShouldBindJSON(&create); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	//check authorId
+	_, _, err := userServiceClient.UserApi.GetUserById(ctx, create.AuthorId)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
