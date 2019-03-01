@@ -1,0 +1,107 @@
+openapi: 3.0.0
+info:
+  description: a user service
+  title: User Service
+  version: 1.0.0
+servers:
+- url: http://localhost:4001
+tags:
+- description: Operations about user
+  name: user
+paths:
+  /user:
+    post:
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+        description: Created user object
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: successful operation
+      summary: Create user
+      tags:
+      - user
+  /user/{id}:
+    delete:
+      description: Delete a user by id
+      operationId: deleteUser
+      parameters:
+      - description: The id that needs to be deleted. Use 0 for testing.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        400:
+          description: Invalid id supplied
+        404:
+          description: User not found
+      summary: Delete user
+      tags:
+      - user
+    get:
+      operationId: getUserById
+      parameters:
+      - description: The id that needs to be fetched. Use 0 for testing.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: successful operation
+        400:
+          description: Invalid id supplied
+        404:
+          description: User not found
+      summary: Get user by id
+      tags:
+      - user
+components:
+  schemas:
+    User:
+      description: A User
+      example:
+        name: name
+        id: 0
+        email: email
+      properties:
+        id:
+          format: int64
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+      title: a User
+      type: object
+    CreateUser:
+      description: create user body
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+      title: create user body
+      type: object
