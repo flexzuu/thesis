@@ -1,5 +1,10 @@
-base = ./micro-service/grpc/
-
+base = micro-service/
+project = github.com/flexzuu/benchmark/
+grpc = grpc/
+rest = rest/
+grpcbase = .$(base)$(grpc)
+gosrc = $(GOPATH)/src/
+restbase = $(gosrc)$(project)$(base)$(rest)
 user = user/user
 post = post/post
 rating = rating/rating
@@ -9,11 +14,11 @@ facade = facade/facade
 stats = stats
 
 generate:
-	protoc --go_out=plugins=grpc:$(GOPATH)/src -I $(base) -I $(base)$(user) $(base)$(user)/*.proto
-	protoc --go_out=plugins=grpc:$(GOPATH)/src -I $(base) -I $(base)$(post) $(base)$(post)/*.proto
-	protoc --go_out=plugins=grpc:$(GOPATH)/src -I $(base) -I $(base)$(rating) $(base)$(rating)/*.proto
-	protoc --go_out=plugins=grpc:$(GOPATH)/src -I $(base) -I $(base)$(facade) $(base)$(facade)/*.proto
-	protoc --go_out=plugins=grpc:$(GOPATH)/src -I $(base) -I $(base)$(stats) $(base)$(stats)/*.proto
+	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(user) $(grpcbase)$(user)/*.proto
+	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(post) $(grpcbase)$(post)/*.proto
+	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(rating) $(grpcbase)$(rating)/*.proto
+	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(facade) $(grpcbase)$(facade)/*.proto
+	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(stats) $(grpcbase)$(stats)/*.proto
 up:
 	docker-compose up --build --scale client=0 --scale client-facade=0 -d
 logs:
@@ -35,3 +40,11 @@ gui-3:
 	grpcui -port 50152 -plaintext localhost:50052
 gui-4:
 	grpcui -port 50153 -plaintext localhost:50053 
+generate-openapi-user:
+	docker run --rm -v $(restbase)user/openapi:/local openapitools/openapi-generator-cli generate --model-name-suffix=Model -i /local/user.yaml -g go-gin-server -o /local/out/go
+generate-openapi-post:
+	# server
+	docker run --rm -v $(restbase)post/openapi:/local openapitools/openapi-generator-cli generate --model-name-suffix=Model -i /local/post.yaml -g go-gin-server -o /local/out/go
+generate-openapi-post-client:
+	# client
+	docker run --rm -v $(restbase)post/openapi:/local openapitools/openapi-generator-cli generate --model-name-suffix=Model -i /local/post.yaml -g go -DpackageName=client -o /local/client

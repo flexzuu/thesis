@@ -17,15 +17,45 @@ import (
 
 // CreateUser - Create user
 func CreateUser(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+
+	var create CreateUserModel
+	if err := c.ShouldBindJSON(&create); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	usr, err := userRepo.Create(create.Email, create.Name)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, UserModel{
+		Id:    usr.ID,
+		Email: usr.Email,
+		Name:  usr.Name,
+	})
 }
 
 // DeleteUser - Delete user
 func DeleteUser(c *gin.Context) {
+	err := userRepo.Delete(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{})
 }
 
 // GetUserById - Get user by id
 func GetUserById(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{})
+	usr, err := userRepo.Get(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, UserModel{
+		Id:    usr.ID,
+		Email: usr.Email,
+		Name:  usr.Name,
+	})
 }

@@ -17,15 +17,19 @@ paths:
       description: This can only be done by the logged in user.
       operationId: createUser
       responses:
-        default:
+        '200':
           description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        description: Created user object
-        required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUser'
+          description: Created user object
+          required: true
   '/user/{id}':
     get:
       tags:
@@ -81,6 +85,15 @@ components:
         id:
           type: integer
           format: int64
+        email:
+          type: string
+        name:
+          type: string
+    CreateUser:
+      title: create user body
+      description: create user body
+      type: object
+      properties:
         email:
           type: string
         name:
