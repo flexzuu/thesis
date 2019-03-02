@@ -49,12 +49,12 @@ func CreatePost(c *gin.Context) {
 
 // DeletePost - Delete post
 func DeletePost(c *gin.Context) {
-	postId, err := strconv.ParseInt(c.Param("id"), 10, 0)
+	postID, err := strconv.ParseInt(c.Param("id"), 10, 0)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = postRepo.Delete(postId)
+	err = postRepo.Delete(postID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -64,13 +64,13 @@ func DeletePost(c *gin.Context) {
 
 // GetPostById - Get post by id
 func GetPostById(c *gin.Context) {
-	postId, err := strconv.ParseInt(c.Param("id"), 10, 0)
+	postID, err := strconv.ParseInt(c.Param("id"), 10, 0)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	post, err := postRepo.GetById(postId)
+	post, err := postRepo.GetById(postID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -87,11 +87,19 @@ func GetPostById(c *gin.Context) {
 func ListPosts(c *gin.Context) {
 	var res []entity.Post
 
-	authorId, err := strconv.ParseInt(c.Query("authorId"), 10, 0)
+	authorID, err := strconv.ParseInt(c.Query("authorId"), 10, 0)
 	if err != nil {
 		res, err = postRepo.List()
 	} else {
-		res, err = postRepo.ListOfAuthor(authorId)
+		ctx := context.Background()
+
+		//check authorId
+		_, _, err := userServiceClient.UserApi.GetUserById(ctx, authorID)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		res, err = postRepo.ListOfAuthor(authorID)
 	}
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

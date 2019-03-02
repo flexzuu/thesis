@@ -13,17 +13,20 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/flexzuu/benchmark/micro-service/rest/post/openapi/client"
+	"github.com/flexzuu/benchmark/micro-service/rest/rating/repo"
+	"github.com/flexzuu/benchmark/micro-service/rest/rating/repo/inmemmory"
 	"github.com/gin-gonic/gin"
 )
 
 // Route is the information for every URI.
 type Route struct {
 	// Name is the name of this Route.
-	Name        string
+	Name string
 	// Method is the string for the HTTP method. ex) GET, POST etc..
-	Method      string
+	Method string
 	// Pattern is the pattern of the URI.
-	Pattern     string
+	Pattern string
 	// HandlerFunc is the handler function of this route.
 	HandlerFunc gin.HandlerFunc
 }
@@ -31,8 +34,16 @@ type Route struct {
 // Routes is the list of the generated Route.
 type Routes []Route
 
+//dependencies
+var ratingRepo repo.Rating
+var postServiceClient *client.APIClient
+
 // NewRouter returns a new router.
 func NewRouter() *gin.Engine {
+	ratingRepo = inmemmory.NewRepo()
+	cfg := client.NewConfiguration()
+	postServiceClient = client.NewAPIClient(cfg)
+
 	router := gin.Default()
 	for _, route := range routes {
 		switch route.Method {
