@@ -9,7 +9,11 @@
 
 package openapi
 
+import (
+	post "github.com/flexzuu/benchmark/micro-service/rest/post/openapi"
+)
+
 // PostListModel - a list of posts
 type PostListModel struct {
-	Posts []PostModel `json:"posts"`
+	Posts []post.PostModel `json:"posts"`
 }

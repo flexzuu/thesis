@@ -9,11 +9,16 @@
 
 package openapi
 
+import (
+	post "github.com/flexzuu/benchmark/micro-service/rest/post/openapi"
+	user "github.com/flexzuu/benchmark/micro-service/rest/user/openapi"
+)
+
 // PostDetailModel - Post with more info included
 type PostDetailModel struct {
-	Post PostModel `json:"post"`
+	Post post.PostModel `json:"post"`
 
-	Author UserModel `json:"author"`
+	Author user.UserModel `json:"author"`
 
 	AvgRating float64 `json:"avgRating"`
 }
