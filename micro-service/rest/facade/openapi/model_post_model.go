@@ -11,10 +11,9 @@ package openapi
 
 // PostModel - A Post
 type PostModel struct {
+	Id int64 `json:"id"`
 
-	Id int64 `json:"id,omitempty"`
-
-	AuthorId int64 `json:"authorId,omitempty"`
+	AuthorId int64 `json:"authorId"`
 
 	Headline string `json:"headline,omitempty"`
 

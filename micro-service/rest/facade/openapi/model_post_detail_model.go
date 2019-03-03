@@ -11,10 +11,9 @@ package openapi
 
 // PostDetailModel - Post with more info included
 type PostDetailModel struct {
+	Post PostModel `json:"post"`
 
-	Post PostModel `json:"post,omitempty"`
+	Author UserModel `json:"author"`
 
-	Author UserModel `json:"author,omitempty"`
-
-	AvgRating float64 `json:"avgRating,omitempty"`
+	AvgRating float64 `json:"avgRating"`
 }

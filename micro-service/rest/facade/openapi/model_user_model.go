@@ -11,8 +11,7 @@ package openapi
 
 // UserModel - A User
 type UserModel struct {
-
-	Id int64 `json:"id,omitempty"`
+	Id int64 `json:"id"`
 
 	Email string `json:"email,omitempty"`
 

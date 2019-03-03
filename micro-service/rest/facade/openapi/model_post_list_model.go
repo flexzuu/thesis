@@ -11,6 +11,5 @@ package openapi
 
 // PostListModel - a list of posts
 type PostListModel struct {
-
-	Posts []PostModel `json:"posts,omitempty"`
+	Posts []PostModel `json:"posts"`
 }
