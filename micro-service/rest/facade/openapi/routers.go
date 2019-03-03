@@ -19,11 +19,11 @@ import (
 // Route is the information for every URI.
 type Route struct {
 	// Name is the name of this Route.
-	Name        string
+	Name string
 	// Method is the string for the HTTP method. ex) GET, POST etc..
-	Method      string
+	Method string
 	// Pattern is the pattern of the URI.
-	Pattern     string
+	Pattern string
 	// HandlerFunc is the handler function of this route.
 	HandlerFunc gin.HandlerFunc
 }
@@ -71,13 +71,6 @@ var routes = Routes{
 	},
 
 	{
-		"AuthorDetail",
-		strings.ToUpper("Get"),
-		"/facade/author/:id",
-		AuthorDetail,
-	},
-
-	{
 		"ListPosts",
 		strings.ToUpper("Get"),
 		"/facade/post",
@@ -89,26 +82,5 @@ var routes = Routes{
 		strings.ToUpper("Get"),
 		"/facade/post/:id",
 		PostDetail,
-	},
-
-	{
-		"ListPosts",
-		strings.ToUpper("Get"),
-		"/facade/post",
-		ListPosts,
-	},
-
-	{
-		"PostDetail",
-		strings.ToUpper("Get"),
-		"/facade/post/:id",
-		PostDetail,
-	},
-
-	{
-		"AuthorDetail",
-		strings.ToUpper("Get"),
-		"/facade/author/:id",
-		AuthorDetail,
 	},
 }
