@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  description: a facade service
+  title: Facade Service
+  version: 1.0.0
+servers:
+- url: http://localhost:4000
+tags:
+- description: Operations about facade
+  name: facade
+paths:
+  /facade/post:
+    get:
+      operationId: ListPosts
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostList'
+          description: successful operation
+        400:
+          description: Invalid id supplied
+        404:
+          description: Facade not found
+      summary: List Posts
+      tags:
+      - facade
+      - post
+  /facade/post/{id}:
+    get:
+      operationId: PostDetail
+      parameters:
+      - description: For what post detail is requested
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facade'
+          description: successful operation
+        400:
+          description: Invalid id supplied
+        404:
+          description: Facade not found
+      summary: Post Detail
+      tags:
+      - facade
+      - post
+  /facade/author/{id}:
+    get:
+      operationId: AuthorDetail
+      parameters:
+      - description: For what author detail is requested
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facade'
+          description: successful operation
+        400:
+          description: Invalid id supplied
+        404:
+          description: Facade not found
+      summary: Author Detail
+      tags:
+      - facade
+      - author
+      - user
+components:
+  schemas:
+    User:
+      description: A User
+      properties:
+        id:
+          format: int64
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+      title: a User
+      type: object
+    Post:
+      description: A Post
+      example:
+        id: 0
+        authorId: 6
+        headline: headline
+        content: content
+      properties:
+        id:
+          format: int64
+          type: integer
+        authorId:
+          format: int64
+          type: integer
+        headline:
+          type: string
+        content:
+          description: content as markdown
+          type: string
+      title: a Post
+      type: object
+    PostList:
+      description: a list of posts
+      example:
+        posts:
+        - id: 0
+          authorId: 6
+          headline: headline
+          content: content
+        - id: 0
+          authorId: 6
+          headline: headline
+          content: content
+      properties:
+        posts:
+          items:
+            $ref: '#/components/schemas/Post'
+          type: array
+      title: List Posts
+      type: object
+    PostDetail:
+      description: Post with more info included
+      properties:
+        post:
+          $ref: '#/components/schemas/Post'
+        author:
+          $ref: '#/components/schemas/User'
+        avgRating:
+          format: double
+          type: number
+      title: PostDetail
+      type: object
+    AuthorDetail:
+      description: Author with more info included
+      properties:
+        author:
+          $ref: '#/components/schemas/User'
+        posts:
+          items:
+            $ref: '#/components/schemas/Post'
+          type: array
+        avgRating:
+          format: double
+          type: number
+      title: AuthorDetail
+      type: object
