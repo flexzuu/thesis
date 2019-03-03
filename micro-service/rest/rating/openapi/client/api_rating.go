@@ -11,11 +11,13 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
-	"fmt"
+
+	"github.com/flexzuu/benchmark/micro-service/rest/rating/openapi"
 )
 
 // Linger please
@@ -31,14 +33,14 @@ RatingApiService Create rating
  * @param createRatingModel Created rating object
 @return RatingModel
 */
-func (a *RatingApiService) CreateRating(ctx context.Context, createRatingModel CreateRatingModel) (RatingModel, *http.Response, error) {
+func (a *RatingApiService) CreateRating(ctx context.Context, createRatingModel openapi.CreateRatingModel) (openapi.RatingModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  RatingModel
+		localVarReturnValue  openapi.RatingModel
 	)
 
 	// create path and map variables
@@ -89,7 +91,7 @@ func (a *RatingApiService) CreateRating(ctx context.Context, createRatingModel C
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v RatingModel
+			var v openapi.RatingModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -186,14 +188,14 @@ RatingApiService Get rating by id
  * @param id The id that needs to be fetched. Use 0 for testing.
 @return RatingModel
 */
-func (a *RatingApiService) GetRatingById(ctx context.Context, id int64) (RatingModel, *http.Response, error) {
+func (a *RatingApiService) GetRatingById(ctx context.Context, id int64) (openapi.RatingModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  RatingModel
+		localVarReturnValue  openapi.RatingModel
 	)
 
 	// create path and map variables
@@ -243,7 +245,7 @@ func (a *RatingApiService) GetRatingById(ctx context.Context, id int64) (RatingM
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v RatingModel
+			var v openapi.RatingModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -274,14 +276,14 @@ a list of ratings
  * @param postId Only get ratings of the supplied post
 @return RatingListModel
 */
-func (a *RatingApiService) ListRatings(ctx context.Context, postId int64) (RatingListModel, *http.Response, error) {
+func (a *RatingApiService) ListRatings(ctx context.Context, postId int64) (openapi.RatingListModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  RatingListModel
+		localVarReturnValue  openapi.RatingListModel
 	)
 
 	// create path and map variables
@@ -331,7 +333,7 @@ func (a *RatingApiService) ListRatings(ctx context.Context, postId int64) (Ratin
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v RatingListModel
+			var v openapi.RatingListModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
