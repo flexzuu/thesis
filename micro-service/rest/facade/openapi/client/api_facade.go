@@ -11,11 +11,13 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
-	"fmt"
+
+	"github.com/flexzuu/benchmark/micro-service/rest/facade/openapi"
 )
 
 // Linger please
@@ -31,14 +33,14 @@ FacadeApiService Author Detail
  * @param id For what author detail is requested
 @return AuthorDetailModel
 */
-func (a *FacadeApiService) AuthorDetail(ctx context.Context, id int64) (AuthorDetailModel, *http.Response, error) {
+func (a *FacadeApiService) AuthorDetail(ctx context.Context, id int64) (openapi.AuthorDetailModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  AuthorDetailModel
+		localVarReturnValue  openapi.AuthorDetailModel
 	)
 
 	// create path and map variables
@@ -88,7 +90,7 @@ func (a *FacadeApiService) AuthorDetail(ctx context.Context, id int64) (AuthorDe
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v AuthorDetailModel
+			var v openapi.AuthorDetailModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -117,14 +119,14 @@ FacadeApiService List Posts
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 @return PostListModel
 */
-func (a *FacadeApiService) ListPosts(ctx context.Context) (PostListModel, *http.Response, error) {
+func (a *FacadeApiService) ListPosts(ctx context.Context) (openapi.PostListModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  PostListModel
+		localVarReturnValue  openapi.PostListModel
 	)
 
 	// create path and map variables
@@ -173,7 +175,7 @@ func (a *FacadeApiService) ListPosts(ctx context.Context) (PostListModel, *http.
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v PostListModel
+			var v openapi.PostListModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -203,14 +205,14 @@ FacadeApiService Post Detail
  * @param id For what post detail is requested
 @return PostDetailModel
 */
-func (a *FacadeApiService) PostDetail(ctx context.Context, id int64) (PostDetailModel, *http.Response, error) {
+func (a *FacadeApiService) PostDetail(ctx context.Context, id int64) (openapi.PostDetailModel, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  PostDetailModel
+		localVarReturnValue  openapi.PostDetailModel
 	)
 
 	// create path and map variables
@@ -260,7 +262,7 @@ func (a *FacadeApiService) PostDetail(ctx context.Context, id int64) (PostDetail
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v PostDetailModel
+			var v openapi.PostDetailModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
