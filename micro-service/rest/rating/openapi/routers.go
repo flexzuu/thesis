@@ -17,7 +17,6 @@ import (
 	"strings"
 
 	postApi "github.com/flexzuu/benchmark/micro-service/rest/post/openapi/client"
-	"github.com/flexzuu/benchmark/micro-service/rest/rating/openapi/client"
 	"github.com/flexzuu/benchmark/micro-service/rest/rating/repo"
 	"github.com/flexzuu/benchmark/micro-service/rest/rating/repo/inmemmory"
 	"github.com/gin-gonic/gin"
@@ -40,7 +39,7 @@ type Routes []Route
 
 //dependencies
 var ratingRepo repo.Rating
-var postServiceClient *client.APIClient
+var postServiceClient *postApi.APIClient
 
 // NewRouter returns a new router.
 func NewRouter() *gin.Engine {
