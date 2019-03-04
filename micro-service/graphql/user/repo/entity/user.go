@@ -7,9 +7,9 @@ import (
 var validate = validator.New()
 
 type User struct {
-	ID    int
-	Email string `validate:"required"`
-	Name  string `validate:"required"`
+	ID    int    `json:"id"`
+	Email string `json:"email" validate:"required"`
+	Name  string `json:"name" validate:"required"`
 }
 
 func (u *User) Valid() error {

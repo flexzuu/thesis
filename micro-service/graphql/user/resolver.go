@@ -6,6 +6,7 @@ import (
 
 	"github.com/flexzuu/benchmark/micro-service/graphql/user/repo"
 	"github.com/flexzuu/benchmark/micro-service/graphql/user/repo/entity"
+	"github.com/flexzuu/benchmark/micro-service/graphql/user/util"
 )
 
 // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.
@@ -27,10 +28,24 @@ func (r *Resolver) User() UserResolver {
 type mutationResolver struct{ *Resolver }
 
 func (r *mutationResolver) UserCreate(ctx context.Context, input UserCreateInput) (*entity.User, error) {
-	panic("not implemented")
+	user, err := r.UserRepo.Create(input.Email, input.Name)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
 }
 func (r *mutationResolver) UserDelete(ctx context.Context, input UserDeleteInput) (*UserDeletePayload, error) {
-	panic("not implemented")
+	i, err := strconv.Atoi(input.ID)
+	if err != nil {
+		return nil, err
+	}
+	err = r.UserRepo.Delete(i)
+	if err != nil {
+		return nil, err
+	}
+	return &UserDeletePayload{
+		DeletedUserID: input.ID,
+	}, nil
 }
 
 type queryResolver struct{ *Resolver }
@@ -44,11 +59,12 @@ func (r *queryResolver) UserGet(ctx context.Context, id string) (*entity.User, e
 	if err != nil {
 		return nil, err
 	}
+
 	return &user, nil
 }
 
 type userResolver struct{ *Resolver }
 
 func (r *userResolver) ID(ctx context.Context, obj *entity.User) (string, error) {
-	panic("not implemented")
+	return util.UnmarshalID(obj.ID)
 }
