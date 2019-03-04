@@ -3,21 +3,21 @@ services:
   post-service:
     depends_on: 
       - user-service
-    build: .
+    build: ../../
     command: "go run ./micro-service/grpc/post/server"
     environment: 
      - USER_SERVICE=user-service:50052
     ports:
     - "50051:50051"
   user-service:
-    build: .
+    build: ../../
     command: "go run ./micro-service/grpc/user/server"
     ports:
     - "50052:50052"
   rating-service:
     depends_on: 
       - post-service
-    build: .
+    build: ../../
     command: "go run ./micro-service/grpc/rating/server"
     environment: 
      - POST_SERVICE=post-service:50051
@@ -28,7 +28,7 @@ services:
       - post-service
       - user-service
       - rating-service
-    build: .
+    build: ../../
     command: "go run ./micro-service/grpc/facade/server"
     environment: 
      - POST_SERVICE=post-service:50051
@@ -42,7 +42,7 @@ services:
       - post-service
       - user-service
       - rating-service
-    build: .
+    build: ../../
     command: "go run ./micro-service/grpc/seed"
     environment: 
      - POST_SERVICE=post-service:50051
@@ -52,7 +52,7 @@ services:
   client:
     depends_on: 
       - seed
-    build: .
+    build: ../../
     command: "go run ./micro-service/grpc/client"
     environment: 
      - POST_SERVICE=post-service:50051
@@ -61,7 +61,7 @@ services:
   client-facade:
     depends_on: 
       - seed
-    build: .
+    build: ../../
     command: "go run ./micro-service/grpc/client-facade"
     environment: 
      - FACADE_SERVICE=facade-service:50060
