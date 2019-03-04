@@ -27,7 +27,8 @@ up-grpc:
 	docker-compose -f $(docc-grpc) up --build --scale client=0 --scale client-facade=0 -d
 logs-grpc:
 	docker-compose -f $(docc-grpc) logs -f
-down-grpc: docker-compose -f $(docc-grpc) down
+down-grpc: 
+	docker-compose -f $(docc-grpc) down
 benchmark-grpc: benchmark-client-grpc benchmark-client-facade-grpc
 benchmark-client-grpc:
 	docker-compose -f $(docc-grpc) up --no-deps --build client
@@ -38,7 +39,8 @@ up-rest:
 	docker-compose -f $(docc-rest) up --build --scale client=0 --scale client-facade=0 -d
 logs-rest:
 	docker-compose -f $(docc-rest) logs -f
-down-rest: docker-compose -f $(docc-rest) down
+down-rest: 
+	docker-compose -f $(docc-rest) down
 benchmark-rest: benchmark-client-rest benchmark-client-facade-rest
 benchmark-client-rest:
 	docker-compose -f $(docc-rest) up --no-deps --build client
