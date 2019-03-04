@@ -10,10 +10,13 @@
 package openapi
 
 import (
+	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 
-	"github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
+	userApi "github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
 
 	"github.com/flexzuu/benchmark/micro-service/rest/post/repo"
 	"github.com/flexzuu/benchmark/micro-service/rest/post/repo/inmemmory"
@@ -37,13 +40,20 @@ type Routes []Route
 
 //dependencies
 var postRepo repo.Post
-var userServiceClient *client.APIClient
+var userServiceClient *userApi.APIClient
 
 // NewRouter returns a new router.
 func NewRouter() *gin.Engine {
 	postRepo = inmemmory.NewRepo()
-	cfg := client.NewConfiguration()
-	userServiceClient = client.NewAPIClient(cfg)
+
+	userServiceAddress := os.Getenv("USER_SERVICE")
+	if userServiceAddress == "" {
+		log.Fatalln("please provide USER_SERVICE as env var")
+	}
+	userCfg := userApi.NewConfiguration()
+	userCfg.BasePath = fmt.Sprintf("http://%s", userServiceAddress)
+	userServiceClient = userApi.NewAPIClient(userCfg)
+
 	router := gin.Default()
 	for _, route := range routes {
 		switch route.Method {
