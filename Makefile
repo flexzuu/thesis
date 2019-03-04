@@ -4,6 +4,7 @@ grpc = grpc/
 rest = rest/
 grpcbase = .$(base)$(grpc)
 gosrc = $(GOPATH)/src/
+grpcbase = $(gosrc)$(project)$(base)$(grpc)
 restbase = $(gosrc)$(project)$(base)$(rest)
 user = user/user
 post = post/post
@@ -13,23 +14,37 @@ facade = facade/facade
 
 stats = stats
 
+docc-grpc = $(grpcbase)docker-compose.yaml
+docc-rest = $(restbase)docker-compose.yaml
+
 generate:
 	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(user) $(grpcbase)$(user)/*.proto
 	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(post) $(grpcbase)$(post)/*.proto
 	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(rating) $(grpcbase)$(rating)/*.proto
 	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(facade) $(grpcbase)$(facade)/*.proto
 	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(stats) $(grpcbase)$(stats)/*.proto
-up:
-	docker-compose up --build --scale client=0 --scale client-facade=0 -d
-logs:
-	docker-compose logs -f
-down: docker-compose down
+up-grpc:
+	docker-compose -f $(docc-grpc) up --build --scale client=0 --scale client-facade=0 -d
+logs-grpc:
+	docker-compose -f $(docc-grpc) logs -f
+down-grpc: docker-compose -f $(docc-grpc) down
+benchmark-grpc: benchmark-client-grpc benchmark-client-facade-grpc
+benchmark-client-grpc:
+	docker-compose -f $(docc-grpc) up --no-deps --build client
+benchmark-client-facade-grpc:
+	docker-compose -f $(docc-grpc) up --no-deps --build client-facade
 
-benchmark: benchmark-client benchmark-client-facade
-benchmark-client:
-	docker-compose up --no-deps --build client
-benchmark-client-facade:
-	docker-compose up --no-deps --build client-facade
+up-rest:
+	docker-compose -f $(docc-rest) up --build --scale client=0 --scale client-facade=0 -d
+logs-rest:
+	docker-compose -f $(docc-rest) logs -f
+down-rest: docker-compose -f $(docc-rest) down
+benchmark-rest: benchmark-client-rest benchmark-client-facade-rest
+benchmark-client-rest:
+	docker-compose -f $(docc-rest) up --no-deps --build client
+benchmark-client-facade-rest:
+	docker-compose -f $(docc-rest) up --no-deps --build client-facade
+
 
 gui: gui-1 gui-2 gui-3 gui-4
 gui-1: 

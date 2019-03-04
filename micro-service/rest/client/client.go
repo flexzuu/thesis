@@ -47,7 +47,7 @@ func ListPosts(postClient *postApi.PostApiService) {
 	ctx := context.Background()
 	fmt.Println("----------ListPosts----------")
 	// fetch posts
-	posts, _, err := postClient.ListPosts(ctx, &postClient.ListPostsOpts{})
+	posts, _, err := postClient.ListPosts(ctx, &postApi.ListPostsOpts{})
 	if err != nil {
 		log.Fatal(err)
 	}
