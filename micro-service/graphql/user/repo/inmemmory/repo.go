@@ -8,11 +8,11 @@ import (
 
 // Repo is used to implement an inmemmory version of  repo.User
 type Repo struct {
-	data   map[int64]entity.User
-	nextID int64
+	data   map[int]entity.User
+	nextID int
 }
 
-func (r *Repo) Get(ID int64) (entity.User, error) {
+func (r *Repo) Get(ID int) (entity.User, error) {
 	u, ok := r.data[ID]
 	if !ok {
 		return entity.User{}, errors.New("user not found")
@@ -42,13 +42,13 @@ func (r *Repo) Create(Email string, Name string) (entity.User, error) {
 	r.data[u.ID] = u
 	return u, nil
 }
-func (r *Repo) Delete(ID int64) error {
+func (r *Repo) Delete(ID int) error {
 	delete(r.data, ID)
 	return nil
 }
 
 func NewRepo() *Repo {
-	data := make(map[int64]entity.User)
-	var nextID int64
+	data := make(map[int]entity.User)
+	var nextID int
 	return &Repo{data, nextID}
 }

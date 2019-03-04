@@ -7,7 +7,7 @@ import (
 var validate = validator.New()
 
 type User struct {
-	ID    int64
+	ID    int
 	Email string `validate:"required"`
 	Name  string `validate:"required"`
 }
