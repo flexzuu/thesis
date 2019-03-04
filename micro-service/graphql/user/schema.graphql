@@ -2,27 +2,30 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
-}
-
 type User {
   id: ID!
+  email: String!
   name: String!
 }
 
-type Query {
-  todos: [Todo!]!
+input UserCreateInput {
+  email: String!
+  name: String!
 }
 
-input NewTodo {
-  text: String!
-  userId: String!
+input UserDeleteInput {
+  id: ID!
+}
+
+type UserDeletePayload {
+  deletedUserId: ID!
+}
+
+type Query {
+  userGet(id: ID!): User
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  userCreate(input: UserCreateInput!): User!
+  userDelete(input: UserDeleteInput!): UserDeletePayload!
 }
