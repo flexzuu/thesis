@@ -11,6 +11,7 @@ require (
 	github.com/bifurcation/mint v0.0.0-20190129141059-83ba9bc2ead9 // indirect
 	github.com/cheekybits/genny v1.0.0 // indirect
 	github.com/coreos/go-systemd v0.0.0-20190212144455-93d5ec2c7f76 // indirect
+	github.com/flexzuu/graphqlt v0.0.0-20190305133519-cb11846183c9
 	github.com/gin-contrib/sse v0.0.0-20190125020943-a7658810eb74 // indirect
 	github.com/gin-gonic/gin v1.3.1-0.20190222084855-e6288e90eb31
 	github.com/gliderlabs/ssh v0.1.3 // indirect

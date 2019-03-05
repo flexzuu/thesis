@@ -19,8 +19,8 @@ func main() {
 	}
 	userRepo := inmemmory.NewRepo()
 
-	http.Handle("/", handler.Playground("GraphQL playground", "/query"))
-	http.Handle("/query", handler.GraphQL(user.NewExecutableSchema(user.Config{Resolvers: &user.Resolver{
+	http.Handle("/", handler.Playground("GraphQL playground", "/graphql"))
+	http.Handle("/graphql", handler.GraphQL(user.NewExecutableSchema(user.Config{Resolvers: &user.Resolver{
 		UserRepo: userRepo,
 	}})))
 

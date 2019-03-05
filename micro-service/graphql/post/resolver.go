@@ -4,7 +4,10 @@ import (
 	"context"
 	"strconv"
 
+	"github.com/pkg/errors"
+
 	"github.com/flexzuu/benchmark/micro-service/graphql/post/repo"
+	"github.com/flexzuu/benchmark/micro-service/graphql/post/userclient"
 	"github.com/flexzuu/benchmark/micro-service/graphql/post/util"
 
 	"github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
@@ -13,7 +16,8 @@ import (
 // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.
 
 type Resolver struct {
-	PostRepo repo.Post
+	PostRepo          repo.Post
+	UserServiceClient userclient.Client
 }
 
 func (r *Resolver) Mutation() MutationResolver {
@@ -33,7 +37,10 @@ func (r *mutationResolver) PostCreate(ctx context.Context, input PostCreateInput
 	if err != nil {
 		return nil, err
 	}
-	// TODO: Check author is existing
+	author, err := r.UserServiceClient.UserGet(ctx, authorI)
+	if err != nil || author == nil {
+		return nil, errors.Wrap(err, "author not found")
+	}
 	post, err := r.PostRepo.Create(authorI, input.Headline, input.Content)
 	if err != nil {
 		return nil, err
