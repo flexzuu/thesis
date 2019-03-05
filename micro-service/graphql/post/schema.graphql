@@ -1,0 +1,35 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Post {
+  id: ID!
+  authorId: ID!
+  headline: String!
+  content: String!
+}
+
+input PostCreateInput {
+  authorId: ID!
+  headline: String!
+  content: String!
+}
+
+input PostDeleteInput {
+  id: ID!
+}
+
+type PostDeletePayload {
+  deletedPostId: ID!
+}
+
+type Query {
+  postGet(id: ID!): Post
+  postList: [Post!]!
+  postListOfAuthor(authorId: ID!): [Post!]!
+}
+
+type Mutation {
+  postCreate(input: PostCreateInput!): Post!
+  postDelete(input: PostDeleteInput!): PostDeletePayload!
+}
