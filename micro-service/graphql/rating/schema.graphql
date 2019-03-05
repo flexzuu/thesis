@@ -23,8 +23,7 @@ type RatingDeletePayload {
 
 type Query {
   ratingGet(id: ID!): Rating
-  ratingList: [Rating!]!
-  ratingListOfAuthor(authorId: ID!): [Rating!]!
+  ratingListOfPost(postId: ID!): [Rating!]!
 }
 
 type Mutation {

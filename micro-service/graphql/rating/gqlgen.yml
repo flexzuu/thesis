@@ -13,7 +13,7 @@ models:
   Rating:
     model: github.com/flexzuu/benchmark/micro-service/graphql/rating/repo/entity.Rating
   ID:
-    model: github.com/flexzuu/benchmark/micro-service/graphql/user/util.ID
+    model: github.com/flexzuu/benchmark/micro-service/graphql/rating/util.ID
 resolver:
   filename: resolver.go
   type: Resolver

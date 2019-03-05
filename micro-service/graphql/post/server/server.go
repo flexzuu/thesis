@@ -10,6 +10,7 @@ import (
 	"github.com/99designs/gqlgen/handler"
 	"github.com/flexzuu/benchmark/micro-service/graphql/post"
 	"github.com/flexzuu/benchmark/micro-service/graphql/post/repo/inmemmory"
+	"github.com/flexzuu/benchmark/micro-service/graphql/post/userclient"
 )
 
 const defaultPort = "8081"

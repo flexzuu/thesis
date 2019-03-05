@@ -1,9 +1,9 @@
-package userclient
+package postclient
 
 import (
 	"context"
 
-	"github.com/flexzuu/benchmark/micro-service/graphql/user/repo/entity"
+	"github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
 	"github.com/flexzuu/graphqlt"
 )
 
@@ -12,15 +12,16 @@ type Client struct {
 }
 
 // Client defines what and how to fetch
-func (c *Client) UserGet(ctx context.Context, id int) (*entity.User, error) {
+func (c *Client) PostGet(ctx context.Context, id int) (*entity.Post, error) {
 	req := graphqlt.NewRequest(`
-	query userGet($id: ID!) {
-		user: userGet(id: $id) {
-		  id
-		  email
-		  name
+	query postGet($id: ID!) {
+		post: postGet(id: $id) {
+			id
+			authorId
+			headline
+			content
 		}
-	  }	  
+	}
 	`)
 
 	// set any variables
@@ -28,10 +29,10 @@ func (c *Client) UserGet(ctx context.Context, id int) (*entity.User, error) {
 
 	// run it and capture the response
 	var respData struct {
-		user entity.User
+		post entity.Post
 	}
 	if err := c.Run(ctx, req, &respData); err != nil {
 		return nil, err
 	}
-	return &respData.user, nil
+	return &respData.post, nil
 }
