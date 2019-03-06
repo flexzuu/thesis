@@ -3,11 +3,13 @@ project = github.com/flexzuu/benchmark/
 grpc = grpc/
 rest = rest/
 graphql = graphql/
+mixed = mixed/
 grpcbase = .$(base)$(grpc)
 gosrc = $(GOPATH)/src/
 grpcbase = $(gosrc)$(project)$(base)$(grpc)
 restbase = $(gosrc)$(project)$(base)$(rest)
 graphqlbase = $(gosrc)$(project)$(base)$(graphql)
+mixedbase = $(gosrc)$(project)$(base)$(mixed)
 user = user/user
 post = post/post
 rating = rating/rating
@@ -19,6 +21,7 @@ stats = stats
 docc-grpc = $(grpcbase)docker-compose.yaml
 docc-rest = $(restbase)docker-compose.yaml
 docc-graphql = $(graphqlbase)docker-compose.yaml
+docc-mixed = $(mixedbase)docker-compose.yaml
 
 generate:
 	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(user) $(grpcbase)$(user)/*.proto
@@ -61,6 +64,18 @@ benchmark-client-graphql:
 	docker-compose -f $(docc-graphql) up --no-deps --build client
 benchmark-client-facade-graphql:
 	docker-compose -f $(docc-graphql) up --no-deps --build client-facade
+
+up-mixed:
+	docker-compose -f $(docc-mixed) up --build --scale client=0 --scale client-facade=0 -d
+logs-mixed:
+	docker-compose -f $(docc-mixed) logs -f
+down-mixed: 
+	docker-compose -f $(docc-mixed) down
+benchmark-mixed: benchmark-client-mixed benchmark-client-facade-mixed
+benchmark-client-mixed:
+	docker-compose -f $(docc-mixed) up --no-deps --build client
+benchmark-client-facade-mixed:
+	docker-compose -f $(docc-mixed) up --no-deps --build client-facade
 
 gui: gui-1 gui-2 gui-3 gui-4
 gui-1: 
