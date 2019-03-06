@@ -68,6 +68,17 @@
                 "RATING_SERVICE":"http://localhost:8082/graphql",
             },
             "args": []
+        },
+        {
+            "name": "Debug graphql facade client",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "/Users/jonas/Development/projects/go/src/github.com/flexzuu/benchmark/micro-service/graphql/client-facade",
+            "env": {
+                "FACADE_SERVICE":"http://localhost:8090/graphql",
+            },
+            "args": []
         }
     ]
 }

@@ -6,72 +6,169 @@ import (
 	"log"
 	"os"
 
-	facadeApi "github.com/flexzuu/benchmark/micro-service/rest/facade/openapi/client"
+	post "github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
+	user "github.com/flexzuu/benchmark/micro-service/graphql/user/repo/entity"
+	"github.com/flexzuu/graphqlt"
 )
 
 func main() {
-	facadeServiceAddress := os.Getenv("FACADE_SERVICE")
-	if facadeServiceAddress == "" {
+	facadeServiceEndpoint := os.Getenv("FACADE_SERVICE")
+	if facadeServiceEndpoint == "" {
 		log.Fatalln("please provide FACADE_SERVICE as env var")
 	}
+	facadeClient := graphqlt.NewClient(facadeServiceEndpoint)
 
-	facadeCfg := facadeApi.NewConfiguration()
-	facadeCfg.BasePath = fmt.Sprintf("http://%s", facadeServiceAddress)
-	facadeClient := facadeApi.NewAPIClient(facadeCfg)
-
-	ListPosts(facadeClient.FacadeApi)
-	PostDetail(facadeClient.FacadeApi, 0)
-	// AuthorDetail(facadeClient, 0)
+	ListPosts(facadeClient)
+	PostDetail(facadeClient, 0)
+	AuthorDetail(facadeClient, 0)
 
 }
 
-func ListPosts(facadeClient *facadeApi.FacadeApiService) {
+func ListPosts(facadeClient *graphqlt.Client) {
 	// shows post ids+headline
 	ctx := context.Background()
 	fmt.Println("----------ListPosts----------")
 	// fetch posts
-	res, _, err := facadeClient.ListPosts(ctx)
+	req := graphqlt.NewRequest(`query ListPosts {
+		posts: postList {
+		  id
+		  headline
+		}
+	  }`)
+	var res struct {
+		Data struct {
+			Posts []struct {
+				ID       int
+				Headline string
+			}
+		}
+	}
+	err := facadeClient.Run(ctx, req, &res)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("#%d Posts:\n", len(res.Posts))
+	fmt.Printf("#%d Posts:\n", len(res.Data.Posts))
 
-	for _, post := range res.Posts {
-		fmt.Printf("\t%s (%d)\n", post.Headline, post.Id)
+	for _, post := range res.Data.Posts {
+		fmt.Printf("\t%s (%d)\n", post.Headline, post.ID)
 	}
 }
 
-func PostDetail(facadeClient *facadeApi.FacadeApiService, postID int64) {
+func PostDetail(facadeClient *graphqlt.Client, postID int) {
 	fmt.Println("----------PostDetail----------")
 	// shows post (headline + content) + authorName and all ratings(avg)
 	ctx := context.Background()
-	// fetch post by id
-	res, _, err := facadeClient.PostDetail(ctx, postID)
+
+	req := graphqlt.NewRequest(`query PostDetail($postID: ID!) {
+		post: postGet(id: $postID) {
+		  id
+		  headline
+		  content
+		  author {
+			id
+			name
+		  }
+		  ratings {
+			id
+			value
+		  }
+		}
+	  }`)
+
+	req.Var("postID", postID)
+
+	var res struct {
+		Data struct {
+			Post struct {
+				post.Post
+				Author struct {
+					ID   int
+					Name string
+				}
+				Ratings []struct {
+					ID    int
+					Value int
+				}
+			}
+		}
+	}
+	err := facadeClient.Run(ctx, req, &res)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("%s by %s\nAVG-Rating: %.2f\n%s\n", res.Post.Headline, res.Author.Name, res.AvgRating, res.Post.Content)
+	var avgRating float64
+
+	for _, rating := range res.Data.Post.Ratings {
+		avgRating += float64(rating.Value)
+	}
+	avgRating = avgRating / float64(len(res.Data.Post.Ratings))
+
+	fmt.Printf("%s by %s\nAVG-Rating: %.2f\n%s\n", res.Data.Post.Headline, res.Data.Post.Author.Name, avgRating, res.Data.Post.Content)
 }
 
-func AuthorDetail(facadeClient *facadeApi.FacadeApiService, authorID int64) {
+func AuthorDetail(facadeClient *graphqlt.Client, authorID int) {
 	// author name and email
 	// shows post ids+headline of author
 	// global avg ratings
 	fmt.Println("----------AuthorDetail----------")
 	ctx := context.Background()
-	res, _, err := facadeClient.AuthorDetail(ctx, authorID)
+	req := graphqlt.NewRequest(`query AuthorDetail($authorID: ID!) {
+		author: userGet(id: $authorID) {
+		  id
+		  email
+		  name
+		  posts {
+			id
+			headline
+			ratings {
+			  id
+			  value
+			}
+		  }
+		}
+	  }`)
+
+	req.Var("authorID", authorID)
+
+	var res struct {
+		Data struct {
+			Author struct {
+				user.User
+				Posts []struct {
+					ID       int
+					Headline string
+					Ratings  []struct {
+						ID    int
+						Value int
+					}
+				}
+			}
+		}
+	}
+	err := facadeClient.Run(ctx, req, &res)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("%s - %s\n", res.Author.Name, res.Author.Email)
-	fmt.Printf("Total AVG-Rating: %.2f\n", res.AvgRating)
+	var avgRating float64
+	var length int
+	for _, post := range res.Data.Author.Posts {
 
-	fmt.Printf("#%d Posts:\n", len(res.Posts.Posts))
+		for _, rating := range post.Ratings {
+			avgRating += float64(rating.Value)
+		}
+		length += len(post.Ratings)
+	}
+	avgRating = avgRating / float64(length)
 
-	for _, post := range res.Posts.Posts {
-		fmt.Printf("\t%s (%d)\n", post.Headline, post.Id)
+	fmt.Printf("%s - %s\n", res.Data.Author.Name, res.Data.Author.Email)
+	fmt.Printf("Total AVG-Rating: %.2f\n", avgRating)
+
+	fmt.Printf("#%d Posts:\n", len(res.Data.Author.Posts))
+
+	for _, post := range res.Data.Author.Posts {
+		fmt.Printf("\t%s (%d)\n", post.Headline, post.ID)
 	}
 
 }
