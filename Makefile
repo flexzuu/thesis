@@ -2,10 +2,12 @@ base = micro-service/
 project = github.com/flexzuu/benchmark/
 grpc = grpc/
 rest = rest/
+graphql = graphql/
 grpcbase = .$(base)$(grpc)
 gosrc = $(GOPATH)/src/
 grpcbase = $(gosrc)$(project)$(base)$(grpc)
 restbase = $(gosrc)$(project)$(base)$(rest)
+graphqlbase = $(gosrc)$(project)$(base)$(graphql)
 user = user/user
 post = post/post
 rating = rating/rating
@@ -16,6 +18,7 @@ stats = stats
 
 docc-grpc = $(grpcbase)docker-compose.yaml
 docc-rest = $(restbase)docker-compose.yaml
+docc-graphql = $(graphqlbase)docker-compose.yaml
 
 generate:
 	protoc --go_out=plugins=grpc:$(gosrc) -I $(grpcbase) -I $(grpcbase)$(user) $(grpcbase)$(user)/*.proto
@@ -47,6 +50,17 @@ benchmark-client-rest:
 benchmark-client-facade-rest:
 	docker-compose -f $(docc-rest) up --no-deps --build client-facade
 
+up-graphql:
+	docker-compose -f $(docc-graphql) up --build --scale client=0 --scale client-facade=0 -d
+logs-graphql:
+	docker-compose -f $(docc-graphql) logs -f
+down-graphql: 
+	docker-compose -f $(docc-graphql) down
+benchmark-graphql: benchmark-client-graphql benchmark-client-facade-graphql
+benchmark-client-graphql:
+	docker-compose -f $(docc-graphql) up --no-deps --build client
+benchmark-client-facade-graphql:
+	docker-compose -f $(docc-graphql) up --no-deps --build client-facade
 
 gui: gui-1 gui-2 gui-3 gui-4
 gui-1: 

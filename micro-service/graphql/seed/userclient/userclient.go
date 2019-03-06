@@ -12,19 +12,20 @@ type Client struct {
 }
 
 // Client defines what and how to fetch
-func (c *Client) UserGet(ctx context.Context, id int) (*entity.User, error) {
+func (c *Client) Create(ctx context.Context, email, name string) (*entity.User, error) {
 	req := graphqlt.NewRequest(`
-	query userGet($id: ID!) {
-		user: userGet(id: $id) {
-		  id
-		  email
-		  name
+	mutation create($email: String!, $name: String!) {
+		user: userCreate(input: { email: $email, name: $name }) {
+			id
+			name
+			email
 		}
-	  }	  
+	}  
 	`)
 
 	// set any variables
-	req.Var("id", id)
+	req.Var("email", email)
+	req.Var("name", name)
 
 	// run it and capture the response
 	var respData struct {

@@ -11,7 +11,7 @@ import (
 
 func MarshalID(s string) graphql.Marshaler {
 	return graphql.WriterFunc(func(w io.Writer) {
-		io.WriteString(w, strconv.Quote(s))
+		io.WriteString(w, s)
 	})
 }
 func UnmarshalID(v interface{}) (string, error) {

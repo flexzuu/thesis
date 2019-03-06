@@ -11,10 +11,10 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/flexzuu/benchmark/micro-service/graphql/facade/util"
 	"github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
 	entity2 "github.com/flexzuu/benchmark/micro-service/graphql/rating/repo/entity"
 	entity1 "github.com/flexzuu/benchmark/micro-service/graphql/user/repo/entity"
+	"github.com/flexzuu/benchmark/micro-service/graphql/util"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 )

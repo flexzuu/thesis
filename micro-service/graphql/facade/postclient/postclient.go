@@ -29,12 +29,14 @@ func (c *Client) PostGet(ctx context.Context, id int) (*entity.Post, error) {
 
 	// run it and capture the response
 	var respData struct {
-		post entity.Post
+		Data struct {
+			Post entity.Post
+		}
 	}
 	if err := c.Run(ctx, req, &respData); err != nil {
 		return nil, err
 	}
-	return &respData.post, nil
+	return &respData.Data.Post, nil
 }
 func (c *Client) PostList(ctx context.Context) ([]entity.Post, error) {
 	req := graphqlt.NewRequest(`
@@ -50,12 +52,14 @@ func (c *Client) PostList(ctx context.Context) ([]entity.Post, error) {
 
 	// run it and capture the response
 	var respData struct {
-		posts []entity.Post
+		Data struct {
+			Posts []entity.Post
+		}
 	}
 	if err := c.Run(ctx, req, &respData); err != nil {
 		return nil, err
 	}
-	return respData.posts, nil
+	return respData.Data.Posts, nil
 }
 func (c *Client) PostListOfAuthor(ctx context.Context, authorId int) ([]entity.Post, error) {
 	req := graphqlt.NewRequest(`
@@ -74,10 +78,12 @@ func (c *Client) PostListOfAuthor(ctx context.Context, authorId int) ([]entity.P
 
 	// run it and capture the response
 	var respData struct {
-		posts []entity.Post
+		Data struct {
+			Posts []entity.Post
+		}
 	}
 	if err := c.Run(ctx, req, &respData); err != nil {
 		return nil, err
 	}
-	return respData.posts, nil
+	return respData.Data.Posts, nil
 }

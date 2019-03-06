@@ -28,10 +28,12 @@ func (c *Client) UserGet(ctx context.Context, id int) (*entity.User, error) {
 
 	// run it and capture the response
 	var respData struct {
-		user entity.User
+		Data struct {
+			User entity.User
+		}
 	}
 	if err := c.Run(ctx, req, &respData); err != nil {
 		return nil, err
 	}
-	return &respData.user, nil
+	return &respData.Data.User, nil
 }

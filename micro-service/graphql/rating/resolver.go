@@ -8,7 +8,7 @@ import (
 
 	"github.com/flexzuu/benchmark/micro-service/graphql/rating/postclient"
 	"github.com/flexzuu/benchmark/micro-service/graphql/rating/repo"
-	"github.com/flexzuu/benchmark/micro-service/graphql/rating/util"
+	"github.com/flexzuu/benchmark/micro-service/graphql/util"
 
 	"github.com/flexzuu/benchmark/micro-service/graphql/rating/repo/entity"
 )

@@ -13,7 +13,7 @@ models:
   Post:
     model: github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity.Post
   ID:
-    model: github.com/flexzuu/benchmark/micro-service/graphql/post/util.ID
+    model: github.com/flexzuu/benchmark/micro-service/graphql/util.ID
 resolver:
   filename: resolver.go
   type: Resolver

@@ -7,10 +7,10 @@ import (
 	"github.com/flexzuu/benchmark/micro-service/graphql/facade/postclient"
 	"github.com/flexzuu/benchmark/micro-service/graphql/facade/ratingclient"
 	"github.com/flexzuu/benchmark/micro-service/graphql/facade/userclient"
-	"github.com/flexzuu/benchmark/micro-service/graphql/facade/util"
 	post "github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
 	rating "github.com/flexzuu/benchmark/micro-service/graphql/rating/repo/entity"
 	user "github.com/flexzuu/benchmark/micro-service/graphql/user/repo/entity"
+	"github.com/flexzuu/benchmark/micro-service/graphql/util"
 )
 
 // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.

@@ -4,21 +4,21 @@ services:
     depends_on: 
       - user-service
     build: ../../
-    command: "go run ./micro-service/facade/post/server"
+    command: "go run ./micro-service/graphql/post/server"
     environment: 
      - USER_SERVICE=http://user-service:8080/graphql
     ports:
     - "8081:8081"
   user-service:
     build: ../../
-    command: "go run ./micro-service/facade/user/server"
+    command: "go run ./micro-service/graphql/user/server"
     ports:
     - "8080:8080"
   rating-service:
     depends_on: 
       - post-service
     build: ../../
-    command: "go run ./micro-service/facade/rating/server"
+    command: "go run ./micro-service/graphql/rating/server"
     environment: 
      - POST_SERVICE=http://post-service:8081/graphql
     ports:
@@ -29,7 +29,7 @@ services:
       - user-service
       - rating-service
     build: ../../
-    command: "go run ./micro-service/facade/facade/server"
+    command: "go run ./micro-service/graphql/facade/server"
     environment: 
      - POST_SERVICE=http://post-service:8081/graphql
      - USER_SERVICE=http://user-service:8080/graphql
@@ -43,7 +43,7 @@ services:
       - user-service
       - rating-service
     build: ../../
-    command: "go run ./micro-service/facade/seed"
+    command: "go run ./micro-service/graphql/seed"
     environment: 
      - POST_SERVICE=http://post-service:8081/graphql
      - USER_SERVICE=http://user-service:8080/graphql
@@ -53,7 +53,7 @@ services:
     depends_on: 
       - seed
     build: ../../
-    command: "go run ./micro-service/facade/client"
+    command: "go run ./micro-service/graphql/client"
     environment: 
      - POST_SERVICE=http://post-service:8081/graphql
      - USER_SERVICE=http://user-service:8080/graphql
@@ -62,6 +62,6 @@ services:
     depends_on: 
       - seed
     build: ../../
-    command: "go run ./micro-service/facade/client-facade"
+    command: "go run ./micro-service/graphql/client-facade"
     environment: 
      - FACADE_SERVICE=http://facade-service:8090/graphql

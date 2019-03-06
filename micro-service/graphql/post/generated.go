@@ -12,7 +12,7 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
-	"github.com/flexzuu/benchmark/micro-service/graphql/post/util"
+	"github.com/flexzuu/benchmark/micro-service/graphql/util"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 )
