@@ -1,0 +1,102 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://localhost:4001'
+info:
+  description: a user service
+  version: 1.0.0
+  title: User Service
+tags:
+  - name: user
+    description: Operations about user
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUser'
+          description: Created user object
+          required: true
+  '/user/{id}':
+    get:
+      tags:
+        - user
+      summary: Get user by id
+      description: ''
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: The id that needs to be fetched. Use 0 for testing.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: Delete a user by id
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          description: The id that needs to be deleted. Use 0 for testing.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: User not found
+components:
+  schemas:
+    User:
+      title: a User
+      description: A User
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        email:
+          type: string
+        name:
+          type: string
+    CreateUser:
+      title: create user body
+      description: create user body
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        
+    
