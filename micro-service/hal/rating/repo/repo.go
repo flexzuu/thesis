@@ -1,6 +1,6 @@
 package repo
 
-import "github.com/flexzuu/benchmark/micro-service/rest/rating/repo/entity"
+import "github.com/flexzuu/benchmark/micro-service/hal/rating/repo/entity"
 
 type Rating interface {
 	GetById(ID int64) (entity.Rating, error)

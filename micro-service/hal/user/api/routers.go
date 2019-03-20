@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -40,7 +39,6 @@ func NewRouter() *gin.Engine {
 	if postServiceAddress == "" {
 		log.Fatalln("please provide POST_SERVICE as env var")
 	}
-	postServiceAddress = fmt.Sprintf("http://%s", postServiceAddress)
 
 	router := gin.Default()
 	for _, route := range routes {
@@ -75,7 +73,7 @@ func Root(c *gin.Context) {
 var routes = Routes{
 	{
 		"Index",
-		"GET",
+		http.MethodGet,
 		"/",
 		Root,
 	},

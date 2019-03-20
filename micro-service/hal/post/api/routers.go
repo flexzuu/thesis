@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -31,6 +30,7 @@ type Routes []Route
 //dependencies
 var postRepo repo.Post
 var userServiceAddress string
+var ratingServiceAddress string
 
 // NewRouter returns a new router.
 func NewRouter() *gin.Engine {
@@ -40,7 +40,11 @@ func NewRouter() *gin.Engine {
 	if userServiceAddress == "" {
 		log.Fatalln("please provide USER_SERVICE as env var")
 	}
-	userServiceAddress = fmt.Sprintf("http://%s", userServiceAddress)
+
+	ratingServiceAddress = os.Getenv("RATING_SERVICE")
+	if ratingServiceAddress == "" {
+		log.Fatalln("please provide RATING_SERVICE as env var")
+	}
 
 	router := gin.Default()
 	for _, route := range routes {
@@ -75,7 +79,7 @@ func Root(c *gin.Context) {
 var routes = Routes{
 	{
 		"Index",
-		"GET",
+		http.MethodGet,
 		"/",
 		Root,
 	},

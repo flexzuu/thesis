@@ -35,7 +35,9 @@ func CreatePost(c *gin.Context) {
 		Id: post.ID,
 		Links: halgo.Links{}.
 			Self("/posts/%d", post.ID).
-			Link("author", "%s/users/%d", userServiceAddress, post.AuthorID),
+			Link("author", "%s/users/%d", userServiceAddress, post.AuthorID).
+			Link("ratings", "%s/ratings?postId=%d", ratingServiceAddress, post.ID),
+
 		Headline: post.Headline,
 		Content:  post.Content,
 	})
@@ -73,7 +75,8 @@ func GetPostById(c *gin.Context) {
 		Id: post.ID,
 		Links: halgo.Links{}.
 			Self("/posts/%d", post.ID).
-			Link("author", "%s/users/%d", userServiceAddress, post.AuthorID),
+			Link("author", "%s/users/%d", userServiceAddress, post.AuthorID).
+			Link("ratings", "%s/ratings?postId=%d", ratingServiceAddress, post.ID),
 		Headline: post.Headline,
 		Content:  post.Content,
 	})
@@ -108,7 +111,8 @@ func ListPosts(c *gin.Context) {
 			Id: p.ID,
 			Links: halgo.Links{}.
 				Self("/posts/%d", p.ID).
-				Link("author", "%s/users/%d", userServiceAddress, p.AuthorID),
+				Link("author", "%s/users/%d", userServiceAddress, p.AuthorID).
+				Link("ratings", "%s/ratings?postId=%d", ratingServiceAddress, p.ID),
 			Headline: p.Headline,
 			Content:  p.Content,
 		}

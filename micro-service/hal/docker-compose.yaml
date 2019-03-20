@@ -6,12 +6,15 @@ services:
     build: ../../
     command: "go run ./micro-service/hal/post/server"
     environment: 
-     - USER_SERVICE=user-service:4001
+     - USER_SERVICE=http://host.docker.internal:4001
+     - RATING_SERVICE=http://host.docker.internal:4003
     ports:
     - "4002:4002"
   user-service:
     build: ../../
     command: "go run ./micro-service/hal/user/server"
+    environment: 
+     - POST_SERVICE=http://host.docker.internal:4002
     ports:
     - "4001:4001"
   rating-service:
@@ -20,22 +23,22 @@ services:
     build: ../../
     command: "go run ./micro-service/hal/rating/server"
     environment: 
-     - POST_SERVICE=post-service:4002
+     - POST_SERVICE=http://host.docker.internal:4002
     ports:
     - "4003:4003"
-  facade-service:
-    depends_on: 
-      - post-service
-      - user-service
-      - rating-service
-    build: ../../
-    command: "go run ./micro-service/hal/facade/server"
-    environment: 
-     - POST_SERVICE=post-service:4002
-     - USER_SERVICE=user-service:4001
-     - RATING_SERVICE=rating-service:4003
-    ports:
-     - "4000:4000"
+  # facade-service:
+  #   depends_on: 
+  #     - post-service
+  #     - user-service
+  #     - rating-service
+  #   build: ../../
+  #   command: "go run ./micro-service/hal/facade/server"
+  #   environment: 
+  #    - POST_SERVICE=http://host.docker.internal:4002
+  #    - USER_SERVICE=http://host.docker.internal:4001
+  #    - RATING_SERVICE=http://host.docker.internal:4003
+  #   ports:
+  #    - "4000:4000"
 
   seed:
     depends_on: 
@@ -45,23 +48,23 @@ services:
     build: ../../
     command: "go run ./micro-service/hal/seed"
     environment: 
-     - POST_SERVICE=post-service:4002
-     - USER_SERVICE=user-service:4001
-     - RATING_SERVICE=rating-service:4003
+     - POST_SERVICE=http://host.docker.internal:4002
+     - USER_SERVICE=http://host.docker.internal:4001
+     - RATING_SERVICE=http://host.docker.internal:4003
 
-  client:
-    depends_on: 
-      - seed
-    build: ../../
-    command: "go run ./micro-service/hal/client"
-    environment: 
-     - POST_SERVICE=post-service:4002
-     - USER_SERVICE=user-service:4001
-     - RATING_SERVICE=rating-service:4003
-  client-facade:
-    depends_on: 
-      - seed
-    build: ../../
-    command: "go run ./micro-service/hal/client-facade"
-    environment: 
-     - FACADE_SERVICE=facade-service:4000
+  # client:
+  #   depends_on: 
+  #     - seed
+  #   build: ../../
+  #   command: "go run ./micro-service/hal/client"
+  #   environment: 
+  #    - POST_SERVICE=http://host.docker.internal:4002
+  #    - USER_SERVICE=http://host.docker.internal:4001
+  #    - RATING_SERVICE=http://host.docker.internal:4003
+  # client-facade:
+  #   depends_on: 
+  #     - seed
+  #   build: ../../
+  #   command: "go run ./micro-service/hal/client-facade"
+  #   environment: 
+  #    - FACADE_SERVICE=facade-service:4000

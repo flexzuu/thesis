@@ -2,18 +2,15 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
 
 	post "github.com/flexzuu/benchmark/micro-service/hal/post/api"
+	rating "github.com/flexzuu/benchmark/micro-service/hal/rating/api"
 	user "github.com/flexzuu/benchmark/micro-service/hal/user/api"
-	rating "github.com/flexzuu/benchmark/micro-service/rest/rating/openapi"
-	ratingApi "github.com/flexzuu/benchmark/micro-service/rest/rating/openapi/client"
 	"github.com/leibowitz/halgo"
 )
 
@@ -24,23 +21,16 @@ func main() {
 	if postServiceAddress == "" {
 		log.Fatalln("please provide POST_SERVICE as env var")
 	}
-	postServiceAddress = fmt.Sprintf("http://%s", postServiceAddress)
 
 	userServiceAddress := os.Getenv("USER_SERVICE")
 	if userServiceAddress == "" {
 		log.Fatalln("please provide USER_SERVICE as env var")
 	}
-	userServiceAddress = fmt.Sprintf("http://%s", userServiceAddress)
 
 	ratingServiceAddress := os.Getenv("RATING_SERVICE")
 	if ratingServiceAddress == "" {
 		log.Fatalln("please provide RATING_SERVICE as env var")
 	}
-	ratingCfg := ratingApi.NewConfiguration()
-	ratingCfg.BasePath = fmt.Sprintf("http://%s", ratingServiceAddress)
-	ratingClient := ratingApi.NewAPIClient(ratingCfg)
-
-	ctx := context.Background()
 
 	var createUser = func(usr user.CreateUserModel) user.UserModel {
 		b, err := json.Marshal(usr)
@@ -67,12 +57,12 @@ func main() {
 	}
 
 	//createTestUser
-	john, _, _ := createUser(user.CreateUserModel{
+	john := createUser(user.CreateUserModel{
 		Email: "john@example.com",
 		Name:  "John Doe",
 	})
 	//createTestUser
-	jane, _, _ := createUser(user.CreateUserModel{
+	jane := createUser(user.CreateUserModel{
 		Email: "jane@example.com",
 		Name:  "Jane Doe",
 	})
@@ -121,10 +111,22 @@ func main() {
 
 		i := 1
 		for i <= 5 /*num of fake reviews*/ {
-			ratingClient.RatingApi.CreateRating(ctx, rating.CreateRatingModel{
+			rating := rating.CreateRatingModel{
 				PostId: postID,
 				Rating: rand.Int31n(5),
-			})
+			}
+			b, err := json.Marshal(rating)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+			_, err = halgo.Navigator(ratingServiceAddress).
+				Follow("ratings").
+				Post("application/json", bytes.NewBuffer(b))
+			if err != nil {
+				log.Fatal(err)
+			}
+
 			i++
 		}
 	}
