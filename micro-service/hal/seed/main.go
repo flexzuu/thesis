@@ -11,10 +11,9 @@ import (
 	"os"
 
 	post "github.com/flexzuu/benchmark/micro-service/hal/post/api"
+	user "github.com/flexzuu/benchmark/micro-service/hal/user/api"
 	rating "github.com/flexzuu/benchmark/micro-service/rest/rating/openapi"
 	ratingApi "github.com/flexzuu/benchmark/micro-service/rest/rating/openapi/client"
-	user "github.com/flexzuu/benchmark/micro-service/rest/user/openapi"
-	userApi "github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
 	"github.com/leibowitz/halgo"
 )
 
@@ -31,9 +30,7 @@ func main() {
 	if userServiceAddress == "" {
 		log.Fatalln("please provide USER_SERVICE as env var")
 	}
-	userCfg := userApi.NewConfiguration()
-	userCfg.BasePath = fmt.Sprintf("http://%s", userServiceAddress)
-	userClient := userApi.NewAPIClient(userCfg)
+	userServiceAddress = fmt.Sprintf("http://%s", userServiceAddress)
 
 	ratingServiceAddress := os.Getenv("RATING_SERVICE")
 	if ratingServiceAddress == "" {
@@ -45,13 +42,37 @@ func main() {
 
 	ctx := context.Background()
 
+	var createUser = func(usr user.CreateUserModel) user.UserModel {
+		b, err := json.Marshal(usr)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		r, err := halgo.Navigator(userServiceAddress).
+			Follow("users").
+			Post("application/json", bytes.NewBuffer(b))
+		if err != nil {
+			log.Fatal(err)
+		}
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+		var user user.UserModel
+		err = json.Unmarshal(body, &user)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return user
+	}
+
 	//createTestUser
-	john, _, _ := userClient.UserApi.CreateUser(ctx, user.CreateUserModel{
+	john, _, _ := createUser(user.CreateUserModel{
 		Email: "john@example.com",
 		Name:  "John Doe",
 	})
 	//createTestUser
-	jane, _, _ := userClient.UserApi.CreateUser(ctx, user.CreateUserModel{
+	jane, _, _ := createUser(user.CreateUserModel{
 		Email: "jane@example.com",
 		Name:  "Jane Doe",
 	})
