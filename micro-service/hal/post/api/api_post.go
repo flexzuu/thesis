@@ -18,10 +18,10 @@ func CreatePost(c *gin.Context) {
 	}
 
 	//check authorId
-	_, err := halgo.Navigator(userServiceAddress).
+	checkRes, err := halgo.Navigator(userServiceAddress).
 		Followf("find", halgo.P{"id": create.AuthorId}).
 		Get()
-	if err != nil {
+	if err != nil || checkRes.StatusCode != http.StatusOK {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -91,10 +91,10 @@ func ListPosts(c *gin.Context) {
 		res, err = postRepo.List()
 	} else {
 		//check authorId
-		_, err := halgo.Navigator(userServiceAddress).
+		checkRes, err := halgo.Navigator(userServiceAddress).
 			Followf("find", halgo.P{"id": authorID}).
 			Get()
-		if err != nil {
+		if err != nil || checkRes.StatusCode != http.StatusOK {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}

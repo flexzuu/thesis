@@ -87,15 +87,19 @@ func ListRatings(c *gin.Context) {
 	ctx := context.Background()
 
 	postID, err := strconv.ParseInt(c.Query("postId"), 10, 0)
-	if err != nil {
-		res, err = ratingRepo.ListOfPost(postID)
-	}
+
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	//check postId
 	_, _, err = postServiceClient.PostApi.GetPostById(ctx, postID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	res, err = ratingRepo.ListOfPost(postID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

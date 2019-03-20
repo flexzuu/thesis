@@ -18,11 +18,11 @@ func CreateRating(c *gin.Context) {
 	}
 
 	//check postId
-	_, err := halgo.Navigator(postServiceAddress).
+	checkRes, err := halgo.Navigator(postServiceAddress).
 		Followf("find", halgo.P{"id": create.PostId}).
 		Get()
 
-	if err != nil {
+	if err != nil || checkRes.StatusCode != http.StatusOK {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -81,19 +81,23 @@ func GetRatingById(c *gin.Context) {
 // ListRatings - List ratings
 func ListRatings(c *gin.Context) {
 	var res []entity.Rating
-
 	postID, err := strconv.ParseInt(c.Query("postId"), 10, 0)
-	if err != nil {
-		res, err = ratingRepo.ListOfPost(postID)
-	}
+
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	//check postId
-	_, err = halgo.Navigator(postServiceAddress).
+	checkRes, err := halgo.Navigator(postServiceAddress).
 		Followf("find", halgo.P{"id": postID}).
 		Get()
+	if err != nil || checkRes.StatusCode != http.StatusOK {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	res, err = ratingRepo.ListOfPost(postID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
