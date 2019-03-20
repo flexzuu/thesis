@@ -6,5 +6,5 @@ import "github.com/leibowitz/halgo"
 type RatingModel struct {
 	halgo.Links
 	Id    int64 `json:"id"`
-	Value int32 `json:"value,omitempty"`
+	Value int32 `json:"value"`
 }
