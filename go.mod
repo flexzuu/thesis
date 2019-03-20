@@ -32,9 +32,11 @@ require (
 	github.com/gregjones/httpcache v0.0.0-20190212212710-3befbb6ad0cc // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.8.1 // indirect
 	github.com/hashicorp/golang-lru v0.5.1 // indirect
+	github.com/jtacoma/uritemplates v1.0.0 // indirect
 	github.com/kisielk/errcheck v1.2.0 // indirect
 	github.com/kisielk/gotool v1.0.0 // indirect
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
+	github.com/leibowitz/halgo v0.0.0-20150327232416-85b31656b6ed
 	github.com/leodido/go-urn v1.1.0 // indirect
 	github.com/lucas-clemente/aes12 v0.0.0-20171027163421-cd47fb39b79f // indirect
 	github.com/lucas-clemente/quic-go v0.10.1

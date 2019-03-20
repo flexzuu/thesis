@@ -1,6 +1,6 @@
 package repo
 
-import "github.com/flexzuu/benchmark/micro-service/rest/post/repo/entity"
+import "github.com/flexzuu/benchmark/micro-service/hal/post/repo/entity"
 
 type Post interface {
 	GetById(ID int64) (entity.Post, error)

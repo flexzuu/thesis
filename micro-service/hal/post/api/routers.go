@@ -1,5 +1,3 @@
-
-
 package api
 
 import (
@@ -7,12 +5,11 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
-	userApi "github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
+	"github.com/leibowitz/halgo"
 
-	"github.com/flexzuu/benchmark/micro-service/rest/post/repo"
-	"github.com/flexzuu/benchmark/micro-service/rest/post/repo/inmemmory"
+	"github.com/flexzuu/benchmark/micro-service/hal/post/repo"
+	"github.com/flexzuu/benchmark/micro-service/hal/post/repo/inmemmory"
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,30 +30,28 @@ type Routes []Route
 
 //dependencies
 var postRepo repo.Post
-var userServiceClient *userApi.APIClient
+var userServiceAddress string
 
 // NewRouter returns a new router.
 func NewRouter() *gin.Engine {
 	postRepo = inmemmory.NewRepo()
 
-	userServiceAddress := os.Getenv("USER_SERVICE")
+	userServiceAddress = os.Getenv("USER_SERVICE")
 	if userServiceAddress == "" {
 		log.Fatalln("please provide USER_SERVICE as env var")
 	}
-	userCfg := userApi.NewConfiguration()
-	userCfg.BasePath = fmt.Sprintf("http://%s", userServiceAddress)
-	userServiceClient = userApi.NewAPIClient(userCfg)
+	userServiceAddress = fmt.Sprintf("http://%s", userServiceAddress)
 
 	router := gin.Default()
 	for _, route := range routes {
 		switch route.Method {
-		case "GET":
+		case http.MethodGet:
 			router.GET(route.Pattern, route.HandlerFunc)
-		case "POST":
+		case http.MethodPost:
 			router.POST(route.Pattern, route.HandlerFunc)
-		case "PUT":
+		case http.MethodPut:
 			router.PUT(route.Pattern, route.HandlerFunc)
-		case "DELETE":
+		case http.MethodDelete:
 			router.DELETE(route.Pattern, route.HandlerFunc)
 		}
 	}
@@ -64,9 +59,17 @@ func NewRouter() *gin.Engine {
 	return router
 }
 
-// Index is the index handler.
-func Index(c *gin.Context) {
-	c.String(http.StatusOK, "Hello World!")
+// Root is the index handler.
+func Root(c *gin.Context) {
+	type root struct{ halgo.Links }
+
+	r := root{
+		Links: halgo.Links{}.
+			Self("/").
+			Link("posts", "/posts{?authorId}").
+			Link("find", "/posts/{id}"),
+	}
+	c.JSON(http.StatusOK, r)
 }
 
 var routes = Routes{
@@ -74,34 +77,34 @@ var routes = Routes{
 		"Index",
 		"GET",
 		"/",
-		Index,
+		Root,
 	},
 
 	{
 		"CreatePost",
-		strings.ToUpper("Post"),
-		"/post",
+		http.MethodPost,
+		"/posts",
 		CreatePost,
 	},
 
 	{
 		"DeletePost",
-		strings.ToUpper("Delete"),
-		"/post/:id",
+		http.MethodDelete,
+		"/posts/:id",
 		DeletePost,
 	},
 
 	{
 		"GetPostById",
-		strings.ToUpper("Get"),
-		"/post/:id",
+		http.MethodGet,
+		"/posts/:id",
 		GetPostById,
 	},
 
 	{
 		"ListPosts",
-		strings.ToUpper("Get"),
-		"/post",
+		http.MethodGet,
+		"/posts",
 		ListPosts,
 	},
 }

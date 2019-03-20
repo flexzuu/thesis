@@ -1,5 +1,3 @@
-
-
 package api
 
 // CreatePostModel - create post body

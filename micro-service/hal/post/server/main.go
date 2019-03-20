@@ -12,14 +12,14 @@ package main
 import (
 	"log"
 
-	"github.com/flexzuu/benchmark/micro-service/rest/post/openapi"
+	"github.com/flexzuu/benchmark/micro-service/hal/post/api"
 	cors "github.com/rs/cors/wrapper/gin"
 )
 
 func main() {
 	log.Printf("Server started")
 
-	router := openapi.NewRouter()
+	router := api.NewRouter()
 	router.Use(cors.Default())
 	log.Fatal(router.Run(":4002"))
 }

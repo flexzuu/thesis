@@ -1,17 +1,16 @@
 package api
 
 import (
-	"context"
 	"net/http"
 	"strconv"
 
-	"github.com/flexzuu/benchmark/micro-service/rest/post/repo/entity"
+	"github.com/flexzuu/benchmark/micro-service/hal/post/repo/entity"
 	"github.com/gin-gonic/gin"
+	"github.com/leibowitz/halgo"
 )
 
 // CreatePost - Create post
 func CreatePost(c *gin.Context) {
-	ctx := context.Background()
 	var create CreatePostModel
 	if err := c.ShouldBindJSON(&create); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -19,7 +18,9 @@ func CreatePost(c *gin.Context) {
 	}
 
 	//check authorId
-	_, _, err := userServiceClient.UserApi.GetUserById(ctx, create.AuthorId)
+	_, err := halgo.Navigator(userServiceAddress).
+		Followf("find", halgo.P{"id": create.AuthorId}).
+		Get()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -30,9 +31,11 @@ func CreatePost(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, PostModel{
-		Id:       post.ID,
-		AuthorId: post.AuthorID,
+	c.JSON(http.StatusCreated, PostModel{
+		Id: post.ID,
+		Links: halgo.Links{}.
+			Self("/posts/%d", post.ID).
+			Link("author", "%s/users/%d", userServiceAddress, post.AuthorID),
 		Headline: post.Headline,
 		Content:  post.Content,
 	})
@@ -50,7 +53,7 @@ func DeletePost(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{})
+	c.Status(http.StatusNoContent)
 }
 
 // GetPostById - Get post by id
@@ -67,8 +70,10 @@ func GetPostById(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, PostModel{
-		Id:       post.ID,
-		AuthorId: post.AuthorID,
+		Id: post.ID,
+		Links: halgo.Links{}.
+			Self("/posts/%d", post.ID).
+			Link("author", "%s/users/%d", userServiceAddress, post.AuthorID),
 		Headline: post.Headline,
 		Content:  post.Content,
 	})
@@ -82,10 +87,10 @@ func ListPosts(c *gin.Context) {
 	if err != nil {
 		res, err = postRepo.List()
 	} else {
-		ctx := context.Background()
-
 		//check authorId
-		_, _, err := userServiceClient.UserApi.GetUserById(ctx, authorID)
+		_, err := halgo.Navigator(userServiceAddress).
+			Followf("find", halgo.P{"id": authorID}).
+			Get()
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -100,15 +105,20 @@ func ListPosts(c *gin.Context) {
 	posts := make([]PostModel, len(res))
 	for i, p := range res {
 		posts[i] = PostModel{
-			Id:       p.ID,
-			AuthorId: p.AuthorID,
+			Id: p.ID,
+			Links: halgo.Links{}.
+				Self("/posts/%d", p.ID).
+				Link("author", "%s/users/%d", userServiceAddress, p.AuthorID),
 			Headline: p.Headline,
 			Content:  p.Content,
 		}
 	}
 
 	c.JSON(http.StatusOK, PostListModel{
-		posts,
+		Posts: posts,
+		Links: halgo.Links{}.
+			Self("/posts").
+			Link("find", "/posts/{id}"),
 	})
 	return
 }

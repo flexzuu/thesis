@@ -4,21 +4,21 @@ services:
     depends_on: 
       - user-service
     build: ../../
-    command: "go run ./micro-service/rest/post/server"
+    command: "go run ./micro-service/hal/post/server"
     environment: 
      - USER_SERVICE=user-service:4001
     ports:
     - "4002:4002"
   user-service:
     build: ../../
-    command: "go run ./micro-service/rest/user/server"
+    command: "go run ./micro-service/hal/user/server"
     ports:
     - "4001:4001"
   rating-service:
     depends_on: 
       - post-service
     build: ../../
-    command: "go run ./micro-service/rest/rating/server"
+    command: "go run ./micro-service/hal/rating/server"
     environment: 
      - POST_SERVICE=post-service:4002
     ports:
@@ -29,7 +29,7 @@ services:
       - user-service
       - rating-service
     build: ../../
-    command: "go run ./micro-service/rest/facade/server"
+    command: "go run ./micro-service/hal/facade/server"
     environment: 
      - POST_SERVICE=post-service:4002
      - USER_SERVICE=user-service:4001
@@ -43,7 +43,7 @@ services:
       - user-service
       - rating-service
     build: ../../
-    command: "go run ./micro-service/rest/seed"
+    command: "go run ./micro-service/hal/seed"
     environment: 
      - POST_SERVICE=post-service:4002
      - USER_SERVICE=user-service:4001
@@ -53,7 +53,7 @@ services:
     depends_on: 
       - seed
     build: ../../
-    command: "go run ./micro-service/rest/client"
+    command: "go run ./micro-service/hal/client"
     environment: 
      - POST_SERVICE=post-service:4002
      - USER_SERVICE=user-service:4001
@@ -62,6 +62,6 @@ services:
     depends_on: 
       - seed
     build: ../../
-    command: "go run ./micro-service/rest/client-facade"
+    command: "go run ./micro-service/hal/client-facade"
     environment: 
      - FACADE_SERVICE=facade-service:4000

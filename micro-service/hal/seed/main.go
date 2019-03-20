@@ -1,18 +1,21 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
 
-	post "github.com/flexzuu/benchmark/micro-service/rest/post/openapi"
-	postApi "github.com/flexzuu/benchmark/micro-service/rest/post/openapi/client"
+	post "github.com/flexzuu/benchmark/micro-service/hal/post/api"
 	rating "github.com/flexzuu/benchmark/micro-service/rest/rating/openapi"
 	ratingApi "github.com/flexzuu/benchmark/micro-service/rest/rating/openapi/client"
 	user "github.com/flexzuu/benchmark/micro-service/rest/user/openapi"
 	userApi "github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
+	"github.com/leibowitz/halgo"
 )
 
 // seed the services with some test data
@@ -22,9 +25,7 @@ func main() {
 	if postServiceAddress == "" {
 		log.Fatalln("please provide POST_SERVICE as env var")
 	}
-	postCfg := postApi.NewConfiguration()
-	postCfg.BasePath = fmt.Sprintf("http://%s", postServiceAddress)
-	postClient := postApi.NewAPIClient(postCfg)
+	postServiceAddress = fmt.Sprintf("http://%s", postServiceAddress)
 
 	userServiceAddress := os.Getenv("USER_SERVICE")
 	if userServiceAddress == "" {
@@ -57,8 +58,7 @@ func main() {
 
 	// create fake post
 	var createPost = func(author user.UserModel, headline string) post.PostModel {
-
-		post, _, _ := postClient.PostApi.CreatePost(ctx, post.CreatePostModel{
+		b, err := json.Marshal(post.CreatePostModel{
 			AuthorId: author.Id,
 			Headline: headline,
 			Content: `Markdown is a lightweight markup language based on the formatting conventions that people naturally use in email.  As [John Gruber] writes on the [Markdown site][df1]
@@ -73,6 +73,25 @@ func main() {
 	
 	This text you see here is *actually* written in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.`,
 		})
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		r, err := halgo.Navigator(postServiceAddress).
+			Follow("posts").
+			Post("application/json", bytes.NewBuffer(b))
+		if err != nil {
+			log.Fatal(err)
+		}
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+		var post post.PostModel
+		err = json.Unmarshal(body, &post)
+		if err != nil {
+			log.Fatal(err)
+		}
 		return post
 	}
 

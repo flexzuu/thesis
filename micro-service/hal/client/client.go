@@ -6,8 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/antihax/optional"
-	postApi "github.com/flexzuu/benchmark/micro-service/rest/post/openapi/client"
+	postApi "github.com/flexzuu/benchmark/micro-service/hal/post/api/client"
 	ratingApi "github.com/flexzuu/benchmark/micro-service/rest/rating/openapi/client"
 	userApi "github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
 )
@@ -17,9 +16,8 @@ func main() {
 	if postServiceAddress == "" {
 		log.Fatalln("please provide POST_SERVICE as env var")
 	}
-	postCfg := postApi.NewConfiguration()
-	postCfg.BasePath = fmt.Sprintf("http://%s", postServiceAddress)
-	postClient := postApi.NewAPIClient(postCfg)
+	postServiceAddress = fmt.Sprintf("http://%s", postServiceAddress)
+	postClient := postApi.New(postServiceAddress)
 
 	userServiceAddress := os.Getenv("USER_SERVICE")
 	if userServiceAddress == "" {
@@ -37,17 +35,17 @@ func main() {
 	ratingCfg.BasePath = fmt.Sprintf("http://%s", ratingServiceAddress)
 	ratingClient := ratingApi.NewAPIClient(ratingCfg)
 
-	ListPosts(postClient.PostApi)
-	PostDetail(postClient.PostApi, userClient.UserApi, ratingClient.RatingApi, 0)
-	AuthorDetail(postClient.PostApi, userClient.UserApi, ratingClient.RatingApi, 0)
+	ListPosts(postClient)
+	PostDetail(postClient, userClient.UserApi, ratingClient.RatingApi, 0)
+	AuthorDetail(postClient, userClient.UserApi, ratingClient.RatingApi, 0)
 }
 
-func ListPosts(postClient *postApi.PostApiService) {
+func ListPosts(postClient *postApi.Client) {
 	// shows post ids+headline
 	ctx := context.Background()
 	fmt.Println("----------ListPosts----------")
 	// fetch posts
-	posts, _, err := postClient.ListPosts(ctx, &postApi.ListPostsOpts{})
+	posts, err := postClient.ListPosts()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -58,12 +56,12 @@ func ListPosts(postClient *postApi.PostApiService) {
 	}
 }
 
-func PostDetail(postClient *postApi.PostApiService, userClient *userApi.UserApiService, ratingClient *ratingApi.RatingApiService, postID int64) {
+func PostDetail(postClient *postApi.Client, userClient *userApi.UserApiService, ratingClient *ratingApi.RatingApiService, postID int64) {
 	fmt.Println("----------PostDetail----------")
 	// shows post (headline + content) + authorName and all ratings(avg)
 	ctx := context.Background()
 	// fetch post by id
-	post, _, err := postClient.GetPostById(ctx, postID)
+	post, err := postClient.GetById(postID)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -85,7 +83,7 @@ func PostDetail(postClient *postApi.PostApiService, userClient *userApi.UserApiS
 	fmt.Printf("%s by %s\nAVG-Rating: %.2f\n%s\n", post.Headline, author.Name, avgRating, post.Content)
 }
 
-func AuthorDetail(postClient *postApi.PostApiService, userClient *userApi.UserApiService, ratingClient *ratingApi.RatingApiService, authorID int64) {
+func AuthorDetail(postClient *postApi.Client, userClient *userApi.UserApiService, ratingClient *ratingApi.RatingApiService, authorID int64) {
 	// author name and email
 	// shows post ids+headline of author
 	// global avg ratings
@@ -95,9 +93,7 @@ func AuthorDetail(postClient *postApi.PostApiService, userClient *userApi.UserAp
 	if err != nil {
 		log.Fatal(err)
 	}
-	posts, _, err := postClient.ListPosts(ctx, &postApi.ListPostsOpts{
-		AuthorId: optional.NewInt64(author.Id),
-	})
+	posts, err := postClient.ListPostsByAuthor(author.Id)
 	if err != nil {
 		log.Fatal(err)
 	}
