@@ -2,12 +2,14 @@ base = micro-service/
 project = github.com/flexzuu/benchmark/
 grpc = grpc/
 rest = rest/
+hal = hal/
 graphql = graphql/
 mixed = mixed/
 grpcbase = .$(base)$(grpc)
 gosrc = $(GOPATH)/src/
 grpcbase = $(gosrc)$(project)$(base)$(grpc)
 restbase = $(gosrc)$(project)$(base)$(rest)
+halbase = $(gosrc)$(project)$(base)$(hal)
 graphqlbase = $(gosrc)$(project)$(base)$(graphql)
 mixedbase = $(gosrc)$(project)$(base)$(mixed)
 user = user/user
@@ -20,6 +22,7 @@ stats = stats
 
 docc-grpc = $(grpcbase)docker-compose.yaml
 docc-rest = $(restbase)docker-compose.yaml
+docc-hal = $(halbase)docker-compose.yaml
 docc-graphql = $(graphqlbase)docker-compose.yaml
 docc-mixed = $(mixedbase)docker-compose.yaml
 
@@ -52,6 +55,18 @@ benchmark-client-rest:
 	docker-compose -f $(docc-rest) up --no-deps --build client
 benchmark-client-facade-rest:
 	docker-compose -f $(docc-rest) up --no-deps --build client-facade
+
+up-hal:
+	docker-compose -f $(docc-hal) up --build --scale client=0 --scale client-facade=0 -d
+logs-hal:
+	docker-compose -f $(docc-hal) logs -f
+down-hal: 
+	docker-compose -f $(docc-hal) down
+benchmark-hal: benchmark-client-hal benchmark-client-facade-hal
+benchmark-client-hal:
+	docker-compose -f $(docc-hal) up --no-deps --build client
+# benchmark-client-facade-hal:
+# 	docker-compose -f $(docc-hal) up --no-deps --build client-facade
 
 up-graphql:
 	docker-compose -f $(docc-graphql) up --build --scale client=0 --scale client-facade=0 -d
