@@ -1,14 +1,14 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"os"
 
-	postApi "github.com/flexzuu/benchmark/micro-service/hal/post/api/client"
-	ratingApi "github.com/flexzuu/benchmark/micro-service/rest/rating/openapi/client"
-	userApi "github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
+	post "github.com/flexzuu/benchmark/micro-service/hal/post/api"
+	rating "github.com/flexzuu/benchmark/micro-service/hal/rating/api"
+	user "github.com/flexzuu/benchmark/micro-service/hal/user/api"
+	"github.com/leibowitz/halgo"
 )
 
 func main() {
@@ -16,108 +16,134 @@ func main() {
 	if postServiceAddress == "" {
 		log.Fatalln("please provide POST_SERVICE as env var")
 	}
-	postServiceAddress = fmt.Sprintf("http://%s", postServiceAddress)
-	postClient := postApi.New(postServiceAddress)
 
 	userServiceAddress := os.Getenv("USER_SERVICE")
 	if userServiceAddress == "" {
 		log.Fatalln("please provide USER_SERVICE as env var")
 	}
-	userCfg := userApi.NewConfiguration()
-	userCfg.BasePath = fmt.Sprintf("http://%s", userServiceAddress)
-	userClient := userApi.NewAPIClient(userCfg)
 
 	ratingServiceAddress := os.Getenv("RATING_SERVICE")
 	if ratingServiceAddress == "" {
 		log.Fatalln("please provide RATING_SERVICE as env var")
 	}
-	ratingCfg := ratingApi.NewConfiguration()
-	ratingCfg.BasePath = fmt.Sprintf("http://%s", ratingServiceAddress)
-	ratingClient := ratingApi.NewAPIClient(ratingCfg)
 
-	ListPosts(postClient)
-	PostDetail(postClient, userClient.UserApi, ratingClient.RatingApi, 0)
-	AuthorDetail(postClient, userClient.UserApi, ratingClient.RatingApi, 0)
+	ListPosts(postServiceAddress)
+	PostDetail(postServiceAddress, 0)
+	AuthorDetail(userServiceAddress, ratingServiceAddress, 0)
 }
 
-func ListPosts(postClient *postApi.Client) {
+func ListPosts(postServiceAddress string) {
 	// shows post ids+headline
-	ctx := context.Background()
 	fmt.Println("----------ListPosts----------")
 	// fetch posts
-	posts, err := postClient.ListPosts()
+	var postsCollection post.PostListModel
+	err := halgo.Navigator(postServiceAddress).
+		Follow("posts").
+		Unmarshal(&postsCollection)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("#%d Posts:\n", len(posts.Posts))
 
-	for _, post := range posts.Posts {
+	fmt.Printf("#%d Posts:\n", postsCollection.Count)
+	for _, post := range postsCollection.Embedded.Posts {
 		fmt.Printf("\t%s (%d)\n", post.Headline, post.Id)
 	}
 }
 
-func PostDetail(postClient *postApi.Client, userClient *userApi.UserApiService, ratingClient *ratingApi.RatingApiService, postID int64) {
+func PostDetail(postServiceAddress string, postID int64) {
 	fmt.Println("----------PostDetail----------")
 	// shows post (headline + content) + authorName and all ratings(avg)
-	ctx := context.Background()
 	// fetch post by id
-	post, err := postClient.GetById(postID)
+	var post post.PostModel
+	err := halgo.Navigator(postServiceAddress).
+		Followf("find", halgo.P{
+			"id": postID,
+		}).
+		Unmarshal(&post)
 	if err != nil {
 		log.Fatal(err)
 	}
-	author, _, err := userClient.GetUserById(ctx, post.AuthorId)
+	var author user.UserModel
+	err = halgo.Navigator(postServiceAddress).
+		Followf("find", halgo.P{
+			"id": postID,
+		}).
+		Follow("author").
+		Unmarshal(&author)
 	if err != nil {
 		log.Fatal(err)
 	}
-	ratings, _, err := ratingClient.ListRatings(ctx, post.Id)
+	var ratings rating.RatingListModel
+	err = halgo.Navigator(postServiceAddress).
+		Followf("find", halgo.P{
+			"id": postID,
+		}).
+		Follow("ratings").
+		Unmarshal(&ratings)
 	if err != nil {
 		log.Fatal(err)
 	}
 	var avgRating float64
 
-	for _, rating := range ratings.Ratings {
+	for _, rating := range ratings.Embedded.Ratings {
 		avgRating += float64(rating.Value)
 	}
-	avgRating = avgRating / float64(len(ratings.Ratings))
+	avgRating = avgRating / float64(ratings.Count)
 
 	fmt.Printf("%s by %s\nAVG-Rating: %.2f\n%s\n", post.Headline, author.Name, avgRating, post.Content)
 }
 
-func AuthorDetail(postClient *postApi.Client, userClient *userApi.UserApiService, ratingClient *ratingApi.RatingApiService, authorID int64) {
+func AuthorDetail(userServiceAddress, ratingServiceAddress string, authorID int64) {
 	// author name and email
 	// shows post ids+headline of author
 	// global avg ratings
 	fmt.Println("----------AuthorDetail----------")
-	ctx := context.Background()
-	author, _, err := userClient.GetUserById(ctx, authorID)
+	var author user.UserModel
+	err := halgo.Navigator(userServiceAddress).
+		Followf("find", halgo.P{
+			"id": authorID,
+		}).
+		Unmarshal(&author)
 	if err != nil {
 		log.Fatal(err)
 	}
-	posts, err := postClient.ListPostsByAuthor(author.Id)
+	var postsCollection post.PostListModel
+	err = halgo.Navigator(userServiceAddress).
+		Followf("find", halgo.P{
+			"id": authorID,
+		}).
+		Follow("posts").
+		Unmarshal(&postsCollection)
 	if err != nil {
 		log.Fatal(err)
 	}
 	var avgRating float64
 	var length int
-	for _, post := range posts.Posts {
-		ratings, _, err := ratingClient.ListRatings(ctx, post.Id)
+	posts := postsCollection.Embedded.Posts
+
+	for _, p := range posts {
+		var ratings rating.RatingListModel
+		err = halgo.Navigator(ratingServiceAddress).
+			Followf("ratings", halgo.P{
+				"postId": p.Id,
+			}).
+			Unmarshal(&ratings)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		for _, rating := range ratings.Ratings {
+		for _, rating := range ratings.Embedded.Ratings {
 			avgRating += float64(rating.Value)
 		}
-		length += len(ratings.Ratings)
+		length += ratings.Count
 	}
 	avgRating = avgRating / float64(length)
 	fmt.Printf("%s - %s\n", author.Name, author.Email)
 	fmt.Printf("Total AVG-Rating: %.2f\n", avgRating)
 
-	fmt.Printf("#%d Posts:\n", len(posts.Posts))
+	fmt.Printf("#%d Posts:\n", len(posts))
 
-	for _, post := range posts.Posts {
+	for _, post := range posts {
 		fmt.Printf("\t%s (%d)\n", post.Headline, post.Id)
 	}
-
 }

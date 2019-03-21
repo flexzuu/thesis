@@ -51,16 +51,15 @@ services:
      - POST_SERVICE=http://host.docker.internal:4002
      - USER_SERVICE=http://host.docker.internal:4001
      - RATING_SERVICE=http://host.docker.internal:4003
-
-  # client:
-  #   depends_on: 
-  #     - seed
-  #   build: ../../
-  #   command: "go run ./micro-service/hal/client"
-  #   environment: 
-  #    - POST_SERVICE=http://host.docker.internal:4002
-  #    - USER_SERVICE=http://host.docker.internal:4001
-  #    - RATING_SERVICE=http://host.docker.internal:4003
+  client:
+    depends_on: 
+      - seed
+    build: ../../
+    command: "go run ./micro-service/hal/client"
+    environment: 
+     - POST_SERVICE=http://host.docker.internal:4002
+     - USER_SERVICE=http://host.docker.internal:4001
+     - RATING_SERVICE=http://host.docker.internal:4003
   # client-facade:
   #   depends_on: 
   #     - seed
