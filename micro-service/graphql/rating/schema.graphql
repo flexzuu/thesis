@@ -1,0 +1,32 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Rating {
+  id: ID!
+  postId: ID!
+  value: Int!
+}
+
+input RatingCreateInput {
+  postId: ID!
+  rating: Int!
+}
+
+input RatingDeleteInput {
+  id: ID!
+}
+
+type RatingDeletePayload {
+  deletedRatingId: ID!
+}
+
+type Query {
+  ratingGet(id: ID!): Rating
+  ratingListOfPost(postId: ID!): [Rating!]!
+}
+
+type Mutation {
+  ratingCreate(input: RatingCreateInput!): Rating!
+  ratingDelete(input: RatingDeleteInput!): RatingDeletePayload!
+}

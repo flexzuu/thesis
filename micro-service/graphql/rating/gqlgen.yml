@@ -1,0 +1,19 @@
+# .gqlgen.yml example
+#
+# Refer to https://gqlgen.com/config/
+# for detailed .gqlgen.yml documentation.
+
+schema:
+- schema.graphql
+exec:
+  filename: generated.go
+model:
+  filename: models_gen.go
+models:
+  Rating:
+    model: github.com/flexzuu/benchmark/micro-service/graphql/rating/repo/entity.Rating
+  ID:
+    model: github.com/flexzuu/benchmark/micro-service/graphql/util.ID
+resolver:
+  filename: resolver.go
+  type: Resolver
