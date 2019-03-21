@@ -15,5 +15,5 @@ type RatingModel struct {
 
 	PostId int64 `json:"postId"`
 
-	Value int32 `json:"value,omitempty"`
+	Value int32 `json:"value"`
 }
