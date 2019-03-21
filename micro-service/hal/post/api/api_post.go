@@ -119,10 +119,13 @@ func ListPosts(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, PostListModel{
-		Posts: posts,
+		Count: len(res),
 		Links: halgo.Links{}.
 			Self("/posts").
 			Link("find", "/posts/{id}"),
+		Embedded: PostListModelEmbedded{
+			Posts: posts,
+		},
 	})
 	return
 }

@@ -102,7 +102,6 @@ func ListRatings(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	ratings := make([]RatingModel, len(res))
 	for i, r := range res {
 		ratings[i] = RatingModel{
@@ -115,7 +114,12 @@ func ListRatings(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, RatingListModel{
-		Ratings: ratings,
+		Count: len(res),
+		Links: halgo.Links{}.Self("/ratings").
+			Link("find", "/ratings/{id}"),
+		Embedded: RatingListModelEmbedded{
+			Ratings: ratings,
+		},
 	})
 	return
 }
