@@ -36,20 +36,18 @@ func ListPosts(facadeClient *graphqlt.Client) {
 		}
 	  }`)
 	var res struct {
-		Data struct {
-			Posts []struct {
-				ID       int
-				Headline string
-			}
+		Posts []struct {
+			ID       int
+			Headline string
 		}
 	}
 	err := facadeClient.Run(ctx, req, &res)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("#%d Posts:\n", len(res.Data.Posts))
+	fmt.Printf("#%d Posts:\n", len(res.Posts))
 
-	for _, post := range res.Data.Posts {
+	for _, post := range res.Posts {
 		fmt.Printf("\t%s (%d)\n", post.Headline, post.ID)
 	}
 }
@@ -78,17 +76,15 @@ func PostDetail(facadeClient *graphqlt.Client, postID int) {
 	req.Var("postID", postID)
 
 	var res struct {
-		Data struct {
-			Post struct {
-				post.Post
-				Author struct {
-					ID   int
-					Name string
-				}
-				Ratings []struct {
-					ID    int
-					Value int
-				}
+		Post struct {
+			post.Post
+			Author struct {
+				ID   int
+				Name string
+			}
+			Ratings []struct {
+				ID    int
+				Value int
 			}
 		}
 	}
@@ -99,12 +95,12 @@ func PostDetail(facadeClient *graphqlt.Client, postID int) {
 
 	var avgRating float64
 
-	for _, rating := range res.Data.Post.Ratings {
+	for _, rating := range res.Post.Ratings {
 		avgRating += float64(rating.Value)
 	}
-	avgRating = avgRating / float64(len(res.Data.Post.Ratings))
+	avgRating = avgRating / float64(len(res.Post.Ratings))
 
-	fmt.Printf("%s by %s\nAVG-Rating: %.2f\n%s\n", res.Data.Post.Headline, res.Data.Post.Author.Name, avgRating, res.Data.Post.Content)
+	fmt.Printf("%s by %s\nAVG-Rating: %.2f\n%s\n", res.Post.Headline, res.Post.Author.Name, avgRating, res.Post.Content)
 }
 
 func AuthorDetail(facadeClient *graphqlt.Client, authorID int) {
@@ -132,16 +128,14 @@ func AuthorDetail(facadeClient *graphqlt.Client, authorID int) {
 	req.Var("authorID", authorID)
 
 	var res struct {
-		Data struct {
-			Author struct {
-				user.User
-				Posts []struct {
-					ID       int
-					Headline string
-					Ratings  []struct {
-						ID    int
-						Value int
-					}
+		Author struct {
+			user.User
+			Posts []struct {
+				ID       int
+				Headline string
+				Ratings  []struct {
+					ID    int
+					Value int
 				}
 			}
 		}
@@ -153,7 +147,7 @@ func AuthorDetail(facadeClient *graphqlt.Client, authorID int) {
 
 	var avgRating float64
 	var length int
-	for _, post := range res.Data.Author.Posts {
+	for _, post := range res.Author.Posts {
 
 		for _, rating := range post.Ratings {
 			avgRating += float64(rating.Value)
@@ -162,12 +156,12 @@ func AuthorDetail(facadeClient *graphqlt.Client, authorID int) {
 	}
 	avgRating = avgRating / float64(length)
 
-	fmt.Printf("%s - %s\n", res.Data.Author.Name, res.Data.Author.Email)
+	fmt.Printf("%s - %s\n", res.Author.Name, res.Author.Email)
 	fmt.Printf("Total AVG-Rating: %.2f\n", avgRating)
 
-	fmt.Printf("#%d Posts:\n", len(res.Data.Author.Posts))
+	fmt.Printf("#%d Posts:\n", len(res.Author.Posts))
 
-	for _, post := range res.Data.Author.Posts {
+	for _, post := range res.Author.Posts {
 		fmt.Printf("\t%s (%d)\n", post.Headline, post.ID)
 	}
 

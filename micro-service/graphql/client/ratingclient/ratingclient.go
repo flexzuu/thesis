@@ -28,14 +28,12 @@ func (c *Client) RatingGet(ctx context.Context, id int) (*entity.Rating, error) 
 
 	// run it and capture the response
 	var respData struct {
-		Data struct {
-			Rating entity.Rating
-		}
+		Rating entity.Rating
 	}
 	if err := c.Run(ctx, req, &respData); err != nil {
 		return nil, err
 	}
-	return &respData.Data.Rating, nil
+	return &respData.Rating, nil
 }
 func (c *Client) RatingListOfPost(ctx context.Context, postId int) ([]entity.Rating, error) {
 	req := graphqlt.NewRequest(`
@@ -53,12 +51,10 @@ func (c *Client) RatingListOfPost(ctx context.Context, postId int) ([]entity.Rat
 
 	// run it and capture the response
 	var respData struct {
-		Data struct {
-			Ratings []entity.Rating
-		}
+		Ratings []entity.Rating
 	}
 	if err := c.Run(ctx, req, &respData); err != nil {
 		return nil, err
 	}
-	return respData.Data.Ratings, nil
+	return respData.Ratings, nil
 }

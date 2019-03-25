@@ -33,12 +33,10 @@ func (c *Client) Create(ctx context.Context, authorId int, headline, content str
 
 	// run it and capture the response
 	var respData struct {
-		Data struct {
-			Post entity.Post
-		}
+		Post entity.Post
 	}
 	if err := c.Run(ctx, req, &respData); err != nil {
 		return nil, err
 	}
-	return &respData.Data.Post, nil
+	return &respData.Post, nil
 }

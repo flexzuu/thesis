@@ -29,12 +29,10 @@ func (c *Client) Create(ctx context.Context, postId int, rating int) (*entity.Ra
 
 	// run it and capture the response
 	var respData struct {
-		Data struct {
-			Rating entity.Rating
-		}
+		Rating entity.Rating
 	}
 	if err := c.Run(ctx, req, &respData); err != nil {
 		return nil, err
 	}
-	return &respData.Data.Rating, nil
+	return &respData.Rating, nil
 }
