@@ -12,9 +12,9 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/flexzuu/benchmark/micro-service/graphql/util"
-	"github.com/flexzuu/benchmark/micro-service/grpc/post/repo/entity"
-	entity2 "github.com/flexzuu/benchmark/micro-service/grpc/rating/repo/entity"
-	entity1 "github.com/flexzuu/benchmark/micro-service/grpc/user/repo/entity"
+	"github.com/flexzuu/benchmark/micro-service/grpc/post/post"
+	"github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
+	"github.com/flexzuu/benchmark/micro-service/grpc/user/user"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 )
@@ -79,27 +79,27 @@ type ComplexityRoot struct {
 }
 
 type PostResolver interface {
-	ID(ctx context.Context, obj *entity.Post) (string, error)
-	Author(ctx context.Context, obj *entity.Post) (*entity1.User, error)
+	ID(ctx context.Context, obj *post.Post) (string, error)
+	Author(ctx context.Context, obj *post.Post) (*user.User, error)
 
-	Ratings(ctx context.Context, obj *entity.Post) ([]entity2.Rating, error)
+	Ratings(ctx context.Context, obj *post.Post) ([]rating.Rating, error)
 }
 type QueryResolver interface {
-	PostGet(ctx context.Context, id string) (*entity.Post, error)
-	PostList(ctx context.Context) ([]entity.Post, error)
-	PostListOfAuthor(ctx context.Context, authorID string) ([]entity.Post, error)
-	RatingGet(ctx context.Context, id string) (*entity2.Rating, error)
-	RatingListOfPost(ctx context.Context, postID string) ([]entity2.Rating, error)
-	UserGet(ctx context.Context, id string) (*entity1.User, error)
+	PostGet(ctx context.Context, id string) (*post.Post, error)
+	PostList(ctx context.Context) ([]post.Post, error)
+	PostListOfAuthor(ctx context.Context, authorID string) ([]post.Post, error)
+	RatingGet(ctx context.Context, id string) (*rating.Rating, error)
+	RatingListOfPost(ctx context.Context, postID string) ([]rating.Rating, error)
+	UserGet(ctx context.Context, id string) (*user.User, error)
 }
 type RatingResolver interface {
-	ID(ctx context.Context, obj *entity2.Rating) (string, error)
-	Post(ctx context.Context, obj *entity2.Rating) (*entity.Post, error)
+	ID(ctx context.Context, obj *rating.Rating) (string, error)
+	Post(ctx context.Context, obj *rating.Rating) (*post.Post, error)
 }
 type UserResolver interface {
-	ID(ctx context.Context, obj *entity1.User) (string, error)
+	ID(ctx context.Context, obj *user.User) (string, error)
 
-	Posts(ctx context.Context, obj *entity1.User) ([]entity.Post, error)
+	Posts(ctx context.Context, obj *user.User) ([]post.Post, error)
 }
 
 type executableSchema struct {
@@ -488,7 +488,7 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Post_id(ctx context.Context, field graphql.CollectedField, obj *entity.Post) graphql.Marshaler {
+func (ec *executionContext) _Post_id(ctx context.Context, field graphql.CollectedField, obj *post.Post) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -514,7 +514,7 @@ func (ec *executionContext) _Post_id(ctx context.Context, field graphql.Collecte
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Post_author(ctx context.Context, field graphql.CollectedField, obj *entity.Post) graphql.Marshaler {
+func (ec *executionContext) _Post_author(ctx context.Context, field graphql.CollectedField, obj *post.Post) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -534,13 +534,13 @@ func (ec *executionContext) _Post_author(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*entity1.User)
+	res := resTmp.(*user.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋrepoᚋentityᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋuserᚐUser(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Post_headline(ctx context.Context, field graphql.CollectedField, obj *entity.Post) graphql.Marshaler {
+func (ec *executionContext) _Post_headline(ctx context.Context, field graphql.CollectedField, obj *post.Post) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -566,7 +566,7 @@ func (ec *executionContext) _Post_headline(ctx context.Context, field graphql.Co
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Post_content(ctx context.Context, field graphql.CollectedField, obj *entity.Post) graphql.Marshaler {
+func (ec *executionContext) _Post_content(ctx context.Context, field graphql.CollectedField, obj *post.Post) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -592,7 +592,7 @@ func (ec *executionContext) _Post_content(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Post_ratings(ctx context.Context, field graphql.CollectedField, obj *entity.Post) graphql.Marshaler {
+func (ec *executionContext) _Post_ratings(ctx context.Context, field graphql.CollectedField, obj *post.Post) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -612,10 +612,10 @@ func (ec *executionContext) _Post_ratings(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]entity2.Rating)
+	res := resTmp.([]rating.Rating)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋrepoᚋentityᚐRating(ctx, field.Selections, res)
+	return ec.marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋratingᚐRating(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_postGet(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -642,10 +642,10 @@ func (ec *executionContext) _Query_postGet(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*entity.Post)
+	res := resTmp.(*post.Post)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
+	return ec.marshalOPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_postList(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -668,10 +668,10 @@ func (ec *executionContext) _Query_postList(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]entity.Post)
+	res := resTmp.([]post.Post)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
+	return ec.marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_postListOfAuthor(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -701,10 +701,10 @@ func (ec *executionContext) _Query_postListOfAuthor(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]entity.Post)
+	res := resTmp.([]post.Post)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
+	return ec.marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_ratingGet(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -731,10 +731,10 @@ func (ec *executionContext) _Query_ratingGet(ctx context.Context, field graphql.
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*entity2.Rating)
+	res := resTmp.(*rating.Rating)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalORating2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋrepoᚋentityᚐRating(ctx, field.Selections, res)
+	return ec.marshalORating2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋratingᚐRating(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_ratingListOfPost(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -764,10 +764,10 @@ func (ec *executionContext) _Query_ratingListOfPost(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]entity2.Rating)
+	res := resTmp.([]rating.Rating)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋrepoᚋentityᚐRating(ctx, field.Selections, res)
+	return ec.marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋratingᚐRating(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_userGet(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -794,10 +794,10 @@ func (ec *executionContext) _Query_userGet(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*entity1.User)
+	res := resTmp.(*user.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOUser2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋrepoᚋentityᚐUser(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋuserᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -853,7 +853,7 @@ func (ec *executionContext) _Query___schema(ctx context.Context, field graphql.C
 	return ec.marshalO__Schema2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐSchema(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Rating_id(ctx context.Context, field graphql.CollectedField, obj *entity2.Rating) graphql.Marshaler {
+func (ec *executionContext) _Rating_id(ctx context.Context, field graphql.CollectedField, obj *rating.Rating) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -879,7 +879,7 @@ func (ec *executionContext) _Rating_id(ctx context.Context, field graphql.Collec
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Rating_post(ctx context.Context, field graphql.CollectedField, obj *entity2.Rating) graphql.Marshaler {
+func (ec *executionContext) _Rating_post(ctx context.Context, field graphql.CollectedField, obj *rating.Rating) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -899,13 +899,13 @@ func (ec *executionContext) _Rating_post(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*entity.Post)
+	res := resTmp.(*post.Post)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
+	return ec.marshalNPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Rating_value(ctx context.Context, field graphql.CollectedField, obj *entity2.Rating) graphql.Marshaler {
+func (ec *executionContext) _Rating_value(ctx context.Context, field graphql.CollectedField, obj *rating.Rating) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -931,7 +931,7 @@ func (ec *executionContext) _Rating_value(ctx context.Context, field graphql.Col
 	return ec.marshalNInt2int32(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *entity1.User) graphql.Marshaler {
+func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *user.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -957,7 +957,7 @@ func (ec *executionContext) _User_id(ctx context.Context, field graphql.Collecte
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *entity1.User) graphql.Marshaler {
+func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *user.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -983,7 +983,7 @@ func (ec *executionContext) _User_email(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *entity1.User) graphql.Marshaler {
+func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *user.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -1009,7 +1009,7 @@ func (ec *executionContext) _User_name(ctx context.Context, field graphql.Collec
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_posts(ctx context.Context, field graphql.CollectedField, obj *entity1.User) graphql.Marshaler {
+func (ec *executionContext) _User_posts(ctx context.Context, field graphql.CollectedField, obj *user.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -1029,10 +1029,10 @@ func (ec *executionContext) _User_posts(ctx context.Context, field graphql.Colle
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]entity.Post)
+	res := resTmp.([]post.Post)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
+	return ec.marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) graphql.Marshaler {
@@ -1844,7 +1844,7 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 var postImplementors = []string{"Post"}
 
-func (ec *executionContext) _Post(ctx context.Context, sel ast.SelectionSet, obj *entity.Post) graphql.Marshaler {
+func (ec *executionContext) _Post(ctx context.Context, sel ast.SelectionSet, obj *post.Post) graphql.Marshaler {
 	fields := graphql.CollectFields(ctx, sel, postImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2023,7 +2023,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 
 var ratingImplementors = []string{"Rating"}
 
-func (ec *executionContext) _Rating(ctx context.Context, sel ast.SelectionSet, obj *entity2.Rating) graphql.Marshaler {
+func (ec *executionContext) _Rating(ctx context.Context, sel ast.SelectionSet, obj *rating.Rating) graphql.Marshaler {
 	fields := graphql.CollectFields(ctx, sel, ratingImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2078,7 +2078,7 @@ func (ec *executionContext) _Rating(ctx context.Context, sel ast.SelectionSet, o
 
 var userImplementors = []string{"User"}
 
-func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *entity1.User) graphql.Marshaler {
+func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *user.User) graphql.Marshaler {
 	fields := graphql.CollectFields(ctx, sel, userImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2405,11 +2405,11 @@ func (ec *executionContext) marshalNInt2int32(ctx context.Context, sel ast.Selec
 	return graphql.MarshalInt32(v)
 }
 
-func (ec *executionContext) marshalNPost2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v entity.Post) graphql.Marshaler {
+func (ec *executionContext) marshalNPost2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx context.Context, sel ast.SelectionSet, v post.Post) graphql.Marshaler {
 	return ec._Post(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v []entity.Post) graphql.Marshaler {
+func (ec *executionContext) marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx context.Context, sel ast.SelectionSet, v []post.Post) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2433,7 +2433,7 @@ func (ec *executionContext) marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmark�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNPost2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx, sel, v[i])
+			ret[i] = ec.marshalNPost2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2446,7 +2446,7 @@ func (ec *executionContext) marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmark�
 	return ret
 }
 
-func (ec *executionContext) marshalNPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v *entity.Post) graphql.Marshaler {
+func (ec *executionContext) marshalNPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx context.Context, sel ast.SelectionSet, v *post.Post) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2456,11 +2456,11 @@ func (ec *executionContext) marshalNPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmark�
 	return ec._Post(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNRating2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v entity2.Rating) graphql.Marshaler {
+func (ec *executionContext) marshalNRating2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋratingᚐRating(ctx context.Context, sel ast.SelectionSet, v rating.Rating) graphql.Marshaler {
 	return ec._Rating(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v []entity2.Rating) graphql.Marshaler {
+func (ec *executionContext) marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋratingᚐRating(ctx context.Context, sel ast.SelectionSet, v []rating.Rating) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2484,7 +2484,7 @@ func (ec *executionContext) marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmark
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNRating2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋrepoᚋentityᚐRating(ctx, sel, v[i])
+			ret[i] = ec.marshalNRating2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋratingᚐRating(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2505,11 +2505,11 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return graphql.MarshalString(v)
 }
 
-func (ec *executionContext) marshalNUser2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋrepoᚋentityᚐUser(ctx context.Context, sel ast.SelectionSet, v entity1.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋuserᚐUser(ctx context.Context, sel ast.SelectionSet, v user.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋrepoᚋentityᚐUser(ctx context.Context, sel ast.SelectionSet, v *entity1.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋuserᚐUser(ctx context.Context, sel ast.SelectionSet, v *user.User) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2756,22 +2756,22 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return ec.marshalOBoolean2bool(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalOPost2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v entity.Post) graphql.Marshaler {
+func (ec *executionContext) marshalOPost2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx context.Context, sel ast.SelectionSet, v post.Post) graphql.Marshaler {
 	return ec._Post(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v *entity.Post) graphql.Marshaler {
+func (ec *executionContext) marshalOPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋpostᚋpostᚐPost(ctx context.Context, sel ast.SelectionSet, v *post.Post) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Post(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalORating2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v entity2.Rating) graphql.Marshaler {
+func (ec *executionContext) marshalORating2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋratingᚐRating(ctx context.Context, sel ast.SelectionSet, v rating.Rating) graphql.Marshaler {
 	return ec._Rating(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalORating2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v *entity2.Rating) graphql.Marshaler {
+func (ec *executionContext) marshalORating2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋratingᚋratingᚐRating(ctx context.Context, sel ast.SelectionSet, v *rating.Rating) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -2801,11 +2801,11 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return ec.marshalOString2string(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalOUser2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋrepoᚋentityᚐUser(ctx context.Context, sel ast.SelectionSet, v entity1.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋuserᚐUser(ctx context.Context, sel ast.SelectionSet, v user.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋrepoᚋentityᚐUser(ctx context.Context, sel ast.SelectionSet, v *entity1.User) graphql.Marshaler {
+func (ec *executionContext) marshalOUser2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgrpcᚋuserᚋuserᚐUser(ctx context.Context, sel ast.SelectionSet, v *user.User) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

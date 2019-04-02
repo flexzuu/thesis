@@ -8,10 +8,6 @@ import (
 	"github.com/flexzuu/benchmark/micro-service/grpc/post/post"
 	"github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
 	"github.com/flexzuu/benchmark/micro-service/grpc/user/user"
-
-	postEntity "github.com/flexzuu/benchmark/micro-service/grpc/post/repo/entity"
-	ratingEntity "github.com/flexzuu/benchmark/micro-service/grpc/rating/repo/entity"
-	userEntity "github.com/flexzuu/benchmark/micro-service/grpc/user/repo/entity"
 )
 
 // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.
@@ -37,199 +33,107 @@ func (r *Resolver) User() UserResolver {
 
 type postResolver struct{ *Resolver }
 
-func (r *postResolver) ID(ctx context.Context, obj *postEntity.Post) (string, error) {
+func (r *postResolver) ID(ctx context.Context, obj *post.Post) (string, error) {
 	return util.UnmarshalID(obj.ID)
 }
-func (r *postResolver) Author(ctx context.Context, obj *postEntity.Post) (*userEntity.User, error) {
-	u, err := r.UserClient.GetById(ctx, &user.GetUserRequest{
+func (r *postResolver) Author(ctx context.Context, obj *post.Post) (*user.User, error) {
+	return r.UserClient.GetById(ctx, &user.GetUserRequest{
 		ID: obj.AuthorID,
 	})
-	if err != nil {
-		return nil, err
-	}
-
-	return &userEntity.User{
-		ID:    u.ID,
-		Email: u.Email,
-		Name:  u.Name,
-	}, nil
 }
-func (r *postResolver) Ratings(ctx context.Context, obj *postEntity.Post) ([]ratingEntity.Rating, error) {
-	ratings, err := r.RatingClient.ListOfPost(ctx, &rating.ListRatingsOfPostRequest{
+func (r *postResolver) Ratings(ctx context.Context, obj *post.Post) ([]rating.Rating, error) {
+	resp, err := r.RatingClient.ListOfPost(ctx, &rating.ListRatingsOfPostRequest{
 		PostID: obj.ID,
 	})
 	if err != nil {
 		return nil, err
 	}
-	ras := make([]ratingEntity.Rating, len(ratings.Ratings))
-	for i, ra := range ratings.Ratings {
-		ras[i] = ratingEntity.Rating{
-			ID:     ra.ID,
-			PostID: ra.PostID,
-			Value:  ra.Value,
-		}
-	}
-	return ras, nil
+
+	return RatingsDeRefSlice(resp.Ratings), nil
 }
 
 type queryResolver struct{ *Resolver }
 
-func (r *queryResolver) PostGet(ctx context.Context, id string) (*postEntity.Post, error) {
+func (r *queryResolver) PostGet(ctx context.Context, id string) (*post.Post, error) {
 	i, err := strconv.ParseInt(id, 10, 0)
 	if err != nil {
 		return nil, err
 	}
-	p, err := r.PostClient.GetById(ctx, &post.GetPostRequest{
+	return r.PostClient.GetById(ctx, &post.GetPostRequest{
 		ID: i,
 	})
+}
+func (r *queryResolver) PostList(ctx context.Context) ([]post.Post, error) {
+	resp, err := r.PostClient.List(ctx, &post.ListPostsRequest{})
 	if err != nil {
 		return nil, err
 	}
-
-	return &postEntity.Post{
-		ID:       p.ID,
-		AuthorID: p.AuthorID,
-		Headline: p.Headline,
-		Content:  p.Content,
-	}, nil
+	return PostsDeRefSlice(resp.Posts), nil
 }
-func (r *queryResolver) PostList(ctx context.Context) ([]postEntity.Post, error) {
-	posts, err := r.PostClient.List(ctx, &post.ListPostsRequest{})
-	if err != nil {
-		return nil, err
-	}
-	ps := make([]postEntity.Post, len(posts.Posts))
-	for i, p := range posts.Posts {
-		ps[i] = postEntity.Post{
-			ID:       p.ID,
-			AuthorID: p.AuthorID,
-			Headline: p.Headline,
-			Content:  p.Content,
-		}
-	}
-	return ps, nil
-}
-func (r *queryResolver) PostListOfAuthor(ctx context.Context, authorID string) ([]postEntity.Post, error) {
+func (r *queryResolver) PostListOfAuthor(ctx context.Context, authorID string) ([]post.Post, error) {
 	authorI, err := strconv.ParseInt(authorID, 10, 0)
 	if err != nil {
 		return nil, err
 	}
-	posts, err := r.PostClient.ListOfAuthor(ctx, &post.ListPostsOfAuthorRequest{
+	resp, err := r.PostClient.ListOfAuthor(ctx, &post.ListPostsOfAuthorRequest{
 		AuthorID: authorI,
 	})
-	if err != nil {
-		return nil, err
-	}
-	ps := make([]postEntity.Post, len(posts.Posts))
-	for i, p := range posts.Posts {
-		ps[i] = postEntity.Post{
-			ID:       p.ID,
-			AuthorID: p.AuthorID,
-			Headline: p.Headline,
-			Content:  p.Content,
-		}
-	}
-	return ps, nil
+	return PostsDeRefSlice(resp.Posts), nil
 }
-func (r *queryResolver) RatingGet(ctx context.Context, id string) (*ratingEntity.Rating, error) {
+func (r *queryResolver) RatingGet(ctx context.Context, id string) (*rating.Rating, error) {
 	i, err := strconv.ParseInt(id, 10, 0)
 	if err != nil {
 		return nil, err
 	}
-	ra, err := r.RatingClient.GetById(ctx, &rating.GetRatingRequest{
+	return r.RatingClient.GetById(ctx, &rating.GetRatingRequest{
 		ID: i,
 	})
-	if err != nil {
-		return nil, err
-	}
-
-	return &ratingEntity.Rating{
-		ID:     ra.ID,
-		PostID: ra.PostID,
-		Value:  ra.Value,
-	}, nil
 }
-func (r *queryResolver) RatingListOfPost(ctx context.Context, postID string) ([]ratingEntity.Rating, error) {
+func (r *queryResolver) RatingListOfPost(ctx context.Context, postID string) ([]rating.Rating, error) {
 	postI, err := strconv.ParseInt(postID, 10, 0)
 	if err != nil {
 		return nil, err
 	}
-	ratings, err := r.RatingClient.ListOfPost(ctx, &rating.ListRatingsOfPostRequest{
+	resp, err := r.RatingClient.ListOfPost(ctx, &rating.ListRatingsOfPostRequest{
 		PostID: postI,
 	})
 	if err != nil {
 		return nil, err
 	}
-	ras := make([]ratingEntity.Rating, len(ratings.Ratings))
-	for i, ra := range ratings.Ratings {
-		ras[i] = ratingEntity.Rating{
-			ID:     ra.ID,
-			PostID: ra.PostID,
-			Value:  ra.Value,
-		}
-	}
-	return ras, nil
+	return RatingsDeRefSlice(resp.Ratings), nil
 }
-func (r *queryResolver) UserGet(ctx context.Context, id string) (*userEntity.User, error) {
+func (r *queryResolver) UserGet(ctx context.Context, id string) (*user.User, error) {
 	i, err := strconv.ParseInt(id, 10, 0)
 	if err != nil {
 		return nil, err
 	}
-	u, err := r.UserClient.GetById(ctx, &user.GetUserRequest{
+	return r.UserClient.GetById(ctx, &user.GetUserRequest{
 		ID: i,
 	})
-	if err != nil {
-		return nil, err
-	}
-
-	return &userEntity.User{
-		ID:    u.ID,
-		Email: u.Email,
-		Name:  u.Name,
-	}, nil
 }
 
 type ratingResolver struct{ *Resolver }
 
-func (r *ratingResolver) ID(ctx context.Context, obj *ratingEntity.Rating) (string, error) {
+func (r *ratingResolver) ID(ctx context.Context, obj *rating.Rating) (string, error) {
 	return util.UnmarshalID(obj.ID)
 }
-func (r *ratingResolver) Post(ctx context.Context, obj *ratingEntity.Rating) (*postEntity.Post, error) {
-	p, err := r.PostClient.GetById(ctx, &post.GetPostRequest{
+func (r *ratingResolver) Post(ctx context.Context, obj *rating.Rating) (*post.Post, error) {
+	return r.PostClient.GetById(ctx, &post.GetPostRequest{
 		ID: obj.PostID,
 	})
-	if err != nil {
-		return nil, err
-	}
-
-	return &postEntity.Post{
-		ID:       p.ID,
-		AuthorID: p.AuthorID,
-		Headline: p.Headline,
-		Content:  p.Content,
-	}, nil
 }
 
 type userResolver struct{ *Resolver }
 
-func (r *userResolver) ID(ctx context.Context, obj *userEntity.User) (string, error) {
+func (r *userResolver) ID(ctx context.Context, obj *user.User) (string, error) {
 	return util.UnmarshalID(obj.ID)
 }
-func (r *userResolver) Posts(ctx context.Context, obj *userEntity.User) ([]postEntity.Post, error) {
-	posts, err := r.PostClient.ListOfAuthor(ctx, &post.ListPostsOfAuthorRequest{
+func (r *userResolver) Posts(ctx context.Context, obj *user.User) ([]post.Post, error) {
+	resp, err := r.PostClient.ListOfAuthor(ctx, &post.ListPostsOfAuthorRequest{
 		AuthorID: obj.ID,
 	})
 	if err != nil {
 		return nil, err
 	}
-	ps := make([]postEntity.Post, len(posts.Posts))
-	for i, p := range posts.Posts {
-		ps[i] = postEntity.Post{
-			ID:       p.ID,
-			AuthorID: p.AuthorID,
-			Headline: p.Headline,
-			Content:  p.Content,
-		}
-	}
-	return ps, nil
+	return PostsDeRefSlice(resp.Posts), nil
 }
