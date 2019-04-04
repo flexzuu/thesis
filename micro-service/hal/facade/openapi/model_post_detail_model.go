@@ -10,8 +10,8 @@
 package openapi
 
 import (
-	post "github.com/flexzuu/benchmark/micro-service/rest/post/openapi"
-	user "github.com/flexzuu/benchmark/micro-service/rest/user/openapi"
+	post "github.com/flexzuu/thesis/micro-service/rest/post/openapi"
+	user "github.com/flexzuu/thesis/micro-service/rest/user/openapi"
 )
 
 // PostDetailModel - Post with more info included

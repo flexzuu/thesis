@@ -1,4 +1,4 @@
-module github.com/flexzuu/benchmark
+module github.com/flexzuu/thesis
 
 require (
 	github.com/99designs/gqlgen v0.8.0

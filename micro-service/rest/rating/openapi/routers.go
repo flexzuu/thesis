@@ -16,9 +16,9 @@ import (
 	"os"
 	"strings"
 
-	postApi "github.com/flexzuu/benchmark/micro-service/rest/post/openapi/client"
-	"github.com/flexzuu/benchmark/micro-service/rest/rating/repo"
-	"github.com/flexzuu/benchmark/micro-service/rest/rating/repo/inmemmory"
+	postApi "github.com/flexzuu/thesis/micro-service/rest/post/openapi/client"
+	"github.com/flexzuu/thesis/micro-service/rest/rating/repo"
+	"github.com/flexzuu/thesis/micro-service/rest/rating/repo/inmemmory"
 	"github.com/gin-gonic/gin"
 )
 

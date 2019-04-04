@@ -6,12 +6,12 @@ import (
 	"log"
 	"os"
 
-	"github.com/flexzuu/benchmark/micro-service/grpc/stats"
+	"github.com/flexzuu/thesis/micro-service/grpc/stats"
 	"github.com/golang/protobuf/ptypes/empty"
 
-	"github.com/flexzuu/benchmark/micro-service/grpc/post/post"
-	"github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
-	"github.com/flexzuu/benchmark/micro-service/grpc/user/user"
+	"github.com/flexzuu/thesis/micro-service/grpc/post/post"
+	"github.com/flexzuu/thesis/micro-service/grpc/rating/rating"
+	"github.com/flexzuu/thesis/micro-service/grpc/user/user"
 	"google.golang.org/grpc"
 )
 

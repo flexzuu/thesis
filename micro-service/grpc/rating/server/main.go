@@ -8,12 +8,12 @@ import (
 	"net"
 	"os"
 
-	"github.com/flexzuu/benchmark/micro-service/grpc/post/post"
-	"github.com/flexzuu/benchmark/micro-service/grpc/stats"
+	"github.com/flexzuu/thesis/micro-service/grpc/post/post"
+	"github.com/flexzuu/thesis/micro-service/grpc/stats"
 
-	pb "github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
-	"github.com/flexzuu/benchmark/micro-service/grpc/rating/repo"
-	"github.com/flexzuu/benchmark/micro-service/grpc/rating/repo/inmemmory"
+	pb "github.com/flexzuu/thesis/micro-service/grpc/rating/rating"
+	"github.com/flexzuu/thesis/micro-service/grpc/rating/repo"
+	"github.com/flexzuu/thesis/micro-service/grpc/rating/repo/inmemmory"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"

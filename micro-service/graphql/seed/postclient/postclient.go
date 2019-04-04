@@ -3,7 +3,7 @@ package postclient
 import (
 	"context"
 
-	"github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
+	"github.com/flexzuu/thesis/micro-service/graphql/post/repo/entity"
 	"github.com/flexzuu/graphqlt"
 )
 

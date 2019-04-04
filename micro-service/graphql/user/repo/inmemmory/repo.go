@@ -3,7 +3,7 @@ package inmemmory
 import (
 	"github.com/pkg/errors"
 
-	"github.com/flexzuu/benchmark/micro-service/graphql/user/repo/entity"
+	"github.com/flexzuu/thesis/micro-service/graphql/user/repo/entity"
 )
 
 // Repo is used to implement an inmemmory version of  repo.User

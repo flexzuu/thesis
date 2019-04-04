@@ -18,7 +18,7 @@ import (
 	"strings"
 
 	"github.com/antihax/optional"
-	"github.com/flexzuu/benchmark/micro-service/rest/post/openapi"
+	"github.com/flexzuu/thesis/micro-service/rest/post/openapi"
 )
 
 // Linger please

@@ -40,36 +40,36 @@ func messure(t *testing.T, toMessure func()) {
 
 func TestFetchNewsFeed(t *testing.T) {
 	messure(t, func() {
-		FetchNewsFeed("https://benchmark:8881", simulatedRTT, http.Client{})
+		FetchNewsFeed("https://thesis:8881", simulatedRTT, http.Client{})
 	})
 }
 
 func TestFetchNewsFeedWithAuthor(t *testing.T) {
 	messure(t, func() {
-		FetchNewsFeedWithAuthor("https://benchmark:8881", simulatedRTT, http.Client{})
+		FetchNewsFeedWithAuthor("https://thesis:8881", simulatedRTT, http.Client{})
 	})
 }
 
 func TestFetchNewsFeedWithAuthorAndComment(t *testing.T) {
 	messure(t, func() {
-		FetchNewsFeedWithAuthorAndComments("https://benchmark:8881", simulatedRTT, http.Client{})
+		FetchNewsFeedWithAuthorAndComments("https://thesis:8881", simulatedRTT, http.Client{})
 	})
 }
 
 func TestFetchNewsFeedQUIC(t *testing.T) {
 	messure(t, func() {
-		FetchNewsFeed("https://benchmark:8882", simulatedRTT, http.Client{Transport: &h2quic.RoundTripper{}})
+		FetchNewsFeed("https://thesis:8882", simulatedRTT, http.Client{Transport: &h2quic.RoundTripper{}})
 	})
 }
 
 func TestFetchNewsFeedWithAuthorQUIC(t *testing.T) {
 	messure(t, func() {
-		FetchNewsFeedWithAuthor("https://benchmark:8882", simulatedRTT, http.Client{Transport: &h2quic.RoundTripper{}})
+		FetchNewsFeedWithAuthor("https://thesis:8882", simulatedRTT, http.Client{Transport: &h2quic.RoundTripper{}})
 	})
 }
 
 func TestFetchNewsFeedWithAuthorAndCommentQUIC(t *testing.T) {
 	messure(t, func() {
-		FetchNewsFeedWithAuthorAndComments("https://benchmark:8882", simulatedRTT, http.Client{Transport: &h2quic.RoundTripper{}})
+		FetchNewsFeedWithAuthorAndComments("https://thesis:8882", simulatedRTT, http.Client{Transport: &h2quic.RoundTripper{}})
 	})
 }

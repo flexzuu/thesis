@@ -17,7 +17,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/flexzuu/benchmark/micro-service/rest/facade/openapi"
+	"github.com/flexzuu/thesis/micro-service/rest/facade/openapi"
 )
 
 // Linger please

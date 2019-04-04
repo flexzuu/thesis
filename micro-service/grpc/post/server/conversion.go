@@ -1,8 +1,8 @@
 package main
 
 import (
-	pb "github.com/flexzuu/benchmark/micro-service/grpc/post/post"
-	"github.com/flexzuu/benchmark/micro-service/grpc/post/repo/entity"
+	pb "github.com/flexzuu/thesis/micro-service/grpc/post/post"
+	"github.com/flexzuu/thesis/micro-service/grpc/post/repo/entity"
 )
 
 func ToProto(p entity.Post) *pb.Post {

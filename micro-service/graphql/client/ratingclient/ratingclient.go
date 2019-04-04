@@ -3,7 +3,7 @@ package ratingclient
 import (
 	"context"
 
-	"github.com/flexzuu/benchmark/micro-service/graphql/rating/repo/entity"
+	"github.com/flexzuu/thesis/micro-service/graphql/rating/repo/entity"
 	"github.com/flexzuu/graphqlt"
 )
 

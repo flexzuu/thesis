@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	post "github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
-	user "github.com/flexzuu/benchmark/micro-service/graphql/user/repo/entity"
+	post "github.com/flexzuu/thesis/micro-service/graphql/post/repo/entity"
+	user "github.com/flexzuu/thesis/micro-service/graphql/user/repo/entity"
 	"github.com/flexzuu/graphqlt"
 )
 

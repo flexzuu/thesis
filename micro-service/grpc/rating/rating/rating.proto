@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/flexzuu/benchmark/micro-service/grpc/rating/rating";
+option go_package = "github.com/flexzuu/thesis/micro-service/grpc/rating/rating";
 
 import "google/protobuf/empty.proto";
 

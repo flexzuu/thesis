@@ -7,9 +7,9 @@ import (
 	"os"
 
 	"github.com/antihax/optional"
-	postApi "github.com/flexzuu/benchmark/micro-service/rest/post/openapi/client"
-	ratingApi "github.com/flexzuu/benchmark/micro-service/rest/rating/openapi/client"
-	userApi "github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
+	postApi "github.com/flexzuu/thesis/micro-service/rest/post/openapi/client"
+	ratingApi "github.com/flexzuu/thesis/micro-service/rest/rating/openapi/client"
+	userApi "github.com/flexzuu/thesis/micro-service/rest/user/openapi/client"
 )
 
 func main() {

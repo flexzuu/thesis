@@ -1,6 +1,6 @@
 package repo
 
-import "github.com/flexzuu/benchmark/micro-service/graphql/user/repo/entity"
+import "github.com/flexzuu/thesis/micro-service/graphql/user/repo/entity"
 
 type User interface {
 	Get(ID int) (entity.User, error)

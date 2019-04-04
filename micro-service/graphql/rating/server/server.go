@@ -8,9 +8,9 @@ import (
 	"github.com/flexzuu/graphqlt"
 
 	"github.com/99designs/gqlgen/handler"
-	"github.com/flexzuu/benchmark/micro-service/graphql/rating"
-	"github.com/flexzuu/benchmark/micro-service/graphql/rating/postclient"
-	"github.com/flexzuu/benchmark/micro-service/graphql/rating/repo/inmemmory"
+	"github.com/flexzuu/thesis/micro-service/graphql/rating"
+	"github.com/flexzuu/thesis/micro-service/graphql/rating/postclient"
+	"github.com/flexzuu/thesis/micro-service/graphql/rating/repo/inmemmory"
 )
 
 const defaultPort = "8082"

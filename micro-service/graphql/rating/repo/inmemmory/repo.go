@@ -3,7 +3,7 @@ package inmemmory
 import (
 	"errors"
 
-	"github.com/flexzuu/benchmark/micro-service/graphql/rating/repo/entity"
+	"github.com/flexzuu/thesis/micro-service/graphql/rating/repo/entity"
 )
 
 // Repo is used to implement an inmemmory version of  repo.Rating

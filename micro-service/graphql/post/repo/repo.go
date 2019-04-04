@@ -1,6 +1,6 @@
 package repo
 
-import "github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
+import "github.com/flexzuu/thesis/micro-service/graphql/post/repo/entity"
 
 type Post interface {
 	GetById(ID int) (entity.Post, error)

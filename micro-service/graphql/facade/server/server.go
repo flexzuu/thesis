@@ -8,10 +8,10 @@ import (
 	"github.com/flexzuu/graphqlt"
 
 	"github.com/99designs/gqlgen/handler"
-	"github.com/flexzuu/benchmark/micro-service/graphql/facade"
-	"github.com/flexzuu/benchmark/micro-service/graphql/facade/postclient"
-	"github.com/flexzuu/benchmark/micro-service/graphql/facade/ratingclient"
-	"github.com/flexzuu/benchmark/micro-service/graphql/facade/userclient"
+	"github.com/flexzuu/thesis/micro-service/graphql/facade"
+	"github.com/flexzuu/thesis/micro-service/graphql/facade/postclient"
+	"github.com/flexzuu/thesis/micro-service/graphql/facade/ratingclient"
+	"github.com/flexzuu/thesis/micro-service/graphql/facade/userclient"
 )
 
 const defaultPort = "8090"

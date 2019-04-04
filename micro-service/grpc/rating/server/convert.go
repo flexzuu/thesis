@@ -1,8 +1,8 @@
 package main
 
 import (
-	pb "github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
-	"github.com/flexzuu/benchmark/micro-service/grpc/rating/repo/entity"
+	pb "github.com/flexzuu/thesis/micro-service/grpc/rating/rating"
+	"github.com/flexzuu/thesis/micro-service/grpc/rating/repo/entity"
 )
 
 func ToProto(r entity.Rating) *pb.Rating {

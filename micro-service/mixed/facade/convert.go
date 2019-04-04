@@ -1,8 +1,8 @@
 package facade
 
 import (
-	"github.com/flexzuu/benchmark/micro-service/grpc/post/post"
-	"github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
+	"github.com/flexzuu/thesis/micro-service/grpc/post/post"
+	"github.com/flexzuu/thesis/micro-service/grpc/rating/rating"
 )
 
 func RatingsDeRefSlice(rs []*rating.Rating) []rating.Rating {

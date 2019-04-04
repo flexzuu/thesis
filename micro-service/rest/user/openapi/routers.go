@@ -13,8 +13,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/flexzuu/benchmark/micro-service/rest/user/repo"
-	"github.com/flexzuu/benchmark/micro-service/rest/user/repo/inmemmory"
+	"github.com/flexzuu/thesis/micro-service/rest/user/repo"
+	"github.com/flexzuu/thesis/micro-service/rest/user/repo/inmemmory"
 	"github.com/gin-gonic/gin"
 )
 

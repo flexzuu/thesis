@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/flexzuu/benchmark/graphql/server"
+	"github.com/flexzuu/thesis/graphql/server"
 )
 
 func main() {
-	log.Fatal(http.ListenAndServeTLS("localhost:8881", "../../../certs/benchmark.pem", "../../../certs/benchmark-key.pem", server.NewHandler()))
+	log.Fatal(http.ListenAndServeTLS("localhost:8881", "../../../certs/thesis.pem", "../../../certs/thesis-key.pem", server.NewHandler()))
 }

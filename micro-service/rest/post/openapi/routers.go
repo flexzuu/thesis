@@ -16,10 +16,10 @@ import (
 	"os"
 	"strings"
 
-	userApi "github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
+	userApi "github.com/flexzuu/thesis/micro-service/rest/user/openapi/client"
 
-	"github.com/flexzuu/benchmark/micro-service/rest/post/repo"
-	"github.com/flexzuu/benchmark/micro-service/rest/post/repo/inmemmory"
+	"github.com/flexzuu/thesis/micro-service/rest/post/repo"
+	"github.com/flexzuu/thesis/micro-service/rest/post/repo/inmemmory"
 	"github.com/gin-gonic/gin"
 )
 

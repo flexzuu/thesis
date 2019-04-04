@@ -8,8 +8,8 @@ import (
 
 	"github.com/golang/protobuf/ptypes/empty"
 
-	"github.com/flexzuu/benchmark/micro-service/grpc/facade/facade"
-	"github.com/flexzuu/benchmark/micro-service/grpc/stats"
+	"github.com/flexzuu/thesis/micro-service/grpc/facade/facade"
+	"github.com/flexzuu/thesis/micro-service/grpc/stats"
 	"google.golang.org/grpc"
 )
 

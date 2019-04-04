@@ -6,10 +6,10 @@ import (
 	"os"
 
 	"github.com/99designs/gqlgen/handler"
-	"github.com/flexzuu/benchmark/micro-service/grpc/post/post"
-	"github.com/flexzuu/benchmark/micro-service/grpc/rating/rating"
-	"github.com/flexzuu/benchmark/micro-service/grpc/user/user"
-	"github.com/flexzuu/benchmark/micro-service/mixed/facade"
+	"github.com/flexzuu/thesis/micro-service/grpc/post/post"
+	"github.com/flexzuu/thesis/micro-service/grpc/rating/rating"
+	"github.com/flexzuu/thesis/micro-service/grpc/user/user"
+	"github.com/flexzuu/thesis/micro-service/mixed/facade"
 	"google.golang.org/grpc"
 )
 

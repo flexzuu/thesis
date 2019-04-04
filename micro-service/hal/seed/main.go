@@ -8,9 +8,9 @@ import (
 	"math/rand"
 	"os"
 
-	post "github.com/flexzuu/benchmark/micro-service/hal/post/api"
-	rating "github.com/flexzuu/benchmark/micro-service/hal/rating/api"
-	user "github.com/flexzuu/benchmark/micro-service/hal/user/api"
+	post "github.com/flexzuu/thesis/micro-service/hal/post/api"
+	rating "github.com/flexzuu/thesis/micro-service/hal/rating/api"
+	user "github.com/flexzuu/thesis/micro-service/hal/user/api"
 	"github.com/leibowitz/halgo"
 )
 

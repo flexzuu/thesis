@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/flexzuu/benchmark/common"
+	"github.com/flexzuu/thesis/common"
 )
 
 func FetchNewsFeed(baseURL string, t time.Duration, c http.Client) {

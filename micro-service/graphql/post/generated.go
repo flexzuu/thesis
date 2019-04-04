@@ -11,8 +11,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
-	"github.com/flexzuu/benchmark/micro-service/graphql/util"
+	"github.com/flexzuu/thesis/micro-service/graphql/post/repo/entity"
+	"github.com/flexzuu/thesis/micro-service/graphql/util"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 )
@@ -309,7 +309,7 @@ func (ec *executionContext) field_Mutation_postCreate_args(ctx context.Context, 
 	args := map[string]interface{}{}
 	var arg0 PostCreateInput
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNPostCreateInput2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostCreateInput(ctx, tmp)
+		arg0, err = ec.unmarshalNPostCreateInput2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostCreateInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -323,7 +323,7 @@ func (ec *executionContext) field_Mutation_postDelete_args(ctx context.Context, 
 	args := map[string]interface{}{}
 	var arg0 PostDeleteInput
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNPostDeleteInput2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostDeleteInput(ctx, tmp)
+		arg0, err = ec.unmarshalNPostDeleteInput2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostDeleteInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -436,7 +436,7 @@ func (ec *executionContext) _Mutation_postCreate(ctx context.Context, field grap
 	res := resTmp.(*entity.Post)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
+	return ec.marshalNPost2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_postDelete(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -469,7 +469,7 @@ func (ec *executionContext) _Mutation_postDelete(ctx context.Context, field grap
 	res := resTmp.(*PostDeletePayload)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNPostDeletePayload2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostDeletePayload(ctx, field.Selections, res)
+	return ec.marshalNPostDeletePayload2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostDeletePayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Post_id(ctx context.Context, field graphql.CollectedField, obj *entity.Post) graphql.Marshaler {
@@ -629,7 +629,7 @@ func (ec *executionContext) _Query_postGet(ctx context.Context, field graphql.Co
 	res := resTmp.(*entity.Post)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
+	return ec.marshalOPost2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_postList(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -655,7 +655,7 @@ func (ec *executionContext) _Query_postList(ctx context.Context, field graphql.C
 	res := resTmp.([]entity.Post)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
+	return ec.marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_postListOfAuthor(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -688,7 +688,7 @@ func (ec *executionContext) _Query_postListOfAuthor(ctx context.Context, field g
 	res := resTmp.([]entity.Post)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
+	return ec.marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -2052,11 +2052,11 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return util.MarshalID(v)
 }
 
-func (ec *executionContext) marshalNPost2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v entity.Post) graphql.Marshaler {
+func (ec *executionContext) marshalNPost2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v entity.Post) graphql.Marshaler {
 	return ec._Post(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v []entity.Post) graphql.Marshaler {
+func (ec *executionContext) marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v []entity.Post) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2080,7 +2080,7 @@ func (ec *executionContext) marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmark�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNPost2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx, sel, v[i])
+			ret[i] = ec.marshalNPost2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2093,7 +2093,7 @@ func (ec *executionContext) marshalNPost2ᚕgithubᚗcomᚋflexzuuᚋbenchmark�
 	return ret
 }
 
-func (ec *executionContext) marshalNPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v *entity.Post) graphql.Marshaler {
+func (ec *executionContext) marshalNPost2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v *entity.Post) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2103,19 +2103,19 @@ func (ec *executionContext) marshalNPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmark�
 	return ec._Post(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNPostCreateInput2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostCreateInput(ctx context.Context, v interface{}) (PostCreateInput, error) {
+func (ec *executionContext) unmarshalNPostCreateInput2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostCreateInput(ctx context.Context, v interface{}) (PostCreateInput, error) {
 	return ec.unmarshalInputPostCreateInput(ctx, v)
 }
 
-func (ec *executionContext) unmarshalNPostDeleteInput2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostDeleteInput(ctx context.Context, v interface{}) (PostDeleteInput, error) {
+func (ec *executionContext) unmarshalNPostDeleteInput2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostDeleteInput(ctx context.Context, v interface{}) (PostDeleteInput, error) {
 	return ec.unmarshalInputPostDeleteInput(ctx, v)
 }
 
-func (ec *executionContext) marshalNPostDeletePayload2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostDeletePayload(ctx context.Context, sel ast.SelectionSet, v PostDeletePayload) graphql.Marshaler {
+func (ec *executionContext) marshalNPostDeletePayload2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostDeletePayload(ctx context.Context, sel ast.SelectionSet, v PostDeletePayload) graphql.Marshaler {
 	return ec._PostDeletePayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNPostDeletePayload2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostDeletePayload(ctx context.Context, sel ast.SelectionSet, v *PostDeletePayload) graphql.Marshaler {
+func (ec *executionContext) marshalNPostDeletePayload2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚐPostDeletePayload(ctx context.Context, sel ast.SelectionSet, v *PostDeletePayload) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2370,11 +2370,11 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return ec.marshalOBoolean2bool(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalOPost2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v entity.Post) graphql.Marshaler {
+func (ec *executionContext) marshalOPost2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v entity.Post) graphql.Marshaler {
 	return ec._Post(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOPost2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v *entity.Post) graphql.Marshaler {
+func (ec *executionContext) marshalOPost2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋpostᚋrepoᚋentityᚐPost(ctx context.Context, sel ast.SelectionSet, v *entity.Post) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

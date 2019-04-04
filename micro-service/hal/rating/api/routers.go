@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/flexzuu/benchmark/micro-service/hal/rating/repo"
-	"github.com/flexzuu/benchmark/micro-service/hal/rating/repo/inmemmory"
+	"github.com/flexzuu/thesis/micro-service/hal/rating/repo"
+	"github.com/flexzuu/thesis/micro-service/hal/rating/repo/inmemmory"
 	"github.com/gin-gonic/gin"
 	"github.com/leibowitz/halgo"
 )

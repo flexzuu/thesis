@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	facadeApi "github.com/flexzuu/benchmark/micro-service/rest/facade/openapi/client"
+	facadeApi "github.com/flexzuu/thesis/micro-service/rest/facade/openapi/client"
 )
 
 func main() {

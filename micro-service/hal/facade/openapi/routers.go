@@ -13,9 +13,9 @@ import (
 	"net/http"
 	"strings"
 
-	post "github.com/flexzuu/benchmark/micro-service/rest/post/openapi/client"
-	rating "github.com/flexzuu/benchmark/micro-service/rest/rating/openapi/client"
-	user "github.com/flexzuu/benchmark/micro-service/rest/user/openapi/client"
+	post "github.com/flexzuu/thesis/micro-service/rest/post/openapi/client"
+	rating "github.com/flexzuu/thesis/micro-service/rest/rating/openapi/client"
+	user "github.com/flexzuu/thesis/micro-service/rest/user/openapi/client"
 	"github.com/gin-gonic/gin"
 )
 

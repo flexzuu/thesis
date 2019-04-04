@@ -1,6 +1,6 @@
 package repo
 
-import "github.com/flexzuu/benchmark/micro-service/graphql/rating/repo/entity"
+import "github.com/flexzuu/thesis/micro-service/graphql/rating/repo/entity"
 
 type Rating interface {
 	GetById(ID int) (entity.Rating, error)

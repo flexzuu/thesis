@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/flexzuu/benchmark/common"
+	"github.com/flexzuu/thesis/common"
 	"github.com/gorilla/mux"
 )
 

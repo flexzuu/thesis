@@ -15,7 +15,7 @@ import (
 	"strconv"
 
 	"github.com/antihax/optional"
-	post "github.com/flexzuu/benchmark/micro-service/rest/post/openapi/client"
+	post "github.com/flexzuu/thesis/micro-service/rest/post/openapi/client"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"

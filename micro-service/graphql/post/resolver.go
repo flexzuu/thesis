@@ -6,11 +6,11 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/flexzuu/benchmark/micro-service/graphql/post/repo"
-	"github.com/flexzuu/benchmark/micro-service/graphql/post/userclient"
-	"github.com/flexzuu/benchmark/micro-service/graphql/util"
+	"github.com/flexzuu/thesis/micro-service/graphql/post/repo"
+	"github.com/flexzuu/thesis/micro-service/graphql/post/userclient"
+	"github.com/flexzuu/thesis/micro-service/graphql/util"
 
-	"github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
+	"github.com/flexzuu/thesis/micro-service/graphql/post/repo/entity"
 )
 
 // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.

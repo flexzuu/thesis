@@ -11,8 +11,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/flexzuu/benchmark/micro-service/graphql/rating/repo/entity"
-	"github.com/flexzuu/benchmark/micro-service/graphql/util"
+	"github.com/flexzuu/thesis/micro-service/graphql/rating/repo/entity"
+	"github.com/flexzuu/thesis/micro-service/graphql/util"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 )
@@ -289,7 +289,7 @@ func (ec *executionContext) field_Mutation_ratingCreate_args(ctx context.Context
 	args := map[string]interface{}{}
 	var arg0 RatingCreateInput
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNRatingCreateInput2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingCreateInput(ctx, tmp)
+		arg0, err = ec.unmarshalNRatingCreateInput2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingCreateInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -303,7 +303,7 @@ func (ec *executionContext) field_Mutation_ratingDelete_args(ctx context.Context
 	args := map[string]interface{}{}
 	var arg0 RatingDeleteInput
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNRatingDeleteInput2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingDeleteInput(ctx, tmp)
+		arg0, err = ec.unmarshalNRatingDeleteInput2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingDeleteInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -416,7 +416,7 @@ func (ec *executionContext) _Mutation_ratingCreate(ctx context.Context, field gr
 	res := resTmp.(*entity.Rating)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNRating2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx, field.Selections, res)
+	return ec.marshalNRating2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_ratingDelete(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -449,7 +449,7 @@ func (ec *executionContext) _Mutation_ratingDelete(ctx context.Context, field gr
 	res := resTmp.(*RatingDeletePayload)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNRatingDeletePayload2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingDeletePayload(ctx, field.Selections, res)
+	return ec.marshalNRatingDeletePayload2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingDeletePayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_ratingGet(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -479,7 +479,7 @@ func (ec *executionContext) _Query_ratingGet(ctx context.Context, field graphql.
 	res := resTmp.(*entity.Rating)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalORating2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx, field.Selections, res)
+	return ec.marshalORating2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_ratingListOfPost(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -512,7 +512,7 @@ func (ec *executionContext) _Query_ratingListOfPost(ctx context.Context, field g
 	res := resTmp.([]entity.Rating)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx, field.Selections, res)
+	return ec.marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -1963,11 +1963,11 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return graphql.MarshalInt(v)
 }
 
-func (ec *executionContext) marshalNRating2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v entity.Rating) graphql.Marshaler {
+func (ec *executionContext) marshalNRating2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v entity.Rating) graphql.Marshaler {
 	return ec._Rating(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v []entity.Rating) graphql.Marshaler {
+func (ec *executionContext) marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v []entity.Rating) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -1991,7 +1991,7 @@ func (ec *executionContext) marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmark
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNRating2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx, sel, v[i])
+			ret[i] = ec.marshalNRating2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2004,7 +2004,7 @@ func (ec *executionContext) marshalNRating2ᚕgithubᚗcomᚋflexzuuᚋbenchmark
 	return ret
 }
 
-func (ec *executionContext) marshalNRating2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v *entity.Rating) graphql.Marshaler {
+func (ec *executionContext) marshalNRating2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v *entity.Rating) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2014,19 +2014,19 @@ func (ec *executionContext) marshalNRating2ᚖgithubᚗcomᚋflexzuuᚋbenchmark
 	return ec._Rating(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNRatingCreateInput2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingCreateInput(ctx context.Context, v interface{}) (RatingCreateInput, error) {
+func (ec *executionContext) unmarshalNRatingCreateInput2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingCreateInput(ctx context.Context, v interface{}) (RatingCreateInput, error) {
 	return ec.unmarshalInputRatingCreateInput(ctx, v)
 }
 
-func (ec *executionContext) unmarshalNRatingDeleteInput2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingDeleteInput(ctx context.Context, v interface{}) (RatingDeleteInput, error) {
+func (ec *executionContext) unmarshalNRatingDeleteInput2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingDeleteInput(ctx context.Context, v interface{}) (RatingDeleteInput, error) {
 	return ec.unmarshalInputRatingDeleteInput(ctx, v)
 }
 
-func (ec *executionContext) marshalNRatingDeletePayload2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingDeletePayload(ctx context.Context, sel ast.SelectionSet, v RatingDeletePayload) graphql.Marshaler {
+func (ec *executionContext) marshalNRatingDeletePayload2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingDeletePayload(ctx context.Context, sel ast.SelectionSet, v RatingDeletePayload) graphql.Marshaler {
 	return ec._RatingDeletePayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNRatingDeletePayload2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingDeletePayload(ctx context.Context, sel ast.SelectionSet, v *RatingDeletePayload) graphql.Marshaler {
+func (ec *executionContext) marshalNRatingDeletePayload2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚐRatingDeletePayload(ctx context.Context, sel ast.SelectionSet, v *RatingDeletePayload) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2281,11 +2281,11 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return ec.marshalOBoolean2bool(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalORating2githubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v entity.Rating) graphql.Marshaler {
+func (ec *executionContext) marshalORating2githubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v entity.Rating) graphql.Marshaler {
 	return ec._Rating(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalORating2ᚖgithubᚗcomᚋflexzuuᚋbenchmarkᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v *entity.Rating) graphql.Marshaler {
+func (ec *executionContext) marshalORating2ᚖgithubᚗcomᚋflexzuuᚋthesisᚋmicroᚑserviceᚋgraphqlᚋratingᚋrepoᚋentityᚐRating(ctx context.Context, sel ast.SelectionSet, v *entity.Rating) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

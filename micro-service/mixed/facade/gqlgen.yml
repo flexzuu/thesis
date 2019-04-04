@@ -11,13 +11,13 @@ model:
   filename: models_gen.go
 models:
   Post:
-    model: github.com/flexzuu/benchmark/micro-service/grpc/post/post.Post
+    model: github.com/flexzuu/thesis/micro-service/grpc/post/post.Post
   User:
-    model: github.com/flexzuu/benchmark/micro-service/grpc/user/user.User
+    model: github.com/flexzuu/thesis/micro-service/grpc/user/user.User
   Rating:
-    model: github.com/flexzuu/benchmark/micro-service/grpc/rating/rating.Rating
+    model: github.com/flexzuu/thesis/micro-service/grpc/rating/rating.Rating
   ID:
-    model: github.com/flexzuu/benchmark/micro-service/graphql/util.ID
+    model: github.com/flexzuu/thesis/micro-service/graphql/util.ID
 resolver:
   filename: resolver.go
   type: Resolver

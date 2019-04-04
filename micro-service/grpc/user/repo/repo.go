@@ -1,6 +1,6 @@
 package repo
 
-import "github.com/flexzuu/benchmark/micro-service/grpc/user/repo/entity"
+import "github.com/flexzuu/thesis/micro-service/grpc/user/repo/entity"
 
 type User interface {
 	Get(ID int64) (entity.User, error)

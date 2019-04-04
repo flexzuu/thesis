@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/99designs/gqlgen/handler"
-	"github.com/flexzuu/benchmark/micro-service/graphql/user"
-	"github.com/flexzuu/benchmark/micro-service/graphql/user/repo/inmemmory"
+	"github.com/flexzuu/thesis/micro-service/graphql/user"
+	"github.com/flexzuu/thesis/micro-service/graphql/user/repo/inmemmory"
 )
 
 const defaultPort = "8080"

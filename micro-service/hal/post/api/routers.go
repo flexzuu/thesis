@@ -7,8 +7,8 @@ import (
 
 	"github.com/leibowitz/halgo"
 
-	"github.com/flexzuu/benchmark/micro-service/hal/post/repo"
-	"github.com/flexzuu/benchmark/micro-service/hal/post/repo/inmemmory"
+	"github.com/flexzuu/thesis/micro-service/hal/post/repo"
+	"github.com/flexzuu/thesis/micro-service/hal/post/repo/inmemmory"
 	"github.com/gin-gonic/gin"
 )
 

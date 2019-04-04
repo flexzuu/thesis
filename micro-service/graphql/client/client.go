@@ -6,9 +6,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/flexzuu/benchmark/micro-service/graphql/client/postclient"
-	"github.com/flexzuu/benchmark/micro-service/graphql/client/ratingclient"
-	"github.com/flexzuu/benchmark/micro-service/graphql/client/userclient"
+	"github.com/flexzuu/thesis/micro-service/graphql/client/postclient"
+	"github.com/flexzuu/thesis/micro-service/graphql/client/ratingclient"
+	"github.com/flexzuu/thesis/micro-service/graphql/client/userclient"
 	"github.com/flexzuu/graphqlt"
 )
 

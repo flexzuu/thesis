@@ -6,11 +6,11 @@ import (
 	"math/rand"
 	"os"
 
-	post "github.com/flexzuu/benchmark/micro-service/graphql/post/repo/entity"
-	"github.com/flexzuu/benchmark/micro-service/graphql/seed/postclient"
-	"github.com/flexzuu/benchmark/micro-service/graphql/seed/ratingclient"
-	"github.com/flexzuu/benchmark/micro-service/graphql/seed/userclient"
-	user "github.com/flexzuu/benchmark/micro-service/graphql/user/repo/entity"
+	post "github.com/flexzuu/thesis/micro-service/graphql/post/repo/entity"
+	"github.com/flexzuu/thesis/micro-service/graphql/seed/postclient"
+	"github.com/flexzuu/thesis/micro-service/graphql/seed/ratingclient"
+	"github.com/flexzuu/thesis/micro-service/graphql/seed/userclient"
+	user "github.com/flexzuu/thesis/micro-service/graphql/user/repo/entity"
 	"github.com/flexzuu/graphqlt"
 )
 

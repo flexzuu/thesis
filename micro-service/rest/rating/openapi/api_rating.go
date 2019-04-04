@@ -14,7 +14,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/flexzuu/benchmark/micro-service/rest/rating/repo/entity"
+	"github.com/flexzuu/thesis/micro-service/rest/rating/repo/entity"
 	"github.com/gin-gonic/gin"
 )
 

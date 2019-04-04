@@ -4,7 +4,7 @@ package stats;
 
 import "google/protobuf/empty.proto";
 
-option go_package = "github.com/flexzuu/benchmark/micro-service/grpc/stats";
+option go_package = "github.com/flexzuu/thesis/micro-service/grpc/stats";
 
 service Stats {
   rpc RoundTrips(google.protobuf.Empty) returns (stats.RoundTripResponse) {}

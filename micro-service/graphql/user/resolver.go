@@ -4,9 +4,9 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/flexzuu/benchmark/micro-service/graphql/user/repo"
-	"github.com/flexzuu/benchmark/micro-service/graphql/user/repo/entity"
-	"github.com/flexzuu/benchmark/micro-service/graphql/util"
+	"github.com/flexzuu/thesis/micro-service/graphql/user/repo"
+	"github.com/flexzuu/thesis/micro-service/graphql/user/repo/entity"
+	"github.com/flexzuu/thesis/micro-service/graphql/util"
 )
 
 // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.

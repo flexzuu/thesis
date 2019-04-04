@@ -3,7 +3,7 @@ syntax = "proto3";
 import "post/post/post.proto";
 import "user/user/user.proto";
 
-option go_package = "github.com/flexzuu/benchmark/micro-service/grpc/facade/facade";
+option go_package = "github.com/flexzuu/thesis/micro-service/grpc/facade/facade";
 
 package facade;
 

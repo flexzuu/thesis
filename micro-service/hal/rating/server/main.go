@@ -12,7 +12,7 @@ package main
 import (
 	"log"
 
-	"github.com/flexzuu/benchmark/micro-service/hal/rating/api"
+	"github.com/flexzuu/thesis/micro-service/hal/rating/api"
 	cors "github.com/rs/cors/wrapper/gin"
 )
 

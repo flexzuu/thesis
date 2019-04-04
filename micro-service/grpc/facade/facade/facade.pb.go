@@ -6,8 +6,8 @@ package facade
 import (
 	context "context"
 	fmt "fmt"
-	post "github.com/flexzuu/benchmark/micro-service/grpc/post/post"
-	user "github.com/flexzuu/benchmark/micro-service/grpc/user/user"
+	post "github.com/flexzuu/thesis/micro-service/grpc/post/post"
+	user "github.com/flexzuu/thesis/micro-service/grpc/user/user"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
 	math "math"
