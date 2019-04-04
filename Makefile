@@ -1,14 +1,14 @@
 base = example/
 project = github.com/flexzuu/thesis/
 grpc = grpc/
-rest = rest/
+openapi = openapi/
 hal = hal/
 graphql = graphql/
 mixed = mixed/
 grpcbase = .$(base)$(grpc)
 gosrc = $(GOPATH)/src/
 grpcbase = $(gosrc)$(project)$(base)$(grpc)
-restbase = $(gosrc)$(project)$(base)$(rest)
+restbase = $(gosrc)$(project)$(base)$(openapi)
 halbase = $(gosrc)$(project)$(base)$(hal)
 graphqlbase = $(gosrc)$(project)$(base)$(graphql)
 mixedbase = $(gosrc)$(project)$(base)$(mixed)
@@ -21,7 +21,7 @@ facade = facade/facade
 stats = stats
 
 docc-grpc = $(grpcbase)docker-compose.yaml
-docc-rest = $(restbase)docker-compose.yaml
+docc-openapi = $(restbase)docker-compose.yaml
 docc-hal = $(halbase)docker-compose.yaml
 docc-graphql = $(graphqlbase)docker-compose.yaml
 docc-mixed = $(mixedbase)docker-compose.yaml
@@ -44,17 +44,17 @@ thesis-client-grpc:
 thesis-client-facade-grpc:
 	docker-compose -f $(docc-grpc) up --no-deps --build client-facade
 
-up-rest:
-	docker-compose -f $(docc-rest) up --build --scale client=0 --scale client-facade=0 -d
-logs-rest:
-	docker-compose -f $(docc-rest) logs -f
-down-rest: 
-	docker-compose -f $(docc-rest) down
-thesis-rest: thesis-client-rest thesis-client-facade-rest
-thesis-client-rest:
-	docker-compose -f $(docc-rest) up --no-deps --build client
-thesis-client-facade-rest:
-	docker-compose -f $(docc-rest) up --no-deps --build client-facade
+up-openapi:
+	docker-compose -f $(docc-openapi) up --build --scale client=0 --scale client-facade=0 -d
+logs-openapi:
+	docker-compose -f $(docc-openapi) logs -f
+down-openapi: 
+	docker-compose -f $(docc-openapi) down
+thesis-openapi: thesis-client-openapi thesis-client-facade-openapi
+thesis-client-openapi:
+	docker-compose -f $(docc-openapi) up --no-deps --build client
+thesis-client-facade-openapi:
+	docker-compose -f $(docc-openapi) up --no-deps --build client-facade
 
 up-hal:
 	docker-compose -f $(docc-hal) up --build --scale client=0 --scale client-facade=0 -d

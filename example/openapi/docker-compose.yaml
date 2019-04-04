@@ -1,0 +1,67 @@
+version: '3'
+services:
+  post-service:
+    depends_on: 
+      - user-service
+    build: ../../
+    command: "go run ./example/openapi/post/server"
+    environment: 
+     - USER_SERVICE=user-service:4001
+    ports:
+    - "4002:4002"
+  user-service:
+    build: ../../
+    command: "go run ./example/openapi/user/server"
+    ports:
+    - "4001:4001"
+  rating-service:
+    depends_on: 
+      - post-service
+    build: ../../
+    command: "go run ./example/openapi/rating/server"
+    environment: 
+     - POST_SERVICE=post-service:4002
+    ports:
+    - "4003:4003"
+  facade-service:
+    depends_on: 
+      - post-service
+      - user-service
+      - rating-service
+    build: ../../
+    command: "go run ./example/openapi/facade/server"
+    environment: 
+     - POST_SERVICE=post-service:4002
+     - USER_SERVICE=user-service:4001
+     - RATING_SERVICE=rating-service:4003
+    ports:
+     - "4000:4000"
+
+  seed:
+    depends_on: 
+      - post-service
+      - user-service
+      - rating-service
+    build: ../../
+    command: "go run ./example/openapi/seed"
+    environment: 
+     - POST_SERVICE=post-service:4002
+     - USER_SERVICE=user-service:4001
+     - RATING_SERVICE=rating-service:4003
+
+  client:
+    depends_on: 
+      - seed
+    build: ../../
+    command: "go run ./example/openapi/client"
+    environment: 
+     - POST_SERVICE=post-service:4002
+     - USER_SERVICE=user-service:4001
+     - RATING_SERVICE=rating-service:4003
+  client-facade:
+    depends_on: 
+      - seed
+    build: ../../
+    command: "go run ./example/openapi/client-facade"
+    environment: 
+     - FACADE_SERVICE=facade-service:4000
