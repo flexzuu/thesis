@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/99designs/gqlgen/handler"
-	"github.com/flexzuu/thesis/prototype/gql-quic/model"
+	"github.com/flexzuu/thesis/prototype/graphql-quic/model"
 	"github.com/gorilla/mux"
 	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"

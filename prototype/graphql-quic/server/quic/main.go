@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/flexzuu/thesis/prototype/gql-quic/graphql"
+	"github.com/flexzuu/thesis/prototype/graphql-quic/graphql"
 	"github.com/lucas-clemente/quic-go/h2quic"
 )
 

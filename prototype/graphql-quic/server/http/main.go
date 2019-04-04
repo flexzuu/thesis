@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/flexzuu/thesis/prototype/gql-quic/graphql"
+	"github.com/flexzuu/thesis/prototype/graphql-quic/graphql"
 )
 
 func main() {
