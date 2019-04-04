@@ -1,0 +1,3 @@
+[submodule "prototype/graphql-protobuf"]
+	path = prototype/graphql-protobuf
+	url = git@github.com:flexzuu/graphql-protobuf.git
