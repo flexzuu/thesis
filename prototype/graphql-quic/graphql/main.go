@@ -11,7 +11,9 @@ import (
 	"github.com/graph-gophers/graphql-go/relay"
 )
 
-type query struct{}
+type query struct {
+	method string
+}
 
 func (*query) NewsFeed() []newsResolver {
 	news := make([]newsResolver, len(model.AllNews))
@@ -21,6 +23,10 @@ func (*query) NewsFeed() []newsResolver {
 		}
 	}
 	return news
+}
+
+func (q query) Method() string {
+	return q.method
 }
 
 type newsResolver struct {
@@ -79,13 +85,14 @@ func (c commentResolver) Author() authorResolver {
 	}
 }
 
-func NewHandler() http.Handler {
+func NewHandler(method string) http.Handler {
 	s := `
 	schema {
 		query: Query
 	}
 	type Query {
 		newsfeed: [News!]!
+		method: String!
 	}
 	type News {
 		id: ID!
@@ -103,7 +110,7 @@ func NewHandler() http.Handler {
 		author: Author!	
 	}
 `
-	schema := graphql.MustParseSchema(s, &query{})
+	schema := graphql.MustParseSchema(s, &query{method})
 
 	r := mux.NewRouter()
 	r.Handle("/graphql", &relay.Handler{Schema: schema})

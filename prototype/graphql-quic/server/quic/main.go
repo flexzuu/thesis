@@ -4,11 +4,12 @@ import (
 	"log"
 
 	"github.com/flexzuu/thesis/prototype/graphql-quic/graphql"
+	"github.com/flexzuu/thesis/prototype/graphql-quic/testdata"
 	"github.com/lucas-clemente/quic-go/h2quic"
 )
 
 func main() {
-	handler := server.NewHandler()
-
-	log.Fatal(h2quic.ListenAndServeQUIC("localhost:8882", "../../certs/thesis.pem", "../../certs/thesis-key.pem", handler))
+	handler := graphql.NewHandler("quic")
+	certFile, keyFile := testdata.GetCertificatePaths()
+	log.Fatal(h2quic.ListenAndServeQUIC("localhost:8882", certFile, keyFile, handler))
 }
