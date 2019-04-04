@@ -1,4 +1,4 @@
-base = micro-service/
+base = example/
 project = github.com/flexzuu/thesis/
 grpc = grpc/
 rest = rest/
