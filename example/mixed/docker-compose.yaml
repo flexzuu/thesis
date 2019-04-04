@@ -1,0 +1,67 @@
+version: '3'
+services:
+  post-service:
+    depends_on: 
+      - user-service
+    build: ../../
+    command: "go run ./example/grpc/post/server"
+    environment: 
+     - USER_SERVICE=user-service:50052
+    ports:
+    - "50051:50051"
+  user-service:
+    build: ../../
+    command: "go run ./example/grpc/user/server"
+    ports:
+    - "50052:50052"
+  rating-service:
+    depends_on: 
+      - post-service
+    build: ../../
+    command: "go run ./example/grpc/rating/server"
+    environment: 
+     - POST_SERVICE=post-service:50051
+    ports:
+    - "50053:50053"
+
+  seed:
+    depends_on: 
+      - post-service
+      - user-service
+      - rating-service
+    build: ../../
+    command: "go run ./example/grpc/seed"
+    environment: 
+     - POST_SERVICE=post-service:50051
+     - USER_SERVICE=user-service:50052
+     - RATING_SERVICE=rating-service:50053
+
+  facade-service:
+    depends_on: 
+      - post-service
+      - user-service
+      - rating-service
+    build: ../../
+    command: "go run ./example/mixed/facade/server"
+    environment: 
+     - POST_SERVICE=post-service:50051
+     - USER_SERVICE=user-service:50052
+     - RATING_SERVICE=rating-service:50053
+    ports:
+     - "8090:8090"
+  client:
+    depends_on: 
+      - seed
+    build: ../../
+    command: "go run ./example/grpc/client"
+    environment: 
+     - POST_SERVICE=post-service:50051
+     - USER_SERVICE=user-service:50052
+     - RATING_SERVICE=rating-service:50053
+  client-facade:
+    depends_on: 
+      - seed
+    build: ../../
+    command: "go run ./example/graphql/client-facade"
+    environment: 
+     - FACADE_SERVICE=http://facade-service:8090/graphql

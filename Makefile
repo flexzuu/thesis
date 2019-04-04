@@ -1,5 +1,5 @@
-base = micro-service/
-project = github.com/flexzuu/benchmark/
+base = example/
+project = github.com/flexzuu/thesis/
 grpc = grpc/
 rest = rest/
 hal = hal/
@@ -38,10 +38,10 @@ logs-grpc:
 	docker-compose -f $(docc-grpc) logs -f
 down-grpc: 
 	docker-compose -f $(docc-grpc) down
-benchmark-grpc: benchmark-client-grpc benchmark-client-facade-grpc
-benchmark-client-grpc:
+thesis-grpc: thesis-client-grpc thesis-client-facade-grpc
+thesis-client-grpc:
 	docker-compose -f $(docc-grpc) up --no-deps --build client
-benchmark-client-facade-grpc:
+thesis-client-facade-grpc:
 	docker-compose -f $(docc-grpc) up --no-deps --build client-facade
 
 up-rest:
@@ -50,10 +50,10 @@ logs-rest:
 	docker-compose -f $(docc-rest) logs -f
 down-rest: 
 	docker-compose -f $(docc-rest) down
-benchmark-rest: benchmark-client-rest benchmark-client-facade-rest
-benchmark-client-rest:
+thesis-rest: thesis-client-rest thesis-client-facade-rest
+thesis-client-rest:
 	docker-compose -f $(docc-rest) up --no-deps --build client
-benchmark-client-facade-rest:
+thesis-client-facade-rest:
 	docker-compose -f $(docc-rest) up --no-deps --build client-facade
 
 up-hal:
@@ -62,10 +62,10 @@ logs-hal:
 	docker-compose -f $(docc-hal) logs -f
 down-hal: 
 	docker-compose -f $(docc-hal) down
-benchmark-hal: benchmark-client-hal benchmark-client-facade-hal
-benchmark-client-hal:
+thesis-hal: thesis-client-hal thesis-client-facade-hal
+thesis-client-hal:
 	docker-compose -f $(docc-hal) up --no-deps --build client
-# benchmark-client-facade-hal:
+# thesis-client-facade-hal:
 # 	docker-compose -f $(docc-hal) up --no-deps --build client-facade
 
 up-graphql:
@@ -74,10 +74,10 @@ logs-graphql:
 	docker-compose -f $(docc-graphql) logs -f
 down-graphql: 
 	docker-compose -f $(docc-graphql) down
-benchmark-graphql: benchmark-client-graphql benchmark-client-facade-graphql
-benchmark-client-graphql:
+thesis-graphql: thesis-client-graphql thesis-client-facade-graphql
+thesis-client-graphql:
 	docker-compose -f $(docc-graphql) up --no-deps --build client
-benchmark-client-facade-graphql:
+thesis-client-facade-graphql:
 	docker-compose -f $(docc-graphql) up --no-deps --build client-facade
 
 up-mixed:
@@ -86,10 +86,10 @@ logs-mixed:
 	docker-compose -f $(docc-mixed) logs -f
 down-mixed: 
 	docker-compose -f $(docc-mixed) down
-benchmark-mixed: benchmark-client-mixed benchmark-client-facade-mixed
-benchmark-client-mixed:
+thesis-mixed: thesis-client-mixed thesis-client-facade-mixed
+thesis-client-mixed:
 	docker-compose -f $(docc-mixed) up --no-deps --build client
-benchmark-client-facade-mixed:
+thesis-client-facade-mixed:
 	docker-compose -f $(docc-mixed) up --no-deps --build client-facade
 
 gui: gui-1 gui-2 gui-3 gui-4
