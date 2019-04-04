@@ -1,6 +1,6 @@
 # Microservice Examples:
 
- - GraphQL
- - gRPC
- - HAL
- - OpenAPI
+- GraphQL
+- gRPC
+- HAL
+- OpenAPI
