@@ -21,7 +21,7 @@ func main() {
 
 	ListPosts(facadeClient.FacadeApi)
 	PostDetail(facadeClient.FacadeApi, 0)
-	// AuthorDetail(facadeClient, 0)
+	AuthorDetail(facadeClient.FacadeApi, 0)
 
 }
 

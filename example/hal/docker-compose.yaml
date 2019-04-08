@@ -26,19 +26,19 @@ services:
      - POST_SERVICE=http://host.docker.internal:4002
     ports:
     - "4003:4003"
-  # facade-service:
-  #   depends_on: 
-  #     - post-service
-  #     - user-service
-  #     - rating-service
-  #   build: ../../
-  #   command: "go run ./example/hal/facade/server"
-  #   environment: 
-  #    - POST_SERVICE=http://host.docker.internal:4002
-  #    - USER_SERVICE=http://host.docker.internal:4001
-  #    - RATING_SERVICE=http://host.docker.internal:4003
-  #   ports:
-  #    - "4000:4000"
+  facade-service:
+    depends_on: 
+      - post-service
+      - user-service
+      - rating-service
+    build: ../../
+    command: "go run ./example/hal/facade/server"
+    environment: 
+     - POST_SERVICE=http://host.docker.internal:4002
+     - USER_SERVICE=http://host.docker.internal:4001
+     - RATING_SERVICE=http://host.docker.internal:4003
+    ports:
+     - "4000:4000"
 
   seed:
     depends_on: 
@@ -60,10 +60,10 @@ services:
      - POST_SERVICE=http://host.docker.internal:4002
      - USER_SERVICE=http://host.docker.internal:4001
      - RATING_SERVICE=http://host.docker.internal:4003
-  # client-facade:
-  #   depends_on: 
-  #     - seed
-  #   build: ../../
-  #   command: "go run ./example/hal/client-facade"
-  #   environment: 
-  #    - FACADE_SERVICE=facade-service:4000
+  client-facade:
+    depends_on: 
+      - seed
+    build: ../../
+    command: "go run ./example/hal/client-facade"
+    environment: 
+     - FACADE_SERVICE=http://host.docker.internal:4000
