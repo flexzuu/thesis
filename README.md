@@ -12,3 +12,22 @@ Prototypes can be found in the `prototype` subdirectory
 
 - `go 1.12+`
 - `node`
+
+
+```
+├── Dockerfile
+├── Makefile
+├── README.md
+├── example
+│   ├── README.md
+│   ├── graphql
+│   ├── grpc
+│   ├── hal
+│   ├── mixed
+│   └── openapi
+├── go.mod
+├── go.sum
+└── prototype
+    ├── graphql-protobuf
+    └── graphql-quic
+```
